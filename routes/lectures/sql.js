@@ -15,22 +15,22 @@ const lectures = `
 
 const sql = {
   all: `${lectures} l.deleted = 'F';`,
-  single: `${lectures} l.id = ?;`,
+  one: `${lectures} l.id = ?;`,
   add: `
     insert into lectures (number, title, modify_date, deleted)
-    values( ?, ?, ?, 'F' );
+    values( ?, ?, datetime('now', 'localtime'), 'F' );
   `,
-  update: `
+  upd: `
     update lectures
     set number = ?, 
         title = ?, 
-        modify_date = ?
+        modify_date = datetime('now', 'localtime')
     where id = ?;
   `,
-  delete: `
+  del: `
     update lectures
     set deleted = 'T',
-        modify_date = ?
+        modify_date = datetime('now', 'localtime')
     where id = ?;
   `
 };
