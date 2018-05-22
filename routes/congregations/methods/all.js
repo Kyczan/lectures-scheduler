@@ -4,6 +4,8 @@ const db = new sqlite3.Database(`${global.appRoot}/db/planer.db`);
 const sql = require('../sql');
 
 module.exports = (req, res) => {
-  db.all(sql.all, [], (err, data) => 
-    res.status(200).json(data));
+  db.all(sql.all, [], (err, data) => {
+    if (data.length === 0) return res.status(404).send('There is no congregations');
+    res.status(200).json(data);
+  });
 };
