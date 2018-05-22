@@ -5,6 +5,10 @@ const sql = require('../sql');
 
 module.exports = (req, res) => {
   const lectureId = +req.params.lectureId;
-  db.run(sql.del, [lectureId], (err) => 
-    res.status(200).json('OK'));
+  db.get(sql.one, [lectureId], (err, data) => {
+    if (!data) return res.status(404).send('There is no lecture with given id');
+    db.run(sql.del, [lectureId], (err) => 
+      res.status(200).json(data));
+  })
+  
 };

@@ -10,12 +10,12 @@ const lectures = `
     ) as uwagi,
   l.number || l.title as number_title
   from lectures l
-  where 
+  where l.deleted = 'F' 
 `;
 
 const sql = {
-  all: `${lectures} l.deleted = 'F';`,
-  one: `${lectures} l.id = ?;`,
+  all: `${lectures} ;`,
+  one: `${lectures} and l.id = ?;`,
   add: `
     insert into lectures (number, title, modify_date, deleted)
     values( ?, ?, datetime('now', 'localtime'), 'F' );

@@ -8,8 +8,8 @@ const upd = require('./methods/upd');
 
 lectures.get('/', all);
 lectures.get('/:lectureId', one);
-lectures.put('/',add);
+lectures.post('/',add);
 lectures.delete('/:lectureId',del);
-lectures.post('/:lectureId',upd);
+lectures.put('/:lectureId',upd);
 
 module.exports = lectures;
