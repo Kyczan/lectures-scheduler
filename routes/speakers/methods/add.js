@@ -10,8 +10,13 @@ module.exports = (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   
   const params = [
-    +req.body.number,
-    req.body.title
+    +req.body.congregation_id,
+    req.body.first_name,
+    req.body.last_name,
+    req.body.phone,
+    req.body.email,
+    req.body.privilege,
+    req.body.note
   ];
   
   db.run(sql.add, params, function (err) {

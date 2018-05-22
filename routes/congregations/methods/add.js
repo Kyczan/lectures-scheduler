@@ -9,10 +9,12 @@ module.exports = (req, res) => {
   const { error } = validateCongregation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   
-  const congregationNumber = +req.body.number;
-  const congregationName = req.body.name;
+  const params = [
+    +req.body.number,
+    req.body.name
+  ];
   
-  db.run(sql.add, [congregationNumber, congregationName], function (err) {
+  db.run(sql.add, params, function (err) {
     db.get(sql.one, [this.lastID], (err, data) => 
       res.status(201).json(data));
   });

@@ -10,10 +10,13 @@ module.exports = (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const lectureId = +req.params.lectureId;
-  const lectureNumber = +req.body.number;
-  const lectureTitle = req.body.title;
+  const params = [
+    +req.body.number,
+    req.body.title,
+    lectureId
+  ];
   
-  db.run(sql.upd, [lectureNumber, lectureTitle, lectureId], err =>
+  db.run(sql.upd, params, err =>
     db.get(sql.one, [lectureId], (err, data) => {
       if (!data) return res.status(404).send('There is no lecture with given id');
       res.status(200).json(data)
