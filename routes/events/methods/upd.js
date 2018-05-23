@@ -20,9 +20,6 @@ module.exports = (req, res) => {
   ];
   
   db.run(sql.upd, params, err =>
-    db.get(sql.one, [eventId], (err, data) => {
-      if (!data) return res.status(404).send('There is no event with given id');
-      res.status(200).json(data)
-    })
-  );
+    db.get(sql.one, [eventId], (err, data) => 
+      res.status(200).json(data)));
 };

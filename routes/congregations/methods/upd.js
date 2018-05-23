@@ -17,9 +17,6 @@ module.exports = (req, res) => {
   ];
   
   db.run(sql.upd, params, err =>
-    db.get(sql.one, [congregationId], (err, data) => {
-      if (!data) return res.status(404).send('There is no congregation with given id');
-      res.status(200).json(data)
-    })
-  );
+    db.get(sql.one, [congregationId], (err, data) => 
+      res.status(200).json(data)));
 };
