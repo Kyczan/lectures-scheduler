@@ -8,10 +8,7 @@ module.exports = (req, res) => {
     +req.params.speakerId,
     +req.params.lectureId
   ];
-  
-  db.get(sql.one, params, (err, data) => {
-    if (!data) return res.status(404).send('Invalid ID');
-    db.run(sql.del, params, (err) => 
-      res.status(200).json(data));
-  })
-};
+
+  db.run(sql.del, params, (err) => 
+    res.status(200).json(req.returnedData));
+}
