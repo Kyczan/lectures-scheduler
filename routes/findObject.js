@@ -5,7 +5,7 @@ module.exports = (sql) => {
   return (req, res, next, value) => {
     db.get(sql.one, [value], (err, data) => {
       if (data) {
-        req[returnedData] = data;
+        req['returnedData'] = data;
         next();
       } else {
         res.status(404).send(`Invalid ID`);
