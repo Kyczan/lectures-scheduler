@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const prepared = require('express').Router({ mergeParams: true });
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(`${global.appRoot}/db/planer.db`);
@@ -9,12 +10,19 @@ const add = require('./methods/add');
 const del = require('./methods/del');
 
 prepared.param( 'lectureId', (req, res, next, value) => {
+
+  const { error } = Joi.validate(
+    value, 
+    Joi.number().required() 
+  );
+  if (error) return res.status(404).send('Invalid ID');
+
   db.get(sql.one, [req.params.speakerId, value], (err, data) => {
     if (data) {
       req['returnedData'] = data;
       next();
     } else {
-      res.status(404).send(`Invalid ID`);
+      res.status(404).send('Invalid ID');
     }
   });
 });
