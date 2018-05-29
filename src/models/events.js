@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
-module.exports = function validateEvent(event) {
+export default function validateEvent(event) {
   const schema = {
     speaker_id: Joi.number().allow('', null).required(),
     lecture_id: Joi.number().allow('', null).required(),

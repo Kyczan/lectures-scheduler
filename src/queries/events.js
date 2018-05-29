@@ -1,4 +1,4 @@
-const events = `
+const select = `
   select 
     sc.*,
     sp.last_name || ' ' || sp.first_name as speaker,
@@ -18,9 +18,9 @@ const events = `
 `;
 
 const sql = {
-  all: `${events} ;`,
-  one: `${events} and sc.id = ?;`,
-  add: `
+  findAll: `${select} ;`,
+  findOne: `${select} and sc.id = ?;`,
+  create: `
     insert into schedule (
       speaker_id,
       lecture_id,
@@ -35,7 +35,7 @@ const sql = {
       'F'
     );
   `,
-  upd: `
+  update: `
     update schedule
     set speaker_id = ?,
       lecture_id = ?,
@@ -45,7 +45,7 @@ const sql = {
       modify_date = datetime('now', 'localtime')
     where id = ?;
   `,
-  del: `
+  remove: `
     update schedule
     set deleted = 'T',
       modify_date = datetime('now', 'localtime')
@@ -53,4 +53,4 @@ const sql = {
   `
 };
 
-module.exports = sql;
+export default sql;
