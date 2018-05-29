@@ -16,7 +16,7 @@ export default {
     return res.status(200).json(events);
   },
 
-  findOne (req, res, next) {
+  findOne (req, res) {
 
     res.status(200).json(req.returnedData);
   },
@@ -40,7 +40,7 @@ export default {
     res.status(201).json(data);
   },
 
-  async update (req, res, next) {
+  async update (req, res) {
 
     const { error } = validateEvent(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -57,11 +57,11 @@ export default {
     
     const db = await dbPromise;
     await db.run(sql.update, params);
-    const data = await db.get(sql.findOne, [eventId])
+    const data = await db.get(sql.findOne, [eventId]);
     res.status(200).json(data);
   },
 
-  async remove (req, res, next) {
+  async remove (req, res) {
 
     const eventId = +req.params.eventId;
     const db = await dbPromise;
