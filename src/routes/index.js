@@ -1,19 +1,21 @@
-const routes = require('express').Router();
+import { Router } from 'express';
 
-const lectures = require('./lectures');
-const congregations = require('./congregations');
-const speakers = require('./speakers');
-const events = require('./events');
-const settings = require('./settings');
+// import lectures from './lectures';
+import congregations from './congregations';
+// import speakers from './speakers';
+// import events from './events';
+// import settings from './settings';
 
-routes.use('/lectures', lectures);
+const routes = Router();
+
+// routes.use('/lectures', lectures);
 routes.use('/congregations', congregations);
-routes.use('/speakers', speakers);
-routes.use('/events', events);
-routes.use('/settings', settings);
+// routes.use('/speakers', speakers);
+// routes.use('/events', events);
+// routes.use('/settings', settings);
 
 routes.get('/', (req, res) => {
   res.status(200).json({ message: 'Connected!' });
 });
 
-module.exports = routes;
+export default routes;

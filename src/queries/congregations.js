@@ -1,4 +1,4 @@
-const congregations = `
+const select = `
   select
   co.*,
   (
@@ -13,20 +13,20 @@ const congregations = `
 `;
 
 const sql = {
-  all: `${congregations} ;`,
-  one: `${congregations} and co.id = ?;`,
-  add: `
+  findAll: `${select} ;`,
+  findOne: `${select} and co.id = ?;`,
+  create: `
     insert into congregations (number, name, modify_date, deleted)
     values( ?, ?, datetime('now', 'localtime'), 'F' );
   `,
-  upd: `
+  update: `
     update congregations
     set number = ?, 
       name = ?, 
       modify_date = datetime('now', 'localtime')
     where id = ?;
   `,
-  del: {
+  remove: {
     congregations: `
       update congregations
       set deleted = 'T',
@@ -41,4 +41,4 @@ const sql = {
   }
 };
 
-module.exports = sql;
+export default sql;

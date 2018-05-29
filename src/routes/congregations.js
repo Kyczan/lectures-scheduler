@@ -1,15 +1,16 @@
-const congregations = require('express').Router();
+import { Router } from 'express';
+import findObject from '../controllers/findObject';
+import sql from '../queries/congregations';
+import ctl from '../controllers/congregationsController';
 
-const findObject = require('./findObject');
-const sql = require('../controllers/sql');
-const congregationsController = require('../controllers/congregationsController');
+const congregations = Router();
 
 congregations.param('congregationId', findObject(sql));
 
-congregations.get('/', congregationsController.findAll);
-congregations.get('/:congregationId', congregationsController.findOne);
-congregations.post('/', congregationsController.create);
-congregations.delete('/:congregationId', congregationsController.remove);
-congregations.put('/:congregationId', congregationsController.update);
+congregations.get('/', ctl.findAll);
+congregations.get('/:congregationId', ctl.findOne);
+congregations.post('/', ctl.create);
+congregations.delete('/:congregationId', ctl.remove);
+congregations.put('/:congregationId', ctl.update);
 
-module.exports = congregations;
+export default congregations;

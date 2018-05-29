@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
-module.exports = function validateCongregation(congregation) {
+export default function validateCongregation(congregation) {
   const schema = {
     number: Joi.number().required(),
     name: Joi.string().required()

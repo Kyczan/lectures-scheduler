@@ -1,15 +1,12 @@
-const path = require('path');
-global.appRoot = path.resolve(__dirname);
+import express from 'express';
+import bodyParser from 'body-parser';
+import routes from './routes';
 
-const app = require('express')();
-const bodyParser = require('body-parser')
-const routes = require('./routes');
+const app = express();
 
 app.use(bodyParser.json())
-//  Connect all our api routes to our application
 app.use('/api', routes);
 
-// Turn on that server!
 app.listen(3000, () => {
   console.log('App listening on port 3000');
 });

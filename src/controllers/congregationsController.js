@@ -1,22 +1,28 @@
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database(`${global.appRoot}/db/planer.db`);
+import Promise from 'bluebird';
+import sqlite from 'sqlite';
+import dbConf from '../config/database';
+import sql from '../queries/congregations';
+import validateCongregation from '../models/congregations';
 
-import sql from './sql';
-const validateCongregation = require('../models/congregations');
+const dbPromise = sqlite.open(dbConf.dbPath, { Promise });
 
-module.exports = {
+export default {
 
   async findAll (req, res) {
-    const congregations = await db.all(sql.all, []);
+    
+    const db = await dbPromise;
+    const congregations = await db.all(sql.findAll, []);
     if (congregations.length === 0) return res.status(404).send('There is no congregations');
     return res.status(200).json(congregations);
   },
 
   findOne (req, res, next) {
+
     res.status(200).json(req.returnedData);
   },
 
-  create (req, res) {
+  async create (req, res) {
+
     const { error } = validateCongregation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     
@@ -25,13 +31,14 @@ module.exports = {
       req.body.name
     ];
     
-    db.run(sql.add, params, function (err) {
-      db.get(sql.one, [this.lastID], (err, data) => 
-        res.status(201).json(data));
-    });
+    const db = await dbPromise;
+    const { lastID } = await db.run(sql.create, params);
+    const data = await db.get(sql.findOne, [lastID]);
+    res.status(201).json(data);
   },
 
-  update (req, res, next) {
+  async update (req, res, next) {
+
     const { error } = validateCongregation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
   
@@ -42,15 +49,18 @@ module.exports = {
       congregationId
     ];
     
-    db.run(sql.upd, params, err =>
-      db.get(sql.one, [congregationId], (err, data) => 
-        res.status(200).json(data)));
+    const db = await dbPromise;
+    await db.run(sql.update, params);
+    const data = await db.get(sql.findOne, [congregationId])
+    res.status(200).json(data);
   },
 
-  remove (req, res, next) {
+  async remove (req, res, next) {
+
     const congregationId = +req.params.congregationId;
-    db.run(sql.del.congregations, [congregationId])
-      .run(sql.del.speakers, [congregationId], (err) => 
-        res.status(200).json(req.returnedData));
+    const db = await dbPromise;
+    await db.run(sql.remove.congregations, [congregationId]);
+    await db.run(sql.remove.speakers, [congregationId]);
+    res.status(200).json(req.returnedData);
   }
 };
