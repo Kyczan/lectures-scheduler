@@ -9,4 +9,4 @@ export default function validateEvent(event) {
     note: Joi.string().allow('', null).required()
   };
   return Joi.validate(event, schema);
-};
+}

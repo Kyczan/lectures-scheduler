@@ -1,4 +1,4 @@
-const lectures = `
+const select = `
   select l.*,
     (
       select max(s.event_date || ifnull(' (' || sp.last_name || ' ' || sp.first_name || ')','')) as a
@@ -14,20 +14,20 @@ const lectures = `
 `;
 
 const sql = {
-  all: `${lectures} ;`,
-  one: `${lectures} and l.id = ?;`,
-  add: `
+  findAll: `${select} ;`,
+  findOne: `${select} and l.id = ?;`,
+  create: `
     insert into lectures (number, title, modify_date, deleted)
     values( ?, ?, datetime('now', 'localtime'), 'F' );
   `,
-  upd: `
+  update: `
     update lectures
     set number = ?, 
         title = ?, 
         modify_date = datetime('now', 'localtime')
     where id = ?;
   `,
-  del: `
+  remove: `
     update lectures
     set deleted = 'T',
         modify_date = datetime('now', 'localtime')
@@ -35,4 +35,4 @@ const sql = {
   `
 };
 
-module.exports = sql;
+export default sql;
