@@ -11,7 +11,7 @@ export default (sql) => {
     const db = await dbPromise;
     const { error } = Joi.validate(
       value, 
-      Joi.number().required() 
+      Joi.string().required() 
     );
     if (error) return res.status(404).send('Invalid ID');
 

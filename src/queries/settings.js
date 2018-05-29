@@ -1,14 +1,14 @@
 const sql = {
-  one: `
+  findOne: `
     select value
     from settings
     where parameter = ?;
   `,
-  upd: `
+  update: `
     update settings
     set value = ?
     where parameter = ?;
   `
 };
 
-module.exports = sql;
+export default sql;

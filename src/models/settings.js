@@ -1,8 +1,8 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
-module.exports = function validateSetting(setting) {
+export default function validateSetting(setting) {
   const schema = {
     value: Joi.string().required()
   };
   return Joi.validate(setting, schema);
-};
+}
