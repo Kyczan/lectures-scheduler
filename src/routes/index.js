@@ -1,6 +1,5 @@
 import { Router } from 'express';
-
-// import lectures from './lectures';
+import lectures from './lectures';
 import congregations from './congregations';
 // import speakers from './speakers';
 import events from './events';
@@ -8,7 +7,7 @@ import events from './events';
 
 const routes = Router();
 
-// routes.use('/lectures', lectures);
+routes.use('/lectures', lectures);
 routes.use('/congregations', congregations);
 // routes.use('/speakers', speakers);
 routes.use('/events', events);
