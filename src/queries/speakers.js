@@ -1,4 +1,4 @@
-const speakers = `
+const select = `
   select
   s.id as id,
   s.first_name as first_name,
@@ -25,9 +25,9 @@ const speakers = `
 `;
 
 const sql = {
-  all: `${speakers} ;`,
-  one: `${speakers} and s.id = ?;`,
-  add: `
+  findAll: `${select} ;`,
+  findOne: `${select} and s.id = ?;`,
+  create: `
     insert into speakers (
       congregation_id,
       first_name,
@@ -44,7 +44,7 @@ const sql = {
       'F'
     );
   `,
-  upd: `
+  update: `
     update speakers
     set congregation_id = ?,
       first_name = ?,
@@ -56,7 +56,7 @@ const sql = {
       modify_date = datetime('now', 'localtime')
     where id = ?;
   `,
-  del: `
+  remove: `
     update speakers
     set deleted = 'T',
       modify_date = datetime('now', 'localtime')
@@ -64,4 +64,4 @@ const sql = {
   `
 };
 
-module.exports = sql;
+export default sql;

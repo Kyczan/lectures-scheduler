@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
-module.exports = function validateSpeaker(speaker) {
+export default function validateSpeaker(speaker) {
   const schema = {
     congregation_id: Joi.number().allow('', null).required(),
     first_name: Joi.string().required(),
