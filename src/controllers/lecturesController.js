@@ -59,7 +59,7 @@ export default {
 
     const lectureId = +req.params.lectureId;
     const db = await dbPromise;
-    await db.run(sql.remove.lectures, [lectureId]);
+    await db.run(sql.remove, [lectureId]);
     res.status(200).json(req.returnedData);
   }
 };

@@ -65,7 +65,7 @@ export default {
 
     const eventId = +req.params.eventId;
     const db = await dbPromise;
-    await db.run(sql.remove.events, [eventId]);
+    await db.run(sql.remove, [eventId]);
     res.status(200).json(req.returnedData);
   }
 };

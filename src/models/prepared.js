@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
-module.exports = function validatePrepared(prepared) {
+export default function validatePrepared(prepared) {
   const schema = {
     lecture_id: Joi.number().required()
   };

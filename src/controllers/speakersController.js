@@ -69,7 +69,7 @@ export default {
 
     const speakerId = +req.params.speakerId;
     const db = await dbPromise;
-    await db.run(sql.remove.speakers, [speakerId]);
+    await db.run(sql.remove, [speakerId]);
     res.status(200).json(req.returnedData);
   }
 };

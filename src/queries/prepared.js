@@ -1,4 +1,4 @@
-const prepared = `
+const select = `
   select pl.speaker_id,
   pl.lecture_id,
   l.title,
@@ -24,17 +24,17 @@ const prepared = `
 `;
 
 const sql = {
-  all: `${prepared} ;`,
-  one: `${prepared} and pl.lecture_id = ?;`,
-  add: `
+  findAll: `${select} ;`,
+  findOne: `${select} and pl.lecture_id = ?;`,
+  create: `
     insert into prepared_lectures ( speaker_id, lecture_id )
     values( ?, ? );
   `,
-  del: `
+  remove: `
     delete from prepared_lectures
     where speaker_id = ?
       and lecture_id = ?;
   `
 };
 
-module.exports = sql;
+export default sql;
