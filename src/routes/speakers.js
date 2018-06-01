@@ -2,7 +2,7 @@ import { Router } from 'express';
 import findObject from '../controllers/findObject';
 import sql from '../queries/speakers';
 import ctl from '../controllers/speakersController';
-import prepared from './speakers/prepared';
+import prepared from './prepared';
 
 const speakers = Router();
 

@@ -5,4 +5,4 @@ export default function validatePrepared(prepared) {
     lecture_id: Joi.number().required()
   };
   return Joi.validate(prepared, schema);
-};
+}

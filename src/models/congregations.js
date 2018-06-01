@@ -6,4 +6,4 @@ export default function validateCongregation(congregation) {
     name: Joi.string().required()
   };
   return Joi.validate(congregation, schema);
-};
+}

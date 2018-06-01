@@ -11,4 +11,4 @@ export default function validateSpeaker(speaker) {
     note: Joi.string().allow('', null).required()
   };
   return Joi.validate(speaker, schema);
-};
+}
