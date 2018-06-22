@@ -7,7 +7,7 @@
     "build": "rimraf ./dist && babel ./src -d ./dist --copy-files",
     "prestart": "npm run -s build",
     "start": "node dist/app.js",
-    "dev": "nodemon -w ./src --exec \"babel-node ./src\""
+    "dev": "nodemon -w ./src --exec \"babel-node ./src/app\""
   },
   "keywords": [],
   "author": "",
