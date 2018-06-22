@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h3>{{modal_title}}</h3>
+</div>
+<form class="form-horizontal" ng-submit="submit(default_event_time)" name="myForm" novalidate>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group">
+                <label class="col-sm-6 control-label">Domyślna godzina rozpoczęcia zebrania*</label>
+                <div class="col-sm-6" ng-class="{'has-error': myForm.default_event_time.$invalid && !myForm.default_event_time.$pristine }">
+                    <timepicker ng-init="default_event_time = settime()" name="default_event_time" ng-model="default_event_time" hour-step="1" minute-step="30" show-meridian="false"></timepicker>
+                    <p ng-show="myForm.default_event_time.$invalid && !myForm.default_event_time.$pristine" class="help-block">Błędna godzina.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <p class="text-muted" style="float: left;">* - oznacza pola wymagane</p>
+        <input type="submit" class="btn btn-primary" value="{{modal_submit}}" ng-disabled="myForm.$invalid"/>
+        <input type="button" class="btn btn-warning" value="Anuluj" ng-click="cancel()"/>
+    </div>
+</form>

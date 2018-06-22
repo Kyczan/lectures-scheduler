@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h3>Usuwanie terminu</h3>
+</div>
+<div class="modal-body">
+    Czy jesteś pewny, że chcesz usunąć termin: <br>
+    <strong>Data:</strong> {{event.event_date}} {{event.event_time}}<br>
+    <strong>Wykład:</strong> {{event.lecture}}<br>
+    <strong>Mówca:</strong> {{event.speaker}}
+</div>
+<div class="modal-footer">
+    <input type="button" class="btn btn-warning" value="Usuń" ng-click="ok()" />
+    <input type="button" class="btn btn-primary" value="Anuluj" ng-click="cancel()" />
+</div>

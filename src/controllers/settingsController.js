@@ -1,8 +1,8 @@
 import Promise from 'bluebird';
 import sqlite from 'sqlite';
 import dbConf from '../config/database';
-import sql from '../queries/lectures';
-import validateSetting from '../models/lectures';
+import sql from '../queries/settings';
+import validateSetting from '../models/settings';
 
 const dbPromise = sqlite.open(dbConf.dbPath, { Promise });
 

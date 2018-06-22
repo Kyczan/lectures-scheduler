@@ -1,0 +1,21 @@
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+        <a href="" ng-click="predicate = name; reverse=!reverse">
+            {{label}}
+            <span ng-show="predicate != name" style="font-size: 11px;">
+                <span class="glyphicon glyphicon-resize-vertical"></span>
+            </span>
+            <span ng-show="predicate == name" style="font-size: 11px;">
+                <span ng-show="reverse">
+                <span class="glyphicon glyphicon-arrow-up"></span>
+                </span>
+                <span ng-show="!reverse">
+                    <span class="glyphicon glyphicon-arrow-down"></span>
+                </span>
+            </span>
+        </a>
+    </div>
+    <div class="col-xs-8 col-sm-9 col-md-10">
+        <input class="form-control" type="search" ng-model="search[name]" ng-change="clr_qry(search)" placeholder="&#xe003;"/>
+    </div>
+</div>

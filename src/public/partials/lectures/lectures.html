@@ -1,0 +1,29 @@
+<header-row title="Lista wykładów" add="open_add_lecture" add-title="Dodaj wykład" data="lectures_list" search="search"></header-row>
+
+<filter-row label="numer" name="'number'" search="search" predicate="predicate" reverse="reverse"></filter-row>
+<filter-row label="tytuł" name="'title'" search="search" predicate="predicate" reverse="reverse"></filter-row>
+<filter-row label="data przedstawienia" name="'uwagi'" search="search" predicate="predicate" reverse="reverse"></filter-row>
+
+<hr>
+
+<div class="row row-eq-height">
+	<div class="col-xs-12 col-sm-6 col-md-4 clear"
+		 ng-repeat="lecture in lectures_list | filter:search | orderBy:predicate:reverse">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<p>
+					<strong>{{lecture.number}}. {{lecture.title}}</strong>
+				</p>
+				<p>{{lecture.uwagi}}</p>
+				<div class="btn-group pull-right">
+					<button type="button" class="btn btn-primary" ng-click="open_edit_lecture(lecture)">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-danger" ng-click="open_delete_lecture(lecture)">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

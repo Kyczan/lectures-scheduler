@@ -1,0 +1,51 @@
+input[type="search"]::-webkit-input-placeholder {
+    color: silver;
+    font-family: 'Glyphicons Halflings';
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.app-modal-window .modal-dialog {
+  width: 90%;
+}
+
+.fixheight-modal{
+	max-height: 560px;
+	overflow-y: auto;
+}
+
+.past_events {
+	color: gray;
+    background-color: lightgray;
+}
+
+.equal, .equal > div[class*='col-'] {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex:1 1 auto;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .clear:nth-child(2n+3) {
+        clear: left;
+    }
+}
+@media (min-width: 992px) {
+    .clear:nth-child(3n+4) {
+        clear: left;
+    }
+}
+
+.panel:hover {
+    border-color: #5cb85c;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px #5cb85c;
+}
+
+.panel-warning {
+    background-color: rgba(240, 173, 78, 0.3);
+}

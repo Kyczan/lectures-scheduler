@@ -1,0 +1,8 @@
+<h1>
+    {{title}}
+    <div style="float: right;">
+        <button type="button" class="btn btn-primary" ng-click="add()">{{addTitle}}</button>
+        <span ng-transclude></span>
+    </div>
+</h1>
+<p class="text-muted">Wszystkich: {{data.length}} | Przefiltrowanych: {{(data|filter:search).length}}</p>

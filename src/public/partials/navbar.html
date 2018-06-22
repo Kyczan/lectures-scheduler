@@ -1,0 +1,18 @@
+<div class="container col-sm-12">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Pokaż menu</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" ng-class="{active: isActive('/')}" href="/">Plan Wykładów</a>
+  </div>
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+      <li ng-class="{active: isActive('/speakers')}"><a data-toggle="collapse" data-target=".navbar-collapse" href="#/speakers">Mówcy</a></li>
+      <li ng-class="{active: isActive('/congregations')}"><a data-toggle="collapse" data-target=".navbar-collapse" href="#/congregations">Zbory</a></li>
+      <li ng-class="{active: isActive('/lectures')}"><a data-toggle="collapse" data-target=".navbar-collapse" href="#/lectures">Wykłady</a></li>
+    </ul>
+  </div><!--/.nav-collapse -->
+</div>
