@@ -4,10 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "setup": "rm -rf ./node_modules && npm i",
     "build": "rimraf ./dist && babel ./src -d ./dist --copy-files",
     "prestart": "npm run -s build",
     "start": "node dist/app.js",
-    "dev": "nodemon -w ./src --exec \"babel-node ./src/app\""
+    "dev": "nodemon -w ./src --exec \"babel-node ./src/app\"",
+    "dev:clean": "npm run setup && npm run dev"
   },
   "keywords": [],
   "author": "",
