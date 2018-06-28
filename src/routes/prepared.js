@@ -1,12 +1,9 @@
 import { Router } from 'express';
 import Joi from 'joi';
-import Promise from 'bluebird';
-import sqlite from 'sqlite';
-import dbConf from '../config/database';
+import db from '../db';
 import sql from '../queries/prepared';
 import ctl from '../controllers/preparedController';
 
-const dbPromise = sqlite.open(dbConf.dbPath, { Promise });
 const prepared = Router({ mergeParams: true });
 
 prepared.param( 'lectureId', async (req, res, next, value) => {
@@ -17,10 +14,9 @@ prepared.param( 'lectureId', async (req, res, next, value) => {
   );
   if (error) return res.status(404).send('Invalid ID');
 
-  const db = await dbPromise;
-  const data = await db.get(sql.findOne, [req.params.speakerId, value]);
-  if (data) {
-    req['returnedData'] = data;
+  const data = await db.query(sql.findOne, [req.params.speakerId, value]);
+  if (data.length) {
+    req['returnedData'] = data[0];
     next();
   } else {
     res.status(404).send('Invalid ID');

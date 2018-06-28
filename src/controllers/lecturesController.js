@@ -1,17 +1,12 @@
-import Promise from 'bluebird';
-import sqlite from 'sqlite';
-import dbConf from '../config/database';
+import db from '../db';
 import sql from '../queries/lectures';
 import validateLecture from '../models/lectures';
-
-const dbPromise = sqlite.open(dbConf.dbPath, { Promise });
 
 export default {
 
   async findAll (req, res) {
     
-    const db = await dbPromise;
-    const lectures = await db.all(sql.findAll, []);
+    const lectures = await db.query(sql.findAll, []);
     if (lectures.length === 0) return res.status(404).send('There is no lectures');
     return res.status(200).json(lectures);
   },
@@ -31,10 +26,9 @@ export default {
       req.body.title
     ];
     
-    const db = await dbPromise;
-    const { lastID } = await db.run(sql.create, params);
-    const data = await db.get(sql.findOne, [lastID]);
-    res.status(201).json(data);
+    const { insertId } = await db.query(sql.create, params);
+    const data = await db.query(sql.findOne, [insertId]);
+    res.status(201).json(data[0]);
   },
 
   async update (req, res) {
@@ -49,17 +43,15 @@ export default {
       lectureId
     ];
     
-    const db = await dbPromise;
-    await db.run(sql.update, params);
-    const data = await db.get(sql.findOne, [lectureId]);
-    res.status(200).json(data);
+    await db.query(sql.update, params);
+    const data = await db.query(sql.findOne, [lectureId]);
+    res.status(200).json(data[0]);
   },
 
   async remove (req, res) {
 
     const lectureId = +req.params.lectureId;
-    const db = await dbPromise;
-    await db.run(sql.remove, [lectureId]);
+    await db.query(sql.remove, [lectureId]);
     res.status(200).json(req.returnedData);
   }
 };

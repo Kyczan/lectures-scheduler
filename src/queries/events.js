@@ -31,7 +31,7 @@ const sql = {
       deleted
     )values(
       ?, ?, ?, ?, ?,
-      datetime('now', 'localtime'),
+      now(),
       'F'
     );
   `,
@@ -42,13 +42,13 @@ const sql = {
       event_date = ?,
       event_time = ?,
       note = ?,
-      modify_date = datetime('now', 'localtime')
+      modify_date = now()
     where id = ?;
   `,
   remove: `
     update schedule
     set deleted = 'T',
-      modify_date = datetime('now', 'localtime')
+      modify_date = now()
     where id = ?;
   `
 };

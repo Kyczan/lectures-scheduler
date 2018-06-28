@@ -1,17 +1,12 @@
-import Promise from 'bluebird';
-import sqlite from 'sqlite';
-import dbConf from '../config/database';
+import db from '../db';
 import sql from '../queries/events';
 import validateEvent from '../models/events';
-
-const dbPromise = sqlite.open(dbConf.dbPath, { Promise });
 
 export default {
 
   async findAll (req, res) {
     
-    const db = await dbPromise;
-    const events = await db.all(sql.findAll, []);
+    const events = await db.query(sql.findAll, []);
     if (events.length === 0) return res.status(404).send('There is no events');
     return res.status(200).json(events);
   },
@@ -34,10 +29,9 @@ export default {
       req.body.note,
     ];
     
-    const db = await dbPromise;
-    const { lastID } = await db.run(sql.create, params);
-    const data = await db.get(sql.findOne, [lastID]);
-    res.status(201).json(data);
+    const { insertId } = await db.query(sql.create, params);
+    const data = await db.query(sql.findOne, [insertId]);
+    res.status(201).json(data[0]);
   },
 
   async update (req, res) {
@@ -55,17 +49,15 @@ export default {
       eventId
     ];
     
-    const db = await dbPromise;
-    await db.run(sql.update, params);
-    const data = await db.get(sql.findOne, [eventId]);
-    res.status(200).json(data);
+    await db.query(sql.update, params);
+    const data = await db.query(sql.findOne, [eventId]);
+    res.status(200).json(data[0]);
   },
 
   async remove (req, res) {
 
     const eventId = +req.params.eventId;
-    const db = await dbPromise;
-    await db.run(sql.remove, [eventId]);
+    await db.query(sql.remove, [eventId]);
     res.status(200).json(req.returnedData);
   }
 };

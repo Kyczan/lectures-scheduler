@@ -17,20 +17,20 @@ const sql = {
   findOne: `${select} and co.id = ?;`,
   create: `
     insert into congregations (number, name, modify_date, deleted)
-    values( ?, ?, datetime('now', 'localtime'), 'F' );
+    values( ?, ?, now(), 'F' );
   `,
   update: `
     update congregations
     set number = ?, 
       name = ?, 
-      modify_date = datetime('now', 'localtime')
+      modify_date = now()
     where id = ?;
   `,
   remove: {
     congregations: `
       update congregations
       set deleted = 'T',
-        modify_date = datetime('now', 'localtime')
+        modify_date = now()
       where id = ?;
     `,
     speakers: `

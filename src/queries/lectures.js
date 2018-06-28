@@ -18,19 +18,19 @@ const sql = {
   findOne: `${select} and l.id = ?;`,
   create: `
     insert into lectures (number, title, modify_date, deleted)
-    values( ?, ?, datetime('now', 'localtime'), 'F' );
+    values( ?, ?, now(), 'F' );
   `,
   update: `
     update lectures
     set number = ?, 
         title = ?, 
-        modify_date = datetime('now', 'localtime')
+        modify_date = now()
     where id = ?;
   `,
   remove: `
     update lectures
     set deleted = 'T',
-        modify_date = datetime('now', 'localtime')
+        modify_date = now()
     where id = ?;
   `
 };

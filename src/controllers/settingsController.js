@@ -1,10 +1,6 @@
-import Promise from 'bluebird';
-import sqlite from 'sqlite';
-import dbConf from '../config/database';
+import db from '../db';
 import sql from '../queries/settings';
 import validateSetting from '../models/settings';
-
-const dbPromise = sqlite.open(dbConf.dbPath, { Promise });
 
 export default {
 
@@ -24,9 +20,8 @@ export default {
       settingName
     ];
     
-    const db = await dbPromise;
-    await db.run(sql.update, params);
-    const data = await db.get(sql.findOne, [settingName]);
-    res.status(200).json(data);
+    await db.query(sql.update, params);
+    const data = await db.query(sql.findOne, [settingName]);
+    res.status(200).json(data[0]);
   }
 };

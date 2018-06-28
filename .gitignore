@@ -1,3 +1,4 @@
 node_modules/*
 db/scheduler.db
 dist/*
+.env

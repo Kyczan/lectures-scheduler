@@ -40,7 +40,7 @@ const sql = {
       deleted
     )values(
       ?, ?, ?, ?, ?, ?, ?,
-      datetime('now', 'localtime'),
+      now(),
       'F'
     );
   `,
@@ -53,13 +53,13 @@ const sql = {
       email = ?,
       privilege = ?,
       note = ?,
-      modify_date = datetime('now', 'localtime')
+      modify_date = now()
     where id = ?;
   `,
   remove: `
     update speakers
     set deleted = 'T',
-      modify_date = datetime('now', 'localtime')
+      modify_date = now()
     where id = ?;
   `
 };
