@@ -6,9 +6,9 @@ planerApp.controller('SpeakersCtrl', function($scope, $rootScope, $modal, $log, 
 
   $rootScope.title = 'Mówcy';
   $scope.predicate = 'congregation';
-  $scope.speakers_list = {};
-  $scope.congregations = {};
-  $scope.lectures = {};
+  $scope.speakers_list = [];
+  $scope.congregations = [];
+  $scope.lectures = [];
 
   //pobranie listy mowców
   dataService.getAllSpeakersFn(function(speakers){

@@ -6,7 +6,7 @@ planerApp.controller('CongregationsCtrl', function($scope, $rootScope, $modal, $
 
   $rootScope.title = 'Zbory';
   $scope.predicate = 'name';
-  $scope.congregations_list = {};
+  $scope.congregations_list = [];
 
   //pobranie listy zborów
   dataService.getAllCongregationsFn(function(congregations){

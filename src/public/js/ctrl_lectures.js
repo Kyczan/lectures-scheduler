@@ -6,7 +6,7 @@ planerApp.controller('LecturesCtrl', function($scope, $rootScope, $modal, $log, 
 
   $rootScope.title = 'Wykłady';
   $scope.predicate = 'number';
-  $scope.lectures_list = {};
+  $scope.lectures_list = [];
 
   //pobranie listy wykładów
   dataService.getAllLecturesFn(function(lectures){

@@ -7,10 +7,9 @@ planerApp.controller('ScheduleCtrl', function($scope, $rootScope, $modal, $log, 
   $rootScope.title = 'Plan wykładów';
   $scope.predicate = 'event_date';
   $scope.reverse = true;
-  $scope.schedule_list = {};
-  $scope.speakers = {};
-  $scope.lectures = {};
-  $scope.dane_pdf = [];
+  $scope.schedule_list = [];
+  $scope.speakers = [];
+  $scope.lectures = [];
   $scope.default_event_time = '';
 
   //pobranie listy zaplanowanych wykładów
