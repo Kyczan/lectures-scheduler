@@ -16,7 +16,7 @@ router.get('/logout', function(req, res){
 
 /* GOOGLE ROUTER */
 router.get('/google',
-  passportGoogle.authenticate('google', { scope: 'https://www.google.com/m8/feeds' }));
+  passportGoogle.authenticate('google', { scope: ['profile'] }));
 
 router.get('/google/callback',
   passportGoogle.authenticate('google', { failureRedirect: '/login' }),
@@ -24,4 +24,4 @@ router.get('/google/callback',
     res.redirect('/');
   });
 
-  export default router;
+export default router;
