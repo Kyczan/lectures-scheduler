@@ -7,7 +7,7 @@ const select = `
     where s.congregation_id = co.id
       and s.deleted = 'F'
   ) as speakers_count,
-  co.number || co.name as number_name
+  concat(co.number, co.name) as number_name
   from congregations co
   where co.deleted = 'F'
 `;

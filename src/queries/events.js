@@ -1,12 +1,11 @@
 const select = `
   select 
     sc.*,
-    sp.last_name || ' ' || sp.first_name as speaker,
+    concat(sp.last_name, ' ', sp.first_name) as speaker,
     sp.phone as phone,
     sp.email as email,
-    -- co.name || ' (' || co.number || ')' as congregation,
     co.name as congregation,
-    le.number || '. ' || le.title as lecture
+    concat(le.number, '. ', le.title) as lecture
   from schedule sc
   left join speakers sp
     on sc.speaker_id = sp.id

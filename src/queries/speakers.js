@@ -3,7 +3,7 @@ const select = `
   s.id as id,
   s.first_name as first_name,
   s.last_name as last_name,
-  s.last_name || ' ' || s.first_name as name,
+  concat(s.last_name, ' ', s.first_name) as name,
   s.phone as phone,
   s.email as email,
   s.privilege as privilege,
@@ -11,7 +11,7 @@ const select = `
   co.id as congregation_id,
   co.number as congregation_number,
   co.name as congregation_name,
-  co.name || ' (' || co.number || ')' as congregation,
+  concat(co.name, ' (', co.number, ')') as congregation,
   (
     select max(sc.event_date)
     from schedule sc

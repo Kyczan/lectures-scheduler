@@ -1,14 +1,14 @@
 const select = `
   select l.*,
     (
-      select max(s.event_date || ifnull(' (' || sp.last_name || ' ' || sp.first_name || ')','')) as a
+      select max(concat(s.event_date, ifnull(concat(' (', sp.last_name, ' ', sp.first_name, ')','')))) as a
       from schedule s 
       left join speakers sp
       on sp.id = s.speaker_id
       where s.lecture_id = l.id 
         and s.deleted = 'F'
     ) as uwagi,
-  l.number || l.title as number_title
+  concat(l.number, l.title) as number_title
   from lectures l
   where l.deleted = 'F' 
 `;
