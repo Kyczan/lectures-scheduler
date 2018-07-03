@@ -4,12 +4,13 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import session from 'express-session';
 import {} from 'dotenv/config';
+import path from 'path';
 import routes from './routes';
 import auth from './routes/auth';
 
 const app = express();
 
-app.set('views', './src/views');
+app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'pug');
 
 app.use(bodyParser.json());
@@ -23,7 +24,7 @@ app.use(passport.session());
 app.use('/api',ensureAuthenticated, routes);
 app.use('/auth', auth);
 app.use('/', ensureAuthenticated);
-app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(path.join(__dirname, '/client')));
 
 app.get('/', (req, res) => 
   res.sendFile('index.html')

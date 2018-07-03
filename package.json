@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "setup": "rm -rf ./node_modules && npm i",
-    "build": "rimraf ./dist && babel ./src -d ./dist --copy-files",
+    "build": "rimraf ./dist && babel ./src -d ./dist --copy-files && cp {package.json,.env} ./dist",
     "prestart": "npm run -s build",
     "start": "node dist/app.js",
     "dev": "nodemon -w ./src --exec \"babel-node ./src/app\"",
@@ -24,8 +24,7 @@
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "promise-mysql": "^3.3.1",
-    "pug": "^2.0.3",
-    "pug-bootstrap": "0.0.15"
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
