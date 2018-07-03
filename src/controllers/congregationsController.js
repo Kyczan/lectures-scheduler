@@ -1,5 +1,4 @@
-import db from '../db';
-import sql from '../queries/congregations';
+import db, { congregations as sql } from '../db';
 import validateCongregation from '../models/congregations';
 
 export default {

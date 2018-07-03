@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import findObject from '../controllers/findObject';
-import sql from '../queries/speakers';
+import { speakers as sql } from '../db';
 import ctl from '../controllers/speakersController';
 import prepared from './prepared';
 

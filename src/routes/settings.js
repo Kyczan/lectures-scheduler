@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import findObject from '../controllers/findObject';
-import sql from '../queries/settings';
+import { settings as sql } from '../db';
 import ctl from '../controllers/settingsController';
 
 const settings = Router();

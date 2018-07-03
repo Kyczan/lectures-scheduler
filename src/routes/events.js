@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import findObject from '../controllers/findObject';
-import sql from '../queries/events';
+import { events as sql } from '../db';
 import ctl from '../controllers/eventsController';
 
 const events = Router();

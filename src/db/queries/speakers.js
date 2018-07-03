@@ -64,4 +64,4 @@ const sql = {
   `
 };
 
-export default sql;
+export { sql as speakers };

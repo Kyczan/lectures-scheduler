@@ -41,4 +41,4 @@ const sql = {
   }
 };
 
-export default sql;
+export { sql as congregations };

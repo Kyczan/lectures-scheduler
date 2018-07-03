@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import findObject from '../controllers/findObject';
-import sql from '../queries/congregations';
+import { congregations as sql } from '../db';
 import ctl from '../controllers/congregationsController';
 
 const congregations = Router();

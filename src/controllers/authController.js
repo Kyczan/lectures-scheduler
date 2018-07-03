@@ -1,7 +1,6 @@
 import passport from 'passport';
 import passportGoogleOauth from 'passport-google-oauth';
-import db from '../db';
-import sql from '../queries/users';
+import db, { users as sql } from '../db';
 
 const GoogleStrategy = passportGoogleOauth.OAuth2Strategy;
 

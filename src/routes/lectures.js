@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import findObject from '../controllers/findObject';
-import sql from '../queries/lectures';
+import { lectures as sql } from '../db';
 import ctl from '../controllers/lecturesController';
 
 const lectures = Router();

@@ -1,5 +1,4 @@
-import db from '../db';
-import sql from '../queries/events';
+import db, { events as sql } from '../db';
 import validateEvent from '../models/events';
 
 export default {

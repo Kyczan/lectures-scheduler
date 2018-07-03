@@ -1,5 +1,4 @@
-import db from '../db';
-import sql from '../queries/speakers';
+import db, { speakers as sql } from '../db';
 import validateSpeaker from '../models/speakers';
 
 export default {

@@ -1,5 +1,4 @@
-import db from '../db';
-import sql from '../queries/lectures';
+import db, { lectures as sql } from '../db';
 import validateLecture from '../models/lectures';
 
 export default {

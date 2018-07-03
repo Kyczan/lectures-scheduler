@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import Joi from 'joi';
-import db from '../db';
-import sql from '../queries/prepared';
+import db, { prepared as sql } from '../db';
 import ctl from '../controllers/preparedController';
 
 const prepared = Router({ mergeParams: true });

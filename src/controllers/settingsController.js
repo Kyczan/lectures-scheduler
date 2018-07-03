@@ -1,5 +1,4 @@
-import db from '../db';
-import sql from '../queries/settings';
+import db, { settings as sql } from '../db';
 import validateSetting from '../models/settings';
 
 export default {

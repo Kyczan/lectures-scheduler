@@ -1,5 +1,4 @@
-import db from '../db';
-import sql from '../queries/prepared';
+import db, { prepared as sql } from '../db';
 import validatePrepared from '../models/prepared';
 
 export default {

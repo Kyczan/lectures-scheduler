@@ -6,4 +6,4 @@ const sql = {
   `
 };
 
-export default sql;
+export { sql as users };

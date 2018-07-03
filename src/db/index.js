@@ -12,3 +12,4 @@ const config = {
 const pool = mysql.createPool(config);
 
 export default pool;
+export * from './queries';
