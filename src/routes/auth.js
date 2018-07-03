@@ -1,27 +1,24 @@
 import { Router } from 'express';
-import passportGoogle from '../auth/google';
+import passportGoogle from '../controllers/authController';
 
-const router = Router();
+const auth = Router();
 
-/* LOGIN ROUTER */
-router.get('/login', function(req, res, next) {
+auth.get('/login', (req, res, next) => {
   res.render('login', { title: 'Please Sign In with:' });
 });
 
-/* LOGOUT ROUTER */
-router.get('/logout', function(req, res){
+auth.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
 
-/* GOOGLE ROUTER */
-router.get('/google',
-  passportGoogle.authenticate('google', { scope: ['profile'] }));
+auth.get('/google',
+  passportGoogle.authenticate('google', { scope: ['profile'] })
+);
 
-router.get('/google/callback',
+auth.get('/google/callback',
   passportGoogle.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
+  (req, res) => res.redirect('/') 
+);
 
-export default router;
+export default auth;

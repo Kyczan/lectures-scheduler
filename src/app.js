@@ -20,16 +20,17 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(express.static(__dirname + '/public'));
 app.use('/api',ensureAuthenticated, routes);
 app.use('/auth', auth);
+app.use('/', ensureAuthenticated);
+app.use('/', express.static(__dirname + '/public'));
 
-// app.get('/',ensureAuthenticated, (req, res) => 
-//   res.sendFile('index.html')
-// );
-// app.get('*', (req, res) => 
-//   res.redirect('/')
-// );
+app.get('/', (req, res) => 
+  res.sendFile('index.html')
+);
+app.get('*', (req, res) => 
+  res.redirect('/')
+);
 
 app.listen(3000);
 
