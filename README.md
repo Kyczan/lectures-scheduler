@@ -10,7 +10,7 @@ In future Angular will be replaced with React (?)
 
 ## Setup
 
-First copy `.env.tmp` to `.env` and set mySQL database details and google credentials for authentication.
+First copy `.env.example` to `.env` and set mySQL database details and google credentials for authentication.
 
 Run `setup_db.sql` in mySQL database.
 
