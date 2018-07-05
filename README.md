@@ -1,6 +1,6 @@
 # lectures-scheduler
 
-Fullstack application to schedule lectures.
+Fullstack application to schedule lectures with Google authentication.
 
 `mySQL + Express + Angular + Node`
 
