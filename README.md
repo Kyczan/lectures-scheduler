@@ -24,7 +24,7 @@ Then just:
 
 ```
 npm i
-npm run dev
+gulp
 ```
 
 And navigate to `localhost:3000`
