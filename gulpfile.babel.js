@@ -1,58 +1,60 @@
 import gulp from 'gulp';
-import nodemon from 'gulp-nodemon';
-import path from 'path';
+import nodemon from 'nodemon';
 import babel from 'gulp-babel';
 import del from 'del';
-import Cache from 'gulp-file-cache';
+import cache from 'gulp-cached';
+import sequence from 'run-sequence';
+import colors from 'colors';
 
-const cache = new Cache();
-const src = ['src/**/*'];
-const dest = 'dist';
-const entryScript = path.join(dest, 'app.js');
+function nodemonLog(message){
+  console.log('[' + new Date().toString().split(' ')[4].gray + '] ' + '[nodemon] '.yellow + message.yellow);
+}
 
 gulp.task('clean', () => {
-  return del(`${dest}/**`, {force:true});
+  return del('dist/**', {force:true});
 });
 
 gulp.task('copy', ['clean'], () => {
   return gulp
-      .src(src)
-      .pipe(gulp.dest('./dist'));
+    .src(['src/**/*'])
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('js', () => {
-  return gulp.src(src+'.js')
-  .pipe(cache.filter())
-  .pipe(babel({
-    presets: ['env'],
-    plugins: ['transform-async-to-generator']
-  }))
-  .pipe(cache.cache())
-  .pipe(gulp.dest(dest));
+  return gulp.src(['src/**/*.js'])
+    .pipe(cache('js'))
+    .pipe(babel({
+      presets: ['env'],
+      plugins: ['transform-async-to-generator']
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
-gulp.task('observe', () => {
-  gulp.watch(src+'.js', ['js']);
-});
-
-gulp.task('nodemon', ['js'], (done) => {
-  return nodemon({
-    script: entryScript,
-    watch: 'src',
-    tasks: ['js'],
-    done: done
+gulp.task('watch', () => {
+  gulp.watch(['src/**/*.js'], (ev) => {
+    sequence('js', () => nodemon.emit('restart', `${ev.type} file: ${ev.path}`));
   });
+});
+
+gulp.task('nodemon', ['js'], () => {
+  nodemon({
+    script: 'dist/app.js',
+    ignore: '*'
+  });
+  nodemon.on('start', () => 
+    nodemonLog('started')
+  ).on('quit', () => {
+    nodemonLog('quit');
+    process.exit();
+  }).on('restart', (files) => 
+    nodemonLog(`detected ${files}`)
+  );
 });
 
 gulp.task('build', ['copy'], () => {
   gulp.start(['js']);
 });
 
-gulp.task('watch', ['build'], () => {
-  gulp.start(['observe']);
-});
-
-// to do - improve handling changes by nodemon
 gulp.task('default', ['build'], () => {
-  gulp.start(['nodemon']);
+  gulp.start(['watch', 'nodemon']);
 });
