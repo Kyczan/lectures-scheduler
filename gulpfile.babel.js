@@ -1,8 +1,10 @@
 import gulp from 'gulp';
-import nodemon from 'nodemon';
 import babel from 'gulp-babel';
-import del from 'del';
 import cache from 'gulp-cached';
+import concat from 'gulp-concat';
+//import uglify from 'gulp-uglify';
+import del from 'del';
+import nodemon from 'nodemon';
 import sequence from 'run-sequence';
 import 'colors';
 
@@ -27,15 +29,16 @@ gulp.task('clean', () => {
 gulp.task('copy', ['clean'], () => {
   return gulp
     .src(['src/**/*'])
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 });
 
 /**
- * Takes all .js files, transpiles to ES5
+ * Takes all node .js files, 
+ * transpiles to ES5
  */
-gulp.task('js', () => {
-  return gulp.src(['src/**/*.js'])
-    .pipe(cache('js'))
+gulp.task('nodeJs', () => {
+  return gulp.src(['src/**/*.js', '!src/public/{js,js/**}'])
+    .pipe(cache('nodeJs'))
     .pipe(babel({
       presets: ['env'],
       plugins: ['transform-async-to-generator']
@@ -44,19 +47,38 @@ gulp.task('js', () => {
 });
 
 /**
+ * Takes all client .js files, 
+ * transpiles to ES5, concatenates
+ */
+gulp.task('clientJs', () => {
+  const stream = gulp.src(['src/public/js/**'])
+    .pipe(cache('clientJs'))
+    .pipe(babel({
+      presets: ['env'],
+      plugins: ['transform-async-to-generator']
+    }))
+    .pipe(concat('bundle.js'))
+    .pipe(gulp.dest('dist/public'));
+    
+  del('dist/public/js/**');
+
+  return stream;
+});
+
+/**
  * Reruns js task when file changes.
  * Restarts nodemon
  */
 gulp.task('watch', () => {
   gulp.watch(['src/**/*.js'], (ev) => {
-    sequence('js', () => nodemon.emit('restart', `${ev.type} file: ${ev.path}`));
+    sequence(['nodeJs', 'clientJs'], () => nodemon.emit('restart', `${ev.type} file: ${ev.path}`));
   });
 });
 
 /**
  * Runs local server
  */
-gulp.task('nodemon', ['js'], () => {
+gulp.task('nodemon', ['nodeJs', 'clientJs'], () => {
   nodemon({
     script: 'dist/app.js',
     ignore: '*'
@@ -75,7 +97,7 @@ gulp.task('nodemon', ['js'], () => {
  * Creates production ready build
  */
 gulp.task('build', ['copy'], () => {
-  gulp.start(['js']);
+  gulp.start(['nodeJs', 'clientJs']);
 });
 
 /**
