@@ -9,6 +9,26 @@ import nodemon from 'nodemon';
 import sequence from 'run-sequence';
 import 'colors';
 
+const babelOptions = {
+  presets: ['env'],
+  plugins: ['transform-async-to-generator']
+};
+
+const paths = {
+  src: 'src/**/*',
+  srcJs: 'src/**/*.js',
+  srcClientExcl: '!src/{public,public/**}',
+  srcClientJs: 'src/public/js/**',
+
+  dist: 'dist',
+  distClient: 'dist/public',
+  
+  delDist: 'dist/**',
+  delDistClientJs: 'dist/public/js/**',
+
+  entryPoint: 'dist/app.js'
+};
+
 /**
  * Colored console log
  * @param {string} message 
@@ -21,7 +41,7 @@ function nodemonLog(message){
  * Clean up dist/ folder
  */
 gulp.task('clean', () => {
-  return del('dist/**', {force:true});
+  return del(paths.delDist, {force:true});
 });
 
 /**
@@ -29,8 +49,8 @@ gulp.task('clean', () => {
  */
 gulp.task('copy', ['clean'], () => {
   return gulp
-    .src(['src/**/*'])
-    .pipe(gulp.dest('dist'));
+    .src([paths.src])
+    .pipe(gulp.dest(paths.dist));
 });
 
 /**
@@ -38,16 +58,13 @@ gulp.task('copy', ['clean'], () => {
  * lints them, transpiles to ES5
  */
 gulp.task('nodeJs', () => {
-  return gulp.src(['src/**/*.js', '!src/{public,public/**}'])
+  return gulp.src([paths.srcJs, paths.srcClientExcl])
     .pipe(cache('nodeJs'))
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError())
-    .pipe(babel({
-      presets: ['env'],
-      plugins: ['transform-async-to-generator']
-    }))
-    .pipe(gulp.dest('dist'));
+    .pipe(babel(babelOptions))
+    .pipe(gulp.dest(paths.dist));
 });
 
 /**
@@ -55,16 +72,13 @@ gulp.task('nodeJs', () => {
  * transpiles to ES5, concatenates
  */
 gulp.task('clientJs', () => {
-  const stream = gulp.src(['src/public/js/**'])
+  const stream = gulp.src([paths.srcClientJs])
     .pipe(cache('clientJs'))
-    .pipe(babel({
-      presets: ['env'],
-      plugins: ['transform-async-to-generator']
-    }))
+    .pipe(babel(babelOptions))
     .pipe(concat('bundle.js'))
-    .pipe(gulp.dest('dist/public'));
+    .pipe(gulp.dest(paths.distClient));
     
-  del('dist/public/js/**');
+  del(paths.delDistClientJs);
 
   return stream;
 });
@@ -74,8 +88,11 @@ gulp.task('clientJs', () => {
  * Restarts nodemon
  */
 gulp.task('watch', () => {
-  gulp.watch(['src/**/*.js'], (ev) => {
-    sequence(['nodeJs', 'clientJs'], () => nodemon.emit('restart', `${ev.type} file: ${ev.path}`));
+  gulp.watch([paths.srcJs], (ev) => {
+    sequence(
+      ['nodeJs', 'clientJs'], 
+      () => nodemon.emit('restart', `${ev.type} file: ${ev.path}`)
+    );
   });
 });
 
@@ -84,7 +101,7 @@ gulp.task('watch', () => {
  */
 gulp.task('nodemon', ['nodeJs', 'clientJs'], () => {
   nodemon({
-    script: 'dist/app.js',
+    script: paths.entryPoint,
     ignore: '*'
   });
   nodemon.on('start', () => 
