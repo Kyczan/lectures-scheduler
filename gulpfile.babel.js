@@ -2,6 +2,7 @@ import gulp from 'gulp';
 import babel from 'gulp-babel';
 import cache from 'gulp-cached';
 import concat from 'gulp-concat';
+import eslint from 'gulp-eslint';
 //import uglify from 'gulp-uglify';
 import del from 'del';
 import nodemon from 'nodemon';
@@ -34,11 +35,14 @@ gulp.task('copy', ['clean'], () => {
 
 /**
  * Takes all node .js files, 
- * transpiles to ES5
+ * lints them, transpiles to ES5
  */
 gulp.task('nodeJs', () => {
-  return gulp.src(['src/**/*.js', '!src/public/{js,js/**}'])
+  return gulp.src(['src/**/*.js', '!src/{public,public/**}'])
     .pipe(cache('nodeJs'))
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
     .pipe(babel({
       presets: ['env'],
       plugins: ['transform-async-to-generator']

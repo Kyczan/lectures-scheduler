@@ -3,7 +3,7 @@ import passportGoogle from '../controllers/authController';
 
 const auth = Router();
 
-auth.get('/login', (req, res, next) => {
+auth.get('/login', (req, res) => {
   res.render('login', { title: 'Logowanie' });
 });
 

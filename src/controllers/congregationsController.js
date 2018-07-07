@@ -10,7 +10,7 @@ export default {
     return res.status(200).json(congregations);
   },
 
-  findOne (req, res, next) {
+  findOne (req, res) {
 
     res.status(200).json(req.returnedData);
   },
@@ -30,7 +30,7 @@ export default {
     res.status(201).json(data[0]);
   },
 
-  async update (req, res, next) {
+  async update (req, res) {
 
     const { error } = validateCongregation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -47,7 +47,7 @@ export default {
     res.status(200).json(data[0]);
   },
 
-  async remove (req, res, next) {
+  async remove (req, res) {
 
     const congregationId = +req.params.congregationId;
     await db.query(sql.remove.congregations, [congregationId]);
