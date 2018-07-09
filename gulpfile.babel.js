@@ -7,21 +7,23 @@ import eslint from 'gulp-eslint';
 import del from 'del';
 import nodemon from 'nodemon';
 import sequence from 'run-sequence';
+import webpack from 'webpack';
+import webpackConf from './webpack.config.babel';
 import 'colors';
 
 const babelOptions = {
-  presets: ['env'],
+  presets: ['react', 'env'],
   plugins: ['transform-async-to-generator']
 };
 
 const paths = {
   src: 'src/**/*',
   srcJs: 'src/**/*.js',
-  srcClientExcl: '!src/{public,public/**}',
-  srcClientJs: 'src/public/js/**',
+  srcClientExcl: '!src/{client,client/**}',
+  srcClientJs: './src/client/js/app.js',
 
   dist: 'dist',
-  distClient: 'dist/public',
+  distClient: 'dist/client',
   
   delDist: 'dist/**',
   delDistClientJs: 'dist/public/js/**',
@@ -58,7 +60,7 @@ gulp.task('copy', ['clean'], () => {
  * lints them, transpiles to ES5
  */
 gulp.task('nodeJs', () => {
-  return gulp.src([paths.srcJs, paths.srcClientExcl])
+  return gulp.src([paths.srcJs, paths.srcClientExcl, '!src/{public,public/**}'])
     .pipe(cache('nodeJs'))
     .pipe(eslint())
     .pipe(eslint.format())
@@ -71,16 +73,12 @@ gulp.task('nodeJs', () => {
  * Takes all client .js files, 
  * transpiles to ES5, concatenates
  */
-gulp.task('clientJs', () => {
-  const stream = gulp.src([paths.srcClientJs])
-    .pipe(cache('clientJs'))
-    .pipe(babel(babelOptions))
-    .pipe(concat('bundle.js'))
-    .pipe(gulp.dest(paths.distClient));
-    
-  del(paths.delDistClientJs);
-
-  return stream;
+gulp.task('clientJs', (done) => {
+  webpack(webpackConf, () => {
+    if (done) {
+      done();
+    }
+  });
 });
 
 /**

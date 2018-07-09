@@ -24,7 +24,7 @@ app.use(passport.session());
 app.use('/api',ensureAuthenticated, routes);
 app.use('/auth', auth);
 app.use('/', ensureAuthenticated);
-app.use('/', express.static(path.join(__dirname, '/public')));
+app.use('/', express.static(path.join(__dirname, '/client')));
 
 app.get('/', (req, res) => res.render('index'));
 app.get('*', (req, res) => res.redirect('/'));
