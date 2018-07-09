@@ -12,13 +12,14 @@ config.output = {
 };
 
 config.module = {
-  rules: [{
-    use: [{
-      loader: 'babel-loader'
-    }]
+  rules: [{ 
+    test: /\.js$/, 
+    use: 'babel-loader',
+    exclude: '/node_modules'
   }]
 };
 
 config.mode = 'development';
+config.watch = true;
 
 module.exports = config;

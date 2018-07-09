@@ -1,9 +1,7 @@
 import gulp from 'gulp';
 import babel from 'gulp-babel';
 import cache from 'gulp-cached';
-import concat from 'gulp-concat';
 import eslint from 'gulp-eslint';
-//import uglify from 'gulp-uglify';
 import del from 'del';
 import nodemon from 'nodemon';
 import sequence from 'run-sequence';
@@ -73,11 +71,9 @@ gulp.task('nodeJs', () => {
  * Takes all client .js files, 
  * transpiles to ES5, concatenates
  */
-gulp.task('clientJs', (done) => {
-  webpack(webpackConf, () => {
-    if (done) {
-      done();
-    }
+gulp.task('clientJs', () => {
+  webpack(webpackConf, (err, stats) => {
+    console.log(stats.toString({chunks: false}));
   });
 });
 
@@ -88,7 +84,7 @@ gulp.task('clientJs', (done) => {
 gulp.task('watch', () => {
   gulp.watch([paths.srcJs], (ev) => {
     sequence(
-      ['nodeJs', 'clientJs'], 
+      ['nodeJs'], 
       () => nodemon.emit('restart', `${ev.type} file: ${ev.path}`)
     );
   });
@@ -97,7 +93,7 @@ gulp.task('watch', () => {
 /**
  * Runs local server
  */
-gulp.task('nodemon', ['nodeJs', 'clientJs'], () => {
+gulp.task('nodemon', ['nodeJs'], () => {
   nodemon({
     script: paths.entryPoint,
     ignore: '*'

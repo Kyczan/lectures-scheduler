@@ -5,7 +5,7 @@ export class MyPage extends React.Component{
   render(){
     return(
       <div>
-        test
+        test3
       </div>
     );
   }
