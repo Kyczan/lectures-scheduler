@@ -1,25 +1,22 @@
 import {resolve} from 'path';
 
-const config = {};
+module.exports = {
 
-config.entry = {
-  app: './src/client/js/app.js'
+  entry: {
+    app: './src/client/js/app.js'
+  },
+
+  output: {
+    filename: '[name].dist.js',
+    path: resolve(__dirname, 'dist/client')
+  },
+
+  module: {
+    rules: [{ 
+      test: /\.js$/, 
+      use: 'babel-loader',
+      exclude: '/node_modules'
+    }]
+  }
+
 };
-
-config.output = {
-  filename: '[name].dist.js',
-  path: resolve(__dirname, 'dist/client')
-};
-
-config.module = {
-  rules: [{ 
-    test: /\.js$/, 
-    use: 'babel-loader',
-    exclude: '/node_modules'
-  }]
-};
-
-config.mode = 'development';
-config.watch = true;
-
-module.exports = config;
