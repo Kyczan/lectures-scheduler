@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Button from '@material-ui/core/Button';
 
-export class MyPage extends React.Component{
-  render(){
-    return(
-      <div>
-        test
-      </div>
-    );
-  }
+function App() {
+  return (
+    <Button variant="raised" color="primary">
+      Hello Worlddd
+    </Button>
+  );
 }
 
-ReactDOM.render(
-  <MyPage />,
-  document.getElementById('app')
-);
+ReactDOM.render(<App />, document.querySelector('#app'));
