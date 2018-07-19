@@ -1,9 +1,8 @@
-import {resolve} from 'path';
+import { resolve } from 'path';
 
 module.exports = {
-
   entry: {
-    app: './src/client/js/app.js'
+    app: './src/client/index.js'
   },
 
   output: {
@@ -12,11 +11,15 @@ module.exports = {
   },
 
   module: {
-    rules: [{ 
-      test: /\.js$/, 
-      use: 'babel-loader',
-      exclude: /node_modules/
-    }]
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        use: 'babel-loader',
+        exclude: /node_modules/
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
   }
-
 };
