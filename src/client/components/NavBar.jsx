@@ -6,17 +6,19 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import SpeakersIcon from '@material-ui/icons/Contacts';
-import CalendarIcon from '@material-ui/icons/EventNote';
-import LecturesIcon from '@material-ui/icons/FileCopy';
-import CongregationsIcon from '@material-ui/icons/Public';
+import {
+  Contacts as SpeakersIcon,
+  EventNote as CalendarIcon,
+  FileCopy as LecturesIcon,
+  Public as CongregationsIcon
+} from '@material-ui/icons';
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   flex: {
-    flex: 1,
+    flex: 1
   },
   linkPurifier: {
     color: 'inherit',
@@ -60,7 +62,7 @@ function NavBar(props) {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(NavBar);
