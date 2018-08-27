@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import MainLayout from './components/mainLayout';
+import NavBar from './components/navBar';
 
 class App extends Component {
   render() {
-    return <MainLayout />;
+    return ( 
+      <div>
+        <NavBar />
+      </div>
+    );
   }
 }
 
