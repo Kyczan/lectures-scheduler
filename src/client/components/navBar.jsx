@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,6 +17,10 @@ const styles = {
   },
   flex: {
     flex: 1,
+  },
+  linkPurifier: {
+    color: 'inherit',
+    textDecoration: 'none'
   }
 };
 
@@ -28,18 +33,26 @@ function NavBar(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             Plan
           </Typography>
-          <IconButton color="inherit" aria-label="Plan">
-            <CalendarIcon />
-          </IconButton>
-          <IconButton color="inherit" aria-label="Speakers">
-            <SpeakersIcon />
-          </IconButton>
-          <IconButton color="inherit" aria-label="Lectures">
-            <LecturesIcon />
-          </IconButton>
-          <IconButton color="inherit" aria-label="Congregations">
-            <CongregationsIcon />
-          </IconButton>
+          <Link className={classes.linkPurifier} to={'/'}>
+            <IconButton color="inherit" aria-label="Plan">
+              <CalendarIcon />
+            </IconButton>
+          </Link>
+          <Link className={classes.linkPurifier} to={'/speakers'}>
+            <IconButton color="inherit" aria-label="Speakers">
+              <SpeakersIcon />
+            </IconButton>
+          </Link>
+          <Link className={classes.linkPurifier} to={'/lectures'}>
+            <IconButton color="inherit" aria-label="Lectures">
+              <LecturesIcon />
+            </IconButton>
+          </Link>
+          <Link className={classes.linkPurifier} to={'/congregations'}>
+            <IconButton color="inherit" aria-label="Congregations">
+              <CongregationsIcon />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>

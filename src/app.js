@@ -27,7 +27,7 @@ app.use('/', ensureAuthenticated);
 app.use('/', express.static(path.join(__dirname, '/client')));
 
 app.get('/', (req, res) => res.render('index'));
-app.get('*', (req, res) => res.redirect('/'));
+//app.get('*', (req, res) => res.redirect('/'));
 
 app.listen(3000);
 
