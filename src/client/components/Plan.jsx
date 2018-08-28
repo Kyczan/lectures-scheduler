@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { fetchEvents } from '../actions/eventsActions';
 
 class Plan extends Component {
-  UNSAFE_componentWillMount() {
+
+  constructor(props) {
+    super(props);
     this.props.fetchEvents();
   }
   render() {
