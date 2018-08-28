@@ -14,14 +14,16 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'pug');
 
 app.use(bodyParser.json());
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/api',ensureAuthenticated, routes);
+app.use('/api', ensureAuthenticated, routes);
 app.use('/auth', auth);
 app.use('/', ensureAuthenticated);
 app.use('/', express.static(path.join(__dirname, '/client')));
@@ -35,6 +37,6 @@ app.get('/*', (req, res) => {
 app.listen(3000);
 
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next(); 
+  if (req.isAuthenticated()) return next();
   res.redirect('/auth/login');
 }
