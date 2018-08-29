@@ -18,7 +18,7 @@ class App extends Component {
     return ( 
       <Provider store={store}>
         <Router>
-          <div className="container">
+          <div>
             <NavBar />
             <Route exact path="/" component={Plan} />
             <Route path="/speakers" component={Speakers} />

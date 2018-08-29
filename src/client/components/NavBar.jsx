@@ -33,7 +33,7 @@ function NavBar(props) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            Plan
+            Planer
           </Typography>
           <Link className={classes.linkPurifier} to={'/'}>
             <IconButton color="inherit" aria-label="Plan">
