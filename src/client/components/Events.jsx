@@ -32,7 +32,7 @@ class Events extends Component {
 
     return (
       <div className="container">
-        <Grid container alignItems="stretch" spacing={24}>
+        <Grid container alignItems="stretch" spacing={16}>
           {eventsItems}
         </Grid>
       </div>
