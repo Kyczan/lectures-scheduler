@@ -13,14 +13,28 @@ class Plan extends Component {
   }
   
   render() {
-    const eventsItems = this.props.events.map(event => (
+    
+    const lastYear = new Date() - 1000 * 60 * 60 * 24 * 365; // today - 1 yr
+    const lastYearStr = (new Date(lastYear)).toJSON().substring(0,10); // format yyyy-mm-dd
+    const filtered = this.props.events.filter(event => (
+      event.event_date > lastYearStr
+    ));
+
+    filtered.sort((a, b) => {
+      if (a.event_date < b.event_date) return 1;
+      if (a.event_date > b.event_date) return -1;
+      return 0;
+    });
+
+    const eventsItems = filtered.map(event => (
       <Grid key={event.id} item xs={12} sm={6} md={4} lg={3}>
-        <PlanerCard />
+        <PlanerCard event={event} />
       </Grid>
     ));
+
     return (
       <div className="container">
-        <Grid container spacing={24}>
+        <Grid container alignItems="stretch" spacing={24}>
           {eventsItems}
         </Grid>
       </div>

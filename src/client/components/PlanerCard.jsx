@@ -12,6 +12,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 // import EditIcon from '@material-ui/icons/Edit';
 
 const styles = {
+  card: {
+    height: '100%'
+  },
   header: {
     paddingBottom: 0,
   },
@@ -21,10 +24,10 @@ const styles = {
 };
 
 function PlannerCard(props) {
-  const { classes } = props;
+  const { classes, event } = props;
 
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardHeader
         className={classes.header}
         action={
@@ -32,17 +35,20 @@ function PlannerCard(props) {
             <MoreVertIcon />
           </IconButton>
         }
-        subheader="2018-08-29 10:00"
+        subheader={`${event.event_date} ${event.event_time}`}
       />
       <CardContent className={classes.content}>
         <Typography variant="headline" component="h3">
-         192. Lorem ipsum dolor set amet
+          {event.lecture || event.note} 
         </Typography>
         <Typography component="p">
-          Imię nazwisko
+          {event.speaker}
         </Typography>
         <Typography color="textSecondary">
-          Wrocław-Leśnica
+          {event.congregation}
+        </Typography>
+        <Typography component="p">
+          {(event.note && event.lecture ? event.note : '')}
         </Typography>
       </CardContent>
       {/* <CardActions>
@@ -59,6 +65,7 @@ function PlannerCard(props) {
 
 PlannerCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  event: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(PlannerCard);
