@@ -6,12 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import {
-  Contacts as SpeakersIcon,
-  EventNote as CalendarIcon,
-  FileCopy as LecturesIcon,
-  Public as CongregationsIcon
-} from '@material-ui/icons';
 
 const styles = {
   root: {
@@ -23,7 +17,20 @@ const styles = {
 };
 
 function NavBar(props) {
-  const { classes } = props;
+  const { classes, buttonsData } = props;
+  const IconButtons = buttonsData.map(btn => (
+    <IconButton
+      key={btn.link}
+      component={NavLink}
+      to={btn.link}
+      exact
+      activeClassName="active-route"
+      color="inherit"
+      aria-label={btn.label}
+    >
+      {btn.icon}
+    </IconButton>
+  ));
   return (
     <div className={classes.root}>
       <AppBar position="fixed">
@@ -31,50 +38,7 @@ function NavBar(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             Planer
           </Typography>
-
-          <IconButton
-            component={NavLink}
-            to={'/'}
-            exact
-            activeClassName="active-route"
-            color="inherit"
-            aria-label="Plan"
-          >
-            <CalendarIcon />
-          </IconButton>
-
-          <IconButton
-            component={NavLink}
-            to={'/speakers'}
-            exact
-            activeClassName="active-route"
-            color="inherit"
-            aria-label="Mówcy"
-          >
-            <SpeakersIcon />
-          </IconButton>
-
-          <IconButton
-            component={NavLink}
-            to={'/lectures'}
-            exact
-            activeClassName="active-route"
-            color="inherit"
-            aria-label="Wykłady"
-          >
-            <LecturesIcon />
-          </IconButton>
-
-          <IconButton
-            component={NavLink}
-            to={'/congregations'}
-            exact
-            activeClassName="active-route"
-            color="inherit"
-            aria-label="Zbory"
-          >
-            <CongregationsIcon />
-          </IconButton>
+          {IconButtons}
         </Toolbar>
       </AppBar>
     </div>
@@ -82,7 +46,8 @@ function NavBar(props) {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  buttonsData: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(NavBar);
