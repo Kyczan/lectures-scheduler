@@ -5,3 +5,6 @@ body {
   margin: 12px;
   margin-top: 76px;
 }
+div .active-route {
+  background-color: rgba(0, 0, 0, 0.08);
+}

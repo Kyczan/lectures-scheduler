@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,10 +19,6 @@ const styles = {
   },
   flex: {
     flex: 1
-  },
-  linkPurifier: {
-    color: 'inherit',
-    textDecoration: 'none'
   }
 };
 
@@ -35,26 +31,50 @@ function NavBar(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             Planer
           </Typography>
-          <Link className={classes.linkPurifier} to={'/'}>
-            <IconButton color="inherit" aria-label="Plan">
-              <CalendarIcon />
-            </IconButton>
-          </Link>
-          <Link className={classes.linkPurifier} to={'/speakers'}>
-            <IconButton color="inherit" aria-label="Mówcy">
-              <SpeakersIcon />
-            </IconButton>
-          </Link>
-          <Link className={classes.linkPurifier} to={'/lectures'}>
-            <IconButton color="inherit" aria-label="Wykłady">
-              <LecturesIcon />
-            </IconButton>
-          </Link>
-          <Link className={classes.linkPurifier} to={'/congregations'}>
-            <IconButton color="inherit" aria-label="Zbory">
-              <CongregationsIcon />
-            </IconButton>
-          </Link>
+
+          <IconButton
+            component={NavLink}
+            to={'/'}
+            exact
+            activeClassName="active-route"
+            color="inherit"
+            aria-label="Plan"
+          >
+            <CalendarIcon />
+          </IconButton>
+
+          <IconButton
+            component={NavLink}
+            to={'/speakers'}
+            exact
+            activeClassName="active-route"
+            color="inherit"
+            aria-label="Mówcy"
+          >
+            <SpeakersIcon />
+          </IconButton>
+
+          <IconButton
+            component={NavLink}
+            to={'/lectures'}
+            exact
+            activeClassName="active-route"
+            color="inherit"
+            aria-label="Wykłady"
+          >
+            <LecturesIcon />
+          </IconButton>
+
+          <IconButton
+            component={NavLink}
+            to={'/congregations'}
+            exact
+            activeClassName="active-route"
+            color="inherit"
+            aria-label="Zbory"
+          >
+            <CongregationsIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
