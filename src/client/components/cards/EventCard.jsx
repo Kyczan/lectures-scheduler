@@ -16,14 +16,14 @@ const styles = {
     height: '100%'
   },
   header: {
-    paddingBottom: 0,
+    paddingBottom: 0
   },
   content: {
-    paddingTop: 0,
+    paddingTop: 0
   }
 };
 
-function PlannerCard(props) {
+function EventCard(props) {
   const { classes, event } = props;
 
   return (
@@ -39,16 +39,12 @@ function PlannerCard(props) {
       />
       <CardContent className={classes.content}>
         <Typography variant="headline" component="h3">
-          {event.lecture || event.note} 
+          {event.lecture || event.note}
         </Typography>
+        <Typography component="p">{event.speaker}</Typography>
+        <Typography color="textSecondary">{event.congregation}</Typography>
         <Typography component="p">
-          {event.speaker}
-        </Typography>
-        <Typography color="textSecondary">
-          {event.congregation}
-        </Typography>
-        <Typography component="p">
-          {(event.note && event.lecture ? event.note : '')}
+          {event.note && event.lecture ? event.note : ''}
         </Typography>
       </CardContent>
       {/* <CardActions>
@@ -63,9 +59,9 @@ function PlannerCard(props) {
   );
 }
 
-PlannerCard.propTypes = {
+EventCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  event: PropTypes.object.isRequired,
+  event: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(PlannerCard);
+export default withStyles(styles)(EventCard);

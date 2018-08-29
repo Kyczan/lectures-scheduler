@@ -41,17 +41,17 @@ function NavBar(props) {
             </IconButton>
           </Link>
           <Link className={classes.linkPurifier} to={'/speakers'}>
-            <IconButton color="inherit" aria-label="Speakers">
+            <IconButton color="inherit" aria-label="Mówcy">
               <SpeakersIcon />
             </IconButton>
           </Link>
           <Link className={classes.linkPurifier} to={'/lectures'}>
-            <IconButton color="inherit" aria-label="Lectures">
+            <IconButton color="inherit" aria-label="Wykłady">
               <LecturesIcon />
             </IconButton>
           </Link>
           <Link className={classes.linkPurifier} to={'/congregations'}>
-            <IconButton color="inherit" aria-label="Congregations">
+            <IconButton color="inherit" aria-label="Zbory">
               <CongregationsIcon />
             </IconButton>
           </Link>
