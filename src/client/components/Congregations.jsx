@@ -6,6 +6,6 @@ const Congregations = () => {
       <h1>Congregations!!</h1>
     </div>
   );
-}
+};
 
 export default Congregations;

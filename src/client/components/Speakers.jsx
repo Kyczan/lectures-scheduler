@@ -6,6 +6,6 @@ const Speakers = () => {
       <h1>Speakers!!</h1>
     </div>
   );
-}
+};
 
 export default Speakers;

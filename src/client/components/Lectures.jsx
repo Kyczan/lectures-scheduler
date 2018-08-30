@@ -6,6 +6,6 @@ const Lectures = () => {
       <h1>Lectures!!</h1>
     </div>
   );
-}
+};
 
 export default Lectures;
