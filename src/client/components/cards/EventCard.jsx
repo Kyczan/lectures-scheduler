@@ -1,67 +1,94 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import DeleteIcon from '@material-ui/icons/Delete';
-// import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
-const styles = {
-  card: {
-    height: '100%'
-  },
-  header: {
-    paddingBottom: 0
-  },
-  content: {
-    paddingTop: 0
+class EventCard extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      anchorEl: null,
+    };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
-};
 
-function EventCard(props) {
-  const { classes, event } = props;
+  handleClick(event) {
+    this.setState({ anchorEl: event.currentTarget });
+  }
 
-  return (
-    <Card className={classes.card}>
-      <CardHeader
-        className={classes.header}
-        action={
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
-        }
-        subheader={`${event.event_date} ${event.event_time}`}
-      />
-      <CardContent className={classes.content}>
-        <Typography variant="headline" component="h3">
-          {event.lecture || event.note}
-        </Typography>
-        <Typography component="p">{event.speaker}</Typography>
-        <Typography color="textSecondary">{event.congregation}</Typography>
-        <Typography component="p">
-          {event.note && event.lecture ? event.note : ''}
-        </Typography>
-      </CardContent>
-      {/* <CardActions>
-        <IconButton aria-label="Edytuj">
-          <EditIcon />
-        </IconButton>
-        <IconButton aria-label="Usuń">
-          <DeleteIcon />
-        </IconButton>
-      </CardActions> */}
-    </Card>
-  );
+  handleClose () {
+    this.setState({ anchorEl: null });
+  }
+
+  render() {
+    const { event } = this.props;
+    const { anchorEl } = this.state;
+
+    return (
+      <Card className="card">
+        <CardHeader
+          className="card-header"
+          action={
+            <div>
+              <IconButton 
+                aria-label="Więcej"
+                aria-owns={open ? 'side-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="side-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.handleClose}
+              >
+                <MenuItem onClick={this.handleClose}>
+                  <ListItemIcon>
+                    <EditIcon />
+                  </ListItemIcon >
+                  <ListItemText primary="Edytuj" />
+                </MenuItem>
+                <MenuItem onClick={this.handleClose}>
+                  <ListItemIcon>
+                    <DeleteIcon />
+                  </ListItemIcon >
+                  <ListItemText primary="Usuń" />
+                </MenuItem>
+              </Menu>
+            </div>
+          }
+          subheader={`${event.event_date} ${event.event_time}`}
+        />
+        <CardContent className="card-content">
+          <Typography variant="headline" component="h3">
+            {event.lecture || event.note}
+          </Typography>
+          <Typography component="p">{event.speaker}</Typography>
+          <Typography color="textSecondary">{event.congregation}</Typography>
+          <Typography component="p">
+            {event.note && event.lecture ? event.note : ''}
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 }
 
 EventCard.propTypes = {
-  classes: PropTypes.object.isRequired,
   event: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(EventCard);
+export default EventCard;

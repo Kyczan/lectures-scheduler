@@ -9,3 +9,12 @@ body {
 div .active-route {
   background-color: rgba(0, 0, 0, 0.08);
 }
+.card {
+  height: 100%;
+}
+.card-header {
+  padding-bottom: 0;
+}
+.card-content {
+  padding-top: 0;
+}
