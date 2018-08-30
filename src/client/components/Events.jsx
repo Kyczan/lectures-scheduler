@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchEvents } from '../actions/eventsActions';
+import { fetchEvents, deleteEvent } from '../actions/eventsActions';
 import EventCard from './cards/EventCard';
 import Grid from '@material-ui/core/Grid';
 
@@ -26,7 +26,7 @@ class Events extends Component {
 
     const eventsItems = filtered.map(event => (
       <Grid key={event.id} item xs={12} sm={6} md={4} lg={3}>
-        <EventCard event={event} />
+        <EventCard handleDelete={this.props.deleteEvent} event={event} />
       </Grid>
     ));
 
@@ -42,6 +42,7 @@ class Events extends Component {
 
 Events.propTypes = {
   fetchEvents: PropTypes.func.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
   events: PropTypes.array.isRequired
 };
 
@@ -49,7 +50,12 @@ const mapStateToProps = state => ({
   events: state.events.items
 });
 
+const mapDispatchToProps = {
+  fetchEvents,
+  deleteEvent
+};
+
 export default connect(
   mapStateToProps,
-  { fetchEvents }
+  mapDispatchToProps
 )(Events);

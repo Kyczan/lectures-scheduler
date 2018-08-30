@@ -22,14 +22,20 @@ class EventCard extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleClick(event) {
+  handleClick (event) {
     this.setState({ anchorEl: event.currentTarget });
   }
 
   handleClose () {
     this.setState({ anchorEl: null });
+  }
+
+  handleDelete () {
+    this.handleClose();
+    this.props.handleDelete(this.props.event.id);
   }
 
   render() {
@@ -61,7 +67,7 @@ class EventCard extends Component {
                   </ListItemIcon >
                   <ListItemText primary="Edytuj" />
                 </MenuItem>
-                <MenuItem onClick={this.handleClose}>
+                <MenuItem onClick={this.handleDelete}>
                   <ListItemIcon>
                     <DeleteIcon />
                   </ListItemIcon >
@@ -88,7 +94,8 @@ class EventCard extends Component {
 }
 
 EventCard.propTypes = {
-  event: PropTypes.object.isRequired
+  event: PropTypes.object.isRequired,
+  handleDelete: PropTypes.func.isRequired
 };
 
 export default EventCard;

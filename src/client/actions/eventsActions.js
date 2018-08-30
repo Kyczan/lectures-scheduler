@@ -10,3 +10,16 @@ export const fetchEvents = () => dispatch => {
       })
     );
 };
+
+export const deleteEvent = (eventId) => dispatch => {
+  fetch(`api/events/${eventId}`, {
+    method: 'delete'
+  })
+    .then(res => res.json())
+    .then(event =>
+      dispatch({
+        type: types.DELETE_EVENT,
+        payload: event
+      })
+    );
+};
