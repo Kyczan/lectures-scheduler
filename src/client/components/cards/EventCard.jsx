@@ -14,29 +14,28 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 class EventCard extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: null,
+      anchorEl: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
+    // this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleClick (event) {
+  handleClick(event) {
     this.setState({ anchorEl: event.currentTarget });
   }
 
-  handleClose () {
+  handleClose() {
     this.setState({ anchorEl: null });
   }
 
-  handleDelete () {
-    this.handleClose();
-    this.props.handleDelete(this.props.event.id);
-  }
+  // handleDelete(event) {
+  //   this.handleClose();
+  //   this.props.handleDelete(event.id);
+  // }
 
   render() {
     const { event } = this.props;
@@ -48,11 +47,12 @@ class EventCard extends Component {
           className="card-header"
           action={
             <div>
-              <IconButton 
+              <IconButton
                 aria-label="Więcej"
                 aria-owns={open ? 'side-menu' : null}
                 aria-haspopup="true"
-                onClick={this.handleClick}>
+                onClick={this.handleClick}
+              >
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -64,13 +64,13 @@ class EventCard extends Component {
                 <MenuItem onClick={this.handleClose}>
                   <ListItemIcon>
                     <EditIcon />
-                  </ListItemIcon >
+                  </ListItemIcon>
                   <ListItemText primary="Edytuj" />
                 </MenuItem>
-                <MenuItem onClick={this.handleDelete}>
+                <MenuItem onClick={() => this.props.onDelete(event.id)}>
                   <ListItemIcon>
                     <DeleteIcon />
-                  </ListItemIcon >
+                  </ListItemIcon>
                   <ListItemText primary="Usuń" />
                 </MenuItem>
               </Menu>
@@ -95,7 +95,7 @@ class EventCard extends Component {
 
 EventCard.propTypes = {
   event: PropTypes.object.isRequired,
-  handleDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired
 };
 
 export default EventCard;

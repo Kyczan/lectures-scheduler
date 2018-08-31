@@ -1,8 +1,7 @@
 import * as types from '../actions/types';
 
 const initialState = {
-  items: [],
-  item: {}
+  items: []
 };
 
 export default function(state = initialState, action) {
@@ -10,7 +9,12 @@ export default function(state = initialState, action) {
   case types.FETCH_EVENTS:
     return {
       ...state,
-      items: action.payload
+      items: [...action.payload]
+    };
+  case types.DELETE_EVENT:
+    return {
+      ...state,
+      items: [...state.items.filter(event => event.id !== action.payload.id)]
     };
   default:
     return state;

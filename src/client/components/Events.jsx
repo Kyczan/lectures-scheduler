@@ -6,8 +6,7 @@ import EventCard from './cards/EventCard';
 import Grid from '@material-ui/core/Grid';
 
 class Events extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
     this.props.fetchEvents();
   }
 
@@ -26,7 +25,7 @@ class Events extends Component {
 
     const eventsItems = filtered.map(event => (
       <Grid key={event.id} item xs={12} sm={6} md={4} lg={3}>
-        <EventCard handleDelete={this.props.deleteEvent} event={event} />
+        <EventCard onDelete={this.props.deleteEvent} event={event} />
       </Grid>
     ));
 
