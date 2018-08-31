@@ -4,13 +4,8 @@
     "node": true,
     "browser": true
   },
-  "plugins": [
-    "react"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
+  "plugins": ["react", "babel"],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2018,
@@ -19,18 +14,10 @@
     }
   },
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "indent": ["error", 2],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
     "no-console": "off"
-  }
+  },
+  "parser": "babel-eslint"
 }

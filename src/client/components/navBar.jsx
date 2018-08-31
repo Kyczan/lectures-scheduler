@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
 function NavBar(props) {
-  const {  buttonsData } = props;
+  const { buttonsData } = props;
   const IconButtons = buttonsData.map(btn => (
     <IconButton
       key={btn.link}
@@ -25,7 +25,7 @@ function NavBar(props) {
     <AppBar position="fixed">
       <Toolbar>
         <Typography variant="title" color="inherit" className="toolbar-title">
-            Planer
+          Planer
         </Typography>
         {IconButtons}
       </Toolbar>

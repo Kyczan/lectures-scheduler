@@ -19,23 +19,20 @@ class EventCard extends Component {
     this.state = {
       anchorEl: null
     };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    // this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleClick(event) {
+  handleMoreClick = event => {
     this.setState({ anchorEl: event.currentTarget });
-  }
+  };
 
-  handleClose() {
+  handleMoreClose = () => {
     this.setState({ anchorEl: null });
-  }
+  };
 
-  // handleDelete(event) {
-  //   this.handleClose();
-  //   this.props.handleDelete(event.id);
-  // }
+  handleEventDelete = () => {
+    this.handleMoreClose();
+    this.props.onDelete();
+  };
 
   render() {
     const { event } = this.props;
@@ -51,7 +48,7 @@ class EventCard extends Component {
                 aria-label="Więcej"
                 aria-owns={open ? 'side-menu' : null}
                 aria-haspopup="true"
-                onClick={this.handleClick}
+                onClick={this.handleMoreClick}
               >
                 <MoreVertIcon />
               </IconButton>
@@ -59,15 +56,15 @@ class EventCard extends Component {
                 id="side-menu"
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
-                onClose={this.handleClose}
+                onClose={this.handleMoreClose}
               >
-                <MenuItem onClick={this.handleClose}>
+                <MenuItem onClick={this.handleMoreClose}>
                   <ListItemIcon>
                     <EditIcon />
                   </ListItemIcon>
                   <ListItemText primary="Edytuj" />
                 </MenuItem>
-                <MenuItem onClick={() => this.props.onDelete(event.id)}>
+                <MenuItem onClick={this.handleEventDelete}>
                   <ListItemIcon>
                     <DeleteIcon />
                   </ListItemIcon>
