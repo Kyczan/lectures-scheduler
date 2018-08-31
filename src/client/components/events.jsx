@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchEvents, deleteEvent } from '../actions/eventsActions';
-import EventCard from './cards/EventCard';
+import EventCard from './cards/eventCard';
 import Grid from '@material-ui/core/Grid';
 
 class Events extends Component {

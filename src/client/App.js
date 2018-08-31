@@ -9,11 +9,11 @@ import {
 } from '@material-ui/icons';
 
 import store from './store';
-import NavBar from './components/NavBar';
-import Events from './components/Events';
-import Speakers from './components/Speakers';
-import Lectures from './components/Lectures';
-import Congregations from './components/Congregations';
+import NavBar from './components/navBar';
+import Events from './components/events';
+import Speakers from './components/speakers';
+import Lectures from './components/lectures';
+import Congregations from './components/congregations';
 
 class App extends Component {
   render() {
