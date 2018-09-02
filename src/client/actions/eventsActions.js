@@ -11,7 +11,7 @@ export const fetchEvents = () => dispatch => {
     );
 };
 
-export const deleteEvent = (eventId) => dispatch => {
+export const deleteEvent = eventId => dispatch => {
   fetch(`api/events/${eventId}`, {
     method: 'delete'
   })

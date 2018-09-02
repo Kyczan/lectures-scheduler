@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchEvents, deleteEvent } from '../actions/eventsActions';
 import EventCard from './cards/eventCard';
 import DeleteDialog from './dialogs/deleteDialog';
+import AddEventDialog from './dialogs/addEventDialog';
 import Grid from '@material-ui/core/Grid';
 
 class Events extends Component {
@@ -55,6 +56,7 @@ class Events extends Component {
 
     return (
       <div className="container">
+        <AddEventDialog />
         <DeleteDialog
           event={this.state.eventToDel}
           opened={this.state.isDelOpen}

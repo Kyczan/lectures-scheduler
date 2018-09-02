@@ -21,3 +21,9 @@ div .active-route {
 .toolbar-title {
   flex: 1;
 }
+div .fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 10;
+}
