@@ -9,49 +9,6 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  {
-    label:
-      'Bolivia, Plurinational State of Bolivia, Plurinational State of Bolivia, Plurinational State of'
-  },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' }
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label
-}));
-
 const styles = theme => ({
   root: {
     flexGrow: 1
@@ -228,14 +185,14 @@ class SelectData extends React.Component {
         <Select
           classes={classes}
           styles={selectStyles}
-          options={suggestions}
+          options={this.props.suggestions}
           components={components}
           value={this.state.selected}
           onChange={this.handleChange()}
           onFocus={() => this.handleFocus()}
           onBlur={() => this.handleBlur()}
           textFieldProps={{
-            label: 'Wykład',
+            label: this.props.label,
             InputLabelProps: {
               shrink: this.state.shouldShrink
             }
@@ -248,7 +205,9 @@ class SelectData extends React.Component {
 
 SelectData.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  suggestions: PropTypes.array.isRequired,
+  label: PropTypes.string.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(SelectData);

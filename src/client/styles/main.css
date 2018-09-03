@@ -33,3 +33,6 @@ div .fab {
 .divider {
   height: 32px;
 }
+.form-date-picker {
+  width: 50%;
+}
