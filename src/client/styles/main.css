@@ -27,3 +27,9 @@ div .fab {
   right: 32px;
   z-index: 10;
 }
+.input-data {
+  width: 100%;
+}
+.divider {
+  height: 32px;
+}

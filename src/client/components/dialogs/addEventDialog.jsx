@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import AddIcon from '@material-ui/icons/Add';
+import AddEventForm from './forms/addEventForm';
 
 class AddEventDialog extends Component {
   state = {
@@ -46,8 +47,9 @@ class AddEventDialog extends Component {
             Dodaj nowe wydarzenie
           </DialogTitle>
           <DialogContent>
+            <AddEventForm />
             <DialogContentText>
-              TODO: Formularz dodawania eventu
+              
             </DialogContentText>
           </DialogContent>
           <DialogActions>
