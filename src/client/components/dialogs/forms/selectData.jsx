@@ -36,17 +36,20 @@ const suggestions = [
   { label: 'Benin' },
   { label: 'Bermuda' },
   { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of Bolivia, Plurinational State of Bolivia, Plurinational State of' },
+  {
+    label:
+      'Bolivia, Plurinational State of Bolivia, Plurinational State of Bolivia, Plurinational State of'
+  },
   { label: 'Bonaire, Sint Eustatius and Saba' },
   { label: 'Bosnia and Herzegovina' },
   { label: 'Botswana' },
   { label: 'Bouvet Island' },
   { label: 'Brazil' },
   { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
+  { label: 'Brunei Darussalam' }
 ].map(suggestion => ({
   value: suggestion.label,
-  label: suggestion.label,
+  label: suggestion.label
 }));
 
 const styles = theme => ({
@@ -55,31 +58,31 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    padding: 0,
+    padding: 0
   },
   valueContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   noOptionsMessage: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`
   },
   singleValue: {
-    fontSize: 16,
+    fontSize: 16
   },
   placeholder: {
     position: 'absolute',
     left: 2,
-    fontSize: 16,
+    fontSize: 16
   },
   paper: {
     position: 'absolute',
     zIndex: 1,
     marginTop: theme.spacing.unit,
     left: 0,
-    right: 0,
+    right: 0
   }
 });
 
@@ -109,8 +112,8 @@ function Control(props) {
           className: props.selectProps.classes.input,
           inputRef: props.innerRef,
           children: props.children,
-          ...props.innerProps,
-        },
+          ...props.innerProps
+        }
       }}
       {...props.selectProps.textFieldProps}
     />
@@ -124,7 +127,7 @@ function Option(props) {
       selected={props.isFocused}
       component="div"
       style={{
-        fontWeight: props.isSelected ? 500 : 400,
+        fontWeight: props.isSelected ? 500 : 400
       }}
       {...props.innerProps}
     >
@@ -139,27 +142,36 @@ function Placeholder(props) {
       color="textSecondary"
       className={props.selectProps.classes.placeholder}
       {...props.innerProps}
-    >
-      
-    </Typography>
+    />
   );
 }
 
 function SingleValue(props) {
   return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+    <Typography
+      className={props.selectProps.classes.singleValue}
+      {...props.innerProps}
+    >
       {props.children}
     </Typography>
   );
 }
 
 function ValueContainer(props) {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+  return (
+    <div className={props.selectProps.classes.valueContainer}>
+      {props.children}
+    </div>
+  );
 }
 
 function Menu(props) {
   return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper
+      square
+      className={props.selectProps.classes.paper}
+      {...props.innerProps}
+    >
       {props.children}
     </Paper>
   );
@@ -172,26 +184,34 @@ const components = {
   Placeholder,
   SingleValue,
   ValueContainer,
-  Menu,
+  Menu
 };
 
 class SelectData extends React.Component {
   state = {
-    single: {
+    selected: {
       value: null,
       label: null
-    }
+    },
+    shouldShrink: false
   };
 
-  handleChange = name => value => {
+  handleChange = () => value => {
     this.setState({
-      [name]: value,
+      selected: value,
+      shouldShrink: true
     });
   };
-
-  inputHasValue = () => {
-    return (this.state.single.value);
-  }
+  handleFocus = () => {
+    this.setState({
+      shouldShrink: true
+    });
+  };
+  handleBlur = () => {
+    this.setState({
+      shouldShrink: this.state.selected.value ? true : false
+    });
+  };
 
   render() {
     const { classes, theme } = this.props;
@@ -199,8 +219,8 @@ class SelectData extends React.Component {
     const selectStyles = {
       input: base => ({
         ...base,
-        color: theme.palette.text.primary,
-      }),
+        color: theme.palette.text.primary
+      })
     };
 
     return (
@@ -210,12 +230,14 @@ class SelectData extends React.Component {
           styles={selectStyles}
           options={suggestions}
           components={components}
-          value={this.state.single}
-          onChange={this.handleChange('single')}
+          value={this.state.selected}
+          onChange={this.handleChange()}
+          onFocus={() => this.handleFocus()}
+          onBlur={() => this.handleBlur()}
           textFieldProps={{
             label: 'Wykład',
             InputLabelProps: {
-              shrink: this.inputHasValue(),
+              shrink: this.state.shouldShrink
             }
           }}
         />
@@ -226,7 +248,7 @@ class SelectData extends React.Component {
 
 SelectData.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(SelectData);
