@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchEvents, newEvent, deleteEvent } from '../actions/eventsActions';
+import {
+  fetchEvents,
+  newEvent,
+  deleteEvent,
+  updateEvent
+} from '../actions/eventsActions';
 import { fetchSpeakers } from '../actions/speakersActions';
 import { fetchLectures } from '../actions/lecturesActions';
 import { fetchSetting } from '../actions/settingsActions';
@@ -9,6 +14,8 @@ import EventCard from './cards/eventCard';
 import DeleteDialog from './utils/deleteDialog';
 import AddEventDialog from './utils/addEventDialog';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 
 class Events extends Component {
   constructor(props) {
@@ -16,7 +23,9 @@ class Events extends Component {
     props.fetchSetting('DEFAULT_EVENT_TIME');
     this.state = {
       isDelOpen: false,
-      eventToDel: {}
+      eventToDel: {},
+      isAddEventOpen: false,
+      eventToUpdate: {}
     };
   }
   componentDidMount() {
@@ -38,8 +47,17 @@ class Events extends Component {
     this.setState({ isDelOpen: false });
   };
 
+  handleEventAdd = event => {
+    this.setState({ isAddEventOpen: true, eventToUpdate: event });
+  };
+
   handleEventSubmit = event => {
+    this.handleAddEventClose();
     this.props.newEvent(event);
+  };
+
+  handleAddEventClose = () => {
+    this.setState({ isAddEventOpen: false });
   };
 
   render() {
@@ -60,6 +78,7 @@ class Events extends Component {
       <Grid key={event.id} item xs={12} sm={6} md={4} lg={3}>
         <EventCard
           onDelete={() => this.handleEventDelete(event)}
+          onUpdate={() => this.handleEventAdd(event)}
           event={event}
         />
       </Grid>
@@ -72,6 +91,9 @@ class Events extends Component {
           speakers={this.props.speakers}
           defaultEventTime={this.props.defaultEventTime.value}
           onSubmitEvent={this.handleEventSubmit}
+          onClose={this.handleAddEventClose}
+          event={this.state.eventToUpdate}
+          opened={this.state.isAddEventOpen}
         />
         <DeleteDialog
           event={this.state.eventToDel}
@@ -79,6 +101,15 @@ class Events extends Component {
           onClose={this.handleDelDialogClose}
           onConfirm={this.handleDelDialogConfirm}
         />
+        <Button
+          onClick={() => this.handleEventAdd({})}
+          variant="fab"
+          color="primary"
+          aria-label="Dodaj"
+          className="fab"
+        >
+          <AddIcon />
+        </Button>
         <Grid container alignItems="stretch" spacing={16}>
           {eventsItems}
         </Grid>
@@ -90,6 +121,7 @@ class Events extends Component {
 Events.propTypes = {
   fetchEvents: PropTypes.func.isRequired,
   newEvent: PropTypes.func.isRequired,
+  updateEvent: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   fetchSpeakers: PropTypes.func.isRequired,
   fetchLectures: PropTypes.func.isRequired,
@@ -110,6 +142,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchEvents,
   newEvent,
+  updateEvent,
   deleteEvent,
   fetchSpeakers,
   fetchLectures,

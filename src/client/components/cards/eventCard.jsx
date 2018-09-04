@@ -34,6 +34,11 @@ class EventCard extends Component {
     this.props.onDelete();
   };
 
+  handleEventUpdate = () => {
+    this.handleMoreClose();
+    this.props.onUpdate();
+  };
+
   render() {
     const { event } = this.props;
     const { anchorEl } = this.state;
@@ -58,7 +63,7 @@ class EventCard extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleMoreClose}
               >
-                <MenuItem onClick={this.handleMoreClose}>
+                <MenuItem onClick={this.handleEventUpdate}>
                   <ListItemIcon>
                     <EditIcon />
                   </ListItemIcon>
@@ -92,7 +97,8 @@ class EventCard extends Component {
 
 EventCard.propTypes = {
   event: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 
 export default EventCard;

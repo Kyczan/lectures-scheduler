@@ -16,6 +16,14 @@ export default function(state = initialState, action) {
       ...state,
       items: [...state.items, action.payload]
     };
+  case types.UPDATE_EVENT:
+    return {
+      ...state,
+      items: [
+        ...state.items.filter(event => event.id !== action.payload.id),
+        action.payload
+      ]
+    };
   case types.DELETE_EVENT:
     return {
       ...state,

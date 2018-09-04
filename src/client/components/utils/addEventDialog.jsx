@@ -6,7 +6,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import AddIcon from '@material-ui/icons/Add';
 import SelectData from './selectData';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -24,7 +23,6 @@ class AddEventDialog extends Component {
   constructor() {
     super();
     this.state = {
-      open: false,
       selectedDate: null,
       toReturn: {
         lecture_id: null,
@@ -95,14 +93,6 @@ class AddEventDialog extends Component {
     });
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   handleFormChange = field => e => {
     this.setState({
       toReturn: {
@@ -114,7 +104,6 @@ class AddEventDialog extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.handleClose();
     this.props.onSubmitEvent(this.state.toReturn);
   };
 
@@ -149,19 +138,10 @@ class AddEventDialog extends Component {
 
     return (
       <div>
-        <Button
-          onClick={this.handleClickOpen}
-          variant="fab"
-          color="primary"
-          aria-label="Dodaj"
-          className="fab"
-        >
-          <AddIcon />
-        </Button>
         <Dialog
           fullScreen={fullScreen}
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={this.props.opened}
+          onClose={this.props.onClose}
           aria-labelledby="responsive-dialog-title"
           scroll="body"
         >
@@ -211,7 +191,7 @@ class AddEventDialog extends Component {
               </div>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={this.props.onClose} color="primary">
                 Anuluj
               </Button>
               <Button type="submit" color="primary" autoFocus>
@@ -230,7 +210,10 @@ AddEventDialog.propTypes = {
   lectures: PropTypes.array.isRequired,
   speakers: PropTypes.array.isRequired,
   defaultEventTime: PropTypes.string.isRequired,
-  onSubmitEvent: PropTypes.func.isRequired
+  onSubmitEvent: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  opened: PropTypes.bool.isRequired,
+  event: PropTypes.object.isRequired
 };
 
 export default withMobileDialog()(AddEventDialog);
