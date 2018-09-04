@@ -25,21 +25,71 @@ class AddEventDialog extends Component {
     super();
     this.state = {
       open: false,
-      selectedDate: null
+      selectedDate: null,
+      toReturn: {
+        lecture_id: null,
+        speaker_id: null,
+        note: null
+      }
     };
   }
+
+  getStringDate(d) {
+    const strDate = d.format('YYYY-MM-DD');
+    const strTime = d.format('HH:mm');
+    return [strDate, strTime];
+  }
+
   componentDidMount(){
-    const d = new Date();
+    const d = moment();
     const hours = this.props.defaultEventTime.split(':');
-    d.setHours(hours[0], hours[1], 0, 0);
+    d.hours(hours[0]);
+    d.minutes(hours[1]);
+    d.second(0);
+    d.millisecond(0);
+    const strDate = this.getStringDate(d);
     this.setState({
-      selectedDate: d
+      selectedDate: d,
+      toReturn: {
+        ...this.state.toReturn, 
+        event_date: strDate[0],
+        event_time: strDate[1]
+      }
     });
   }
   
   handleDateChange = date => {
-    this.setState({ selectedDate: date });
+    const time = this.state.toReturn.event_time;
+    const hours = time.split(':');
+    date.hours(hours[0]);
+    date.minutes(hours[1]);
+    const strDate = this.getStringDate(date);
+    this.setState({ 
+      selectedDate: date, 
+      toReturn: {
+        ...this.state.toReturn, 
+        event_date: strDate[0],
+        event_time: strDate[1]
+      }});
   };
+
+  handleTimeChange = date => {
+    const strDate = this.getStringDate(date);
+    this.setState({ 
+      selectedDate: date, 
+      toReturn: {
+        ...this.state.toReturn, 
+        event_time: strDate[1]
+      }});
+  };
+
+  handleSelect = (field) => (value) => {
+    const id = value && value.id ? value.id : null;
+    this.setState({toReturn: {
+      ...this.state.toReturn, 
+      [field]: id
+    }});
+  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -47,6 +97,18 @@ class AddEventDialog extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handleFormChange = (field) => (e) => {
+    this.setState({toReturn: {
+      ...this.state.toReturn, 
+      [field]: e.target.value
+    }});
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
   };
 
   render() {
@@ -94,46 +156,50 @@ class AddEventDialog extends Component {
           aria-labelledby="responsive-dialog-title"
           scroll="body"
         >
-          <DialogTitle id="responsive-dialog-title">
+          <form onSubmit={this.handleSubmit}>
+            <DialogTitle id="responsive-dialog-title">
             Dodaj nowe wydarzenie
-          </DialogTitle>
-          <DialogContent style={{ overflow: 'visible' }}>
-            <div className="form-wrapper">
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <DatePicker
-                  className="form-date-picker"
-                  format="DD MMM YYYY"
-                  label="Data"
-                  value={selectedDate}
-                  onChange={this.handleDateChange}
-                />
-                <TimePicker
-                  className="form-date-picker"
-                  ampm={false}
-                  label="Godzina"
-                  value={selectedDate}
-                  onChange={this.handleDateChange}
-                />
-              </MuiPickersUtilsProvider>
-              <div className="divider" />
-              <SelectData suggestions={suggestedLectures} label="Wykład" />
-              <div className="divider" />
-              <SelectData suggestions={suggestedSpeakers} label="Mówca" />
-              <div className="divider" />
-              <FormControl className="input-data">
-                <InputLabel htmlFor="notes">Uwagi</InputLabel>
-                <Input id="notes" />
-              </FormControl>
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            </DialogTitle>
+            <DialogContent style={{ overflow: 'visible' }}>
+              <div className="form-wrapper">
+              
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <DatePicker
+                    className="form-date-picker"
+                    format="DD MMM YYYY"
+                    label="Data"
+                    value={selectedDate}
+                    onChange={this.handleDateChange}
+                  />
+                  <TimePicker
+                    className="form-date-picker"
+                    ampm={false}
+                    label="Godzina"
+                    value={selectedDate}
+                    onChange={this.handleTimeChange}
+                  />
+                </MuiPickersUtilsProvider>
+                <div className="divider" />
+                <SelectData suggestions={suggestedLectures} label="Wykład" handleSelect={this.handleSelect('lecture_id')}/>
+                <div className="divider" />
+                <SelectData suggestions={suggestedSpeakers} label="Mówca" handleSelect={this.handleSelect('speaker_id')}/>
+                <div className="divider" />
+                <FormControl className="input-data">
+                  <InputLabel htmlFor="notes">Uwagi</InputLabel>
+                  <Input id="notes" name="note" onChange={this.handleFormChange('note')}/>
+                </FormControl>
+              
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
               Anuluj
-            </Button>
-            <Button onClick={this.handleClose} color="primary" autoFocus>
+              </Button>
+              <Button type="submit" color="primary" autoFocus>
               Dodaj
-            </Button>
-          </DialogActions>
+              </Button>
+            </DialogActions>
+          </form>
         </Dialog>
       </div>
     );

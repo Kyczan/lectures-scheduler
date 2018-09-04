@@ -153,11 +153,12 @@ class SelectData extends React.Component {
     shouldShrink: false
   };
 
-  handleChange = () => value => {
+  handleChange = () => selected => {
     this.setState({
-      selected: value,
+      selected,
       shouldShrink: true
     });
+    this.props.handleSelect(selected.value);
   };
   handleFocus = () => {
     this.setState({
@@ -207,7 +208,8 @@ SelectData.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   suggestions: PropTypes.array.isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  handleSelect: PropTypes.func.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(SelectData);
