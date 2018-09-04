@@ -16,59 +16,27 @@ import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsPr
 import TimePicker from 'material-ui-pickers/TimePicker';
 import DatePicker from 'material-ui-pickers/DatePicker';
 import moment from 'moment';
-import 'moment/locale/fr';
+import 'moment/locale/pl';
 
 moment.locale('pl');
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  {
-    label:
-      'Bolivia, Plurinational State of Bolivia, Plurinational State of Bolivia, Plurinational State of'
-  },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' }
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label
-}));
-
 class AddEventDialog extends Component {
-  state = {
-    open: false,
-    selectedDate: new Date()
-  };
-
+  constructor() {
+    super();
+    this.state = {
+      open: false,
+      selectedDate: null
+    };
+  }
+  componentDidMount(){
+    const d = new Date();
+    const hours = this.props.defaultEventTime.split(':');
+    d.setHours(hours[0], hours[1], 0, 0);
+    this.setState({
+      selectedDate: d
+    });
+  }
+  
   handleDateChange = date => {
     this.setState({ selectedDate: date });
   };
@@ -82,8 +50,31 @@ class AddEventDialog extends Component {
   };
 
   render() {
-    const { fullScreen } = this.props;
+    const { fullScreen, lectures, speakers } = this.props;
     const { selectedDate } = this.state;
+
+    lectures.sort((a, b) => {
+      return a.number - b.number;
+    });
+
+    const suggestedLectures = lectures.map(lecture => ({
+      value: lecture,
+      label: `${lecture.number}. ${lecture.title}`
+    }));
+
+    speakers.sort((a, b) => {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
+
+    const suggestedSpeakers = speakers.map(speaker => {
+      const congregation = speaker.congregation_name ? ` [${speaker.congregation_name}]` : '';
+      return {
+        value: speaker,
+        label: `${speaker.name}${congregation}`
+      };
+    });
 
     return (
       <div>
@@ -125,9 +116,9 @@ class AddEventDialog extends Component {
                 />
               </MuiPickersUtilsProvider>
               <div className="divider" />
-              <SelectData suggestions={suggestions} label="Wykład" />
+              <SelectData suggestions={suggestedLectures} label="Wykład" />
               <div className="divider" />
-              <SelectData suggestions={suggestions} label="Mówca" />
+              <SelectData suggestions={suggestedSpeakers} label="Mówca" />
               <div className="divider" />
               <FormControl className="input-data">
                 <InputLabel htmlFor="notes">Uwagi</InputLabel>
@@ -150,7 +141,10 @@ class AddEventDialog extends Component {
 }
 
 AddEventDialog.propTypes = {
-  fullScreen: PropTypes.bool.isRequired
+  fullScreen: PropTypes.bool.isRequired,
+  lectures: PropTypes.array.isRequired,
+  speakers: PropTypes.array.isRequired,
+  defaultEventTime: PropTypes.string.isRequired
 };
 
 export default withMobileDialog()(AddEventDialog);

@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchEvents, deleteEvent } from '../actions/eventsActions';
+import { fetchSpeakers } from '../actions/speakersActions';
+import { fetchLectures } from '../actions/lecturesActions';
+import { fetchSetting } from '../actions/settingsActions';
 import EventCard from './cards/eventCard';
 import DeleteDialog from './utils/deleteDialog';
 import AddEventDialog from './utils/addEventDialog';
 import Grid from '@material-ui/core/Grid';
 
 class Events extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    props.fetchSetting('DEFAULT_EVENT_TIME');
     this.state = {
       isDelOpen: false,
       eventToDel: {}
@@ -17,6 +21,8 @@ class Events extends Component {
   }
   componentDidMount() {
     this.props.fetchEvents();
+    this.props.fetchSpeakers();
+    this.props.fetchLectures();
   }
 
   handleEventDelete = event => {
@@ -33,6 +39,8 @@ class Events extends Component {
   };
 
   render() {
+    if (!this.props.defaultEventTime.value) 
+      return null;
     const lastYear = new Date() - 1000 * 60 * 60 * 24 * 365; // today - 1 yr
     const lastYearStr = new Date(lastYear).toJSON().substring(0, 10); // format yyyy-mm-dd
     const filtered = this.props.events.filter(
@@ -56,7 +64,7 @@ class Events extends Component {
 
     return (
       <div className="container">
-        <AddEventDialog />
+        <AddEventDialog lectures={this.props.lectures} speakers={this.props.speakers} defaultEventTime={this.props.defaultEventTime.value}/>
         <DeleteDialog
           event={this.state.eventToDel}
           opened={this.state.isDelOpen}
@@ -74,16 +82,28 @@ class Events extends Component {
 Events.propTypes = {
   fetchEvents: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired,
-  events: PropTypes.array.isRequired
+  fetchSpeakers: PropTypes.func.isRequired,
+  fetchLectures: PropTypes.func.isRequired,
+  fetchSetting: PropTypes.func.isRequired,
+  events: PropTypes.array.isRequired,
+  lectures: PropTypes.array.isRequired,
+  speakers: PropTypes.array.isRequired,
+  defaultEventTime: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  events: state.events.items
+  events: state.events.items,
+  lectures: state.lectures.items,
+  speakers: state.speakers.items,
+  defaultEventTime: state.setting.item
 });
 
 const mapDispatchToProps = {
   fetchEvents,
-  deleteEvent
+  deleteEvent,
+  fetchSpeakers,
+  fetchLectures,
+  fetchSetting
 };
 
 export default connect(
