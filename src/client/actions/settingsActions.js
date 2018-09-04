@@ -1,12 +1,10 @@
 import * as types from './types';
 
-export const fetchSetting = settingName => dispatch => {
-  fetch(`api/settings/${settingName}`)
-    .then(res => res.json())
-    .then(setting =>
-      dispatch({
-        type: types.FETCH_SETTING,
-        payload: setting
-      })
-    );
+export const fetchSetting = settingName => async dispatch => {
+  const rawRes = await fetch(`api/settings/${settingName}`);
+  const setting = await rawRes.json();
+  return dispatch({
+    type: types.FETCH_SETTING,
+    payload: setting
+  });
 };

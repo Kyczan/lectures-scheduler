@@ -1,25 +1,37 @@
 import * as types from './types';
 
-export const fetchEvents = () => dispatch => {
-  fetch('api/events')
-    .then(res => res.json())
-    .then(events =>
-      dispatch({
-        type: types.FETCH_EVENTS,
-        payload: events
-      })
-    );
+export const fetchEvents = () => async dispatch => {
+  const rawRes = await fetch('api/events');
+  const events = await rawRes.json();
+  return dispatch({
+    type: types.FETCH_EVENTS,
+    payload: events
+  });
 };
 
-export const deleteEvent = eventId => dispatch => {
-  fetch(`api/events/${eventId}`, {
+export const newEvent = event => async dispatch => {
+  const rawRes = await fetch('api/events', {
+    method: 'post',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(event)
+  });
+  const retEvent = await rawRes.json();
+  return dispatch({
+    type: types.NEW_EVENT,
+    payload: retEvent
+  });
+};
+
+export const deleteEvent = eventId => async dispatch => {
+  const rawRes = await fetch(`api/events/${eventId}`, {
     method: 'delete'
-  })
-    .then(res => res.json())
-    .then(event =>
-      dispatch({
-        type: types.DELETE_EVENT,
-        payload: event
-      })
-    );
+  });
+  const event = await rawRes.json();
+  return dispatch({
+    type: types.DELETE_EVENT,
+    payload: event
+  });
 };

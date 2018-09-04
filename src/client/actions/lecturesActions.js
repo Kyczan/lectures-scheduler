@@ -1,12 +1,10 @@
 import * as types from './types';
 
-export const fetchLectures = () => dispatch => {
-  fetch('api/lectures')
-    .then(res => res.json())
-    .then(lectures =>
-      dispatch({
-        type: types.FETCH_LECTURES,
-        payload: lectures
-      })
-    );
+export const fetchLectures = () => async dispatch => {
+  const rawRes = await fetch('api/lectures');
+  const lectures = await rawRes.json();
+  return dispatch({
+    type: types.FETCH_LECTURES,
+    payload: lectures
+  });
 };

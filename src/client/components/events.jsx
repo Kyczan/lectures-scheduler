@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchEvents, deleteEvent } from '../actions/eventsActions';
+import { fetchEvents, newEvent, deleteEvent } from '../actions/eventsActions';
 import { fetchSpeakers } from '../actions/speakersActions';
 import { fetchLectures } from '../actions/lecturesActions';
 import { fetchSetting } from '../actions/settingsActions';
@@ -38,9 +38,12 @@ class Events extends Component {
     this.setState({ isDelOpen: false });
   };
 
+  handleEventSubmit = event => {
+    this.props.newEvent(event);
+  };
+
   render() {
-    if (!this.props.defaultEventTime.value) 
-      return null;
+    if (!this.props.defaultEventTime.value) return null;
     const lastYear = new Date() - 1000 * 60 * 60 * 24 * 365; // today - 1 yr
     const lastYearStr = new Date(lastYear).toJSON().substring(0, 10); // format yyyy-mm-dd
     const filtered = this.props.events.filter(
@@ -64,7 +67,12 @@ class Events extends Component {
 
     return (
       <div className="container">
-        <AddEventDialog lectures={this.props.lectures} speakers={this.props.speakers} defaultEventTime={this.props.defaultEventTime.value}/>
+        <AddEventDialog
+          lectures={this.props.lectures}
+          speakers={this.props.speakers}
+          defaultEventTime={this.props.defaultEventTime.value}
+          onSubmitEvent={this.handleEventSubmit}
+        />
         <DeleteDialog
           event={this.state.eventToDel}
           opened={this.state.isDelOpen}
@@ -81,6 +89,7 @@ class Events extends Component {
 
 Events.propTypes = {
   fetchEvents: PropTypes.func.isRequired,
+  newEvent: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   fetchSpeakers: PropTypes.func.isRequired,
   fetchLectures: PropTypes.func.isRequired,
@@ -100,6 +109,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchEvents,
+  newEvent,
   deleteEvent,
   fetchSpeakers,
   fetchLectures,

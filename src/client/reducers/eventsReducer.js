@@ -11,6 +11,11 @@ export default function(state = initialState, action) {
       ...state,
       items: [...action.payload]
     };
+  case types.NEW_EVENT:
+    return {
+      ...state,
+      items: [...state.items, action.payload]
+    };
   case types.DELETE_EVENT:
     return {
       ...state,

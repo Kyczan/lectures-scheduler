@@ -40,7 +40,7 @@ class AddEventDialog extends Component {
     return [strDate, strTime];
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const d = moment();
     const hours = this.props.defaultEventTime.split(':');
     d.hours(hours[0]);
@@ -51,45 +51,49 @@ class AddEventDialog extends Component {
     this.setState({
       selectedDate: d,
       toReturn: {
-        ...this.state.toReturn, 
+        ...this.state.toReturn,
         event_date: strDate[0],
         event_time: strDate[1]
       }
     });
   }
-  
+
   handleDateChange = date => {
     const time = this.state.toReturn.event_time;
     const hours = time.split(':');
     date.hours(hours[0]);
     date.minutes(hours[1]);
     const strDate = this.getStringDate(date);
-    this.setState({ 
-      selectedDate: date, 
+    this.setState({
+      selectedDate: date,
       toReturn: {
-        ...this.state.toReturn, 
+        ...this.state.toReturn,
         event_date: strDate[0],
         event_time: strDate[1]
-      }});
+      }
+    });
   };
 
   handleTimeChange = date => {
     const strDate = this.getStringDate(date);
-    this.setState({ 
-      selectedDate: date, 
+    this.setState({
+      selectedDate: date,
       toReturn: {
-        ...this.state.toReturn, 
+        ...this.state.toReturn,
         event_time: strDate[1]
-      }});
+      }
+    });
   };
 
-  handleSelect = (field) => (value) => {
+  handleSelect = field => value => {
     const id = value && value.id ? value.id : null;
-    this.setState({toReturn: {
-      ...this.state.toReturn, 
-      [field]: id
-    }});
-  }
+    this.setState({
+      toReturn: {
+        ...this.state.toReturn,
+        [field]: id
+      }
+    });
+  };
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -99,16 +103,19 @@ class AddEventDialog extends Component {
     this.setState({ open: false });
   };
 
-  handleFormChange = (field) => (e) => {
-    this.setState({toReturn: {
-      ...this.state.toReturn, 
-      [field]: e.target.value
-    }});
-  }
+  handleFormChange = field => e => {
+    this.setState({
+      toReturn: {
+        ...this.state.toReturn,
+        [field]: e.target.value
+      }
+    });
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+    this.handleClose();
+    this.props.onSubmitEvent(this.state.toReturn);
   };
 
   render() {
@@ -131,7 +138,9 @@ class AddEventDialog extends Component {
     });
 
     const suggestedSpeakers = speakers.map(speaker => {
-      const congregation = speaker.congregation_name ? ` [${speaker.congregation_name}]` : '';
+      const congregation = speaker.congregation_name
+        ? ` [${speaker.congregation_name}]`
+        : '';
       return {
         value: speaker,
         label: `${speaker.name}${congregation}`
@@ -158,11 +167,10 @@ class AddEventDialog extends Component {
         >
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="responsive-dialog-title">
-            Dodaj nowe wydarzenie
+              Dodaj nowe wydarzenie
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
-              
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                   <DatePicker
                     className="form-date-picker"
@@ -180,23 +188,34 @@ class AddEventDialog extends Component {
                   />
                 </MuiPickersUtilsProvider>
                 <div className="divider" />
-                <SelectData suggestions={suggestedLectures} label="Wykład" handleSelect={this.handleSelect('lecture_id')}/>
+                <SelectData
+                  suggestions={suggestedLectures}
+                  label="Wykład"
+                  handleSelect={this.handleSelect('lecture_id')}
+                />
                 <div className="divider" />
-                <SelectData suggestions={suggestedSpeakers} label="Mówca" handleSelect={this.handleSelect('speaker_id')}/>
+                <SelectData
+                  suggestions={suggestedSpeakers}
+                  label="Mówca"
+                  handleSelect={this.handleSelect('speaker_id')}
+                />
                 <div className="divider" />
                 <FormControl className="input-data">
                   <InputLabel htmlFor="notes">Uwagi</InputLabel>
-                  <Input id="notes" name="note" onChange={this.handleFormChange('note')}/>
+                  <Input
+                    id="notes"
+                    name="note"
+                    onChange={this.handleFormChange('note')}
+                  />
                 </FormControl>
-              
               </div>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
-              Anuluj
+                Anuluj
               </Button>
               <Button type="submit" color="primary" autoFocus>
-              Dodaj
+                Dodaj
               </Button>
             </DialogActions>
           </form>
@@ -210,7 +229,8 @@ AddEventDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   lectures: PropTypes.array.isRequired,
   speakers: PropTypes.array.isRequired,
-  defaultEventTime: PropTypes.string.isRequired
+  defaultEventTime: PropTypes.string.isRequired,
+  onSubmitEvent: PropTypes.func.isRequired
 };
 
 export default withMobileDialog()(AddEventDialog);
