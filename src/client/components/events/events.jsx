@@ -6,13 +6,13 @@ import {
   newEvent,
   deleteEvent,
   updateEvent
-} from '../actions/eventsActions';
-import { fetchSpeakers } from '../actions/speakersActions';
-import { fetchLectures } from '../actions/lecturesActions';
-import { fetchSetting } from '../actions/settingsActions';
-import EventCard from './cards/eventCard';
-import DeleteDialog from './utils/deleteDialog';
-import AddEventDialog from './utils/addEventDialog';
+} from '../../actions/eventsActions';
+import { fetchSpeakers } from '../../actions/speakersActions';
+import { fetchLectures } from '../../actions/lecturesActions';
+import { fetchSetting } from '../../actions/settingsActions';
+import EventCard from './eventCard';
+import DeleteDialog from './deleteDialog';
+import AddEventDialog from './addEventDialog';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -53,8 +53,7 @@ class Events extends Component {
 
   handleEventSubmit = event => {
     this.handleAddEventClose();
-    console.log(event);
-    if(event.id) {
+    if (event.id) {
       this.props.updateEvent(event);
     } else {
       this.props.newEvent(event);

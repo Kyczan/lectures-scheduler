@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import SelectData from './selectData';
+import SelectData from '../utils/selectData';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -45,10 +45,11 @@ class AddEventDialog extends Component {
 
   componentDidUpdate(prevProps) {
     const hasDefaults = this.props.event.event_date ? true : false;
-    if( hasDefaults ) {
-      const setDate = moment(`${this.props.event.event_date} ${this.props.event.event_time}`);
-      if(!this.state.selectedDate.isSame(setDate) && this.state.clean){
-        console.log('state',this.state);
+    if (hasDefaults) {
+      const setDate = moment(
+        `${this.props.event.event_date} ${this.props.event.event_time}`
+      );
+      if (!this.state.selectedDate.isSame(setDate) && this.state.clean) {
         this.setState({
           clean: false,
           selectedDate: setDate,
@@ -57,7 +58,7 @@ class AddEventDialog extends Component {
           }
         });
       }
-      if( prevProps.event.id !== this.props.event.id ) {
+      if (prevProps.event.id !== this.props.event.id) {
         this.setState({
           toReturn: {
             lecture_id: this.props.event.lecture_id || null,
@@ -69,18 +70,23 @@ class AddEventDialog extends Component {
           }
         });
       }
-    }else {
-      if( prevProps.event.id && !this.props.event.id ) {
-        const toReturn = {...this.state.toReturn};
+    } else {
+      if (prevProps.event.id && !this.props.event.id) {
+        const toReturn = { ...this.state.toReturn };
         delete toReturn.id;
-        this.setState({
-          toReturn: {
-            ...toReturn,
-            lecture_id: null,
-            speaker_id: null,
-            note: null
+        this.setState(
+          {
+            toReturn: {
+              ...toReturn,
+              lecture_id: null,
+              speaker_id: null,
+              note: null
+            }
+          },
+          () => {
+            this.initializeDate();
           }
-        }, () => {this.initializeDate();});
+        );
       }
     }
   }
@@ -103,7 +109,7 @@ class AddEventDialog extends Component {
     });
   }
 
-  handleDateChange = date =>  {
+  handleDateChange = date => {
     const time = this.state.toReturn.event_time;
     const hours = time.split(':');
     date.hours(hours[0]);
@@ -186,10 +192,14 @@ class AddEventDialog extends Component {
     });
 
     if (event.lecture_id) {
-      defaultLecture = suggestedLectures.filter(lecture=> lecture.value.id === event.lecture_id)[0];
+      defaultLecture = suggestedLectures.filter(
+        lecture => lecture.value.id === event.lecture_id
+      )[0];
     }
     if (event.speaker_id) {
-      defaultSpeaker = suggestedSpeakers.filter(speaker=> speaker.value.id === event.speaker_id)[0];
+      defaultSpeaker = suggestedSpeakers.filter(
+        speaker => speaker.value.id === event.speaker_id
+      )[0];
     }
 
     return (

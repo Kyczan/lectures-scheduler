@@ -145,7 +145,6 @@ const components = {
 };
 
 class SelectData extends React.Component {
-
   constructor(props) {
     super(props);
     const defaultValue = props.defaultValue;
