@@ -19,7 +19,7 @@ class DeleteDialog extends Component {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            Usunąć wybrane wydarzenie?
+            Usunąć wybraną kartę?
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">

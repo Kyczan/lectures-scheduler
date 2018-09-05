@@ -79,7 +79,7 @@ class CongregationCard extends Component {
             </div>
           }
           title={congregation.name}
-          subheader={congregation.number}
+          subheader={`${congregation.number}`}
         />
         <CardContent className="card-content">
           <Typography color="textSecondary">

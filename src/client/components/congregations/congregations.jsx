@@ -123,14 +123,14 @@ class Congregations extends Component {
           opened={this.state.flash.opened}
           handleClose={this.handleFlashClose}
         />
-        {/* <AddCongregationDialog
+        <AddCongregationDialog
           onSubmitCongregation={this.handleCongregationSubmit}
           onClose={this.handleAddCongregationClose}
           congregation={this.state.congregationToUpdate}
           opened={this.state.isAddCongregationOpen}
-        /> */}
+        />
         <DeleteDialog
-          deleteMsg={this.state.congregationToDel.name}
+          deleteMsg={this.state.congregationToDel.name || ''}
           opened={this.state.isDelOpen}
           onClose={this.handleDelDialogClose}
           onConfirm={this.handleDelDialogConfirm}

@@ -213,7 +213,7 @@ class AddEventDialog extends Component {
         >
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="responsive-dialog-title">
-              Dodaj nowe wydarzenie
+              {event.id ? 'Edytuj wydarzenie' : 'Dodaj nowe wydarzenie'}
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
@@ -255,7 +255,7 @@ class AddEventDialog extends Component {
                 <FormControl className="input-data">
                   <InputLabel htmlFor="notes">Uwagi</InputLabel>
                   <Input
-                    id="notes"
+                    id="note"
                     name="note"
                     onChange={this.handleFormChange('note')}
                     defaultValue={event.note || null}
