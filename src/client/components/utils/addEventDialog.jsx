@@ -23,6 +23,7 @@ class AddEventDialog extends Component {
   constructor() {
     super();
     this.state = {
+      clean: true,
       selectedDate: null,
       toReturn: {
         lecture_id: null,
@@ -39,15 +40,61 @@ class AddEventDialog extends Component {
   }
 
   componentDidMount() {
-    const d = moment();
+    this.initializeDate();
+  }
+
+  componentDidUpdate(prevProps) {
+    const hasDefaults = this.props.event.event_date ? true : false;
+    if( hasDefaults ) {
+      const setDate = moment(`${this.props.event.event_date} ${this.props.event.event_time}`);
+      if(!this.state.selectedDate.isSame(setDate) && this.state.clean){
+        console.log('state',this.state);
+        this.setState({
+          clean: false,
+          selectedDate: setDate,
+          toReturn: {
+            ...this.state.toReturn
+          }
+        });
+      }
+      if( prevProps.event.id !== this.props.event.id ) {
+        this.setState({
+          toReturn: {
+            lecture_id: this.props.event.lecture_id || null,
+            speaker_id: this.props.event.speaker_id || null,
+            note: this.props.event.note || null,
+            event_date: this.props.event.event_date,
+            event_time: this.props.event.event_time,
+            id: this.props.event.id
+          }
+        });
+      }
+    }else {
+      if( prevProps.event.id && !this.props.event.id ) {
+        const toReturn = {...this.state.toReturn};
+        delete toReturn.id;
+        this.setState({
+          toReturn: {
+            ...toReturn,
+            lecture_id: null,
+            speaker_id: null,
+            note: null
+          }
+        }, () => {this.initializeDate();});
+      }
+    }
+  }
+
+  initializeDate() {
+    const setDate = moment();
     const hours = this.props.defaultEventTime.split(':');
-    d.hours(hours[0]);
-    d.minutes(hours[1]);
-    d.second(0);
-    d.millisecond(0);
-    const strDate = this.getStringDate(d);
+    setDate.hours(hours[0]);
+    setDate.minutes(hours[1]);
+    setDate.second(0);
+    setDate.millisecond(0);
+    const strDate = this.getStringDate(setDate);
     this.setState({
-      selectedDate: d,
+      selectedDate: setDate,
       toReturn: {
         ...this.state.toReturn,
         event_date: strDate[0],
@@ -56,7 +103,7 @@ class AddEventDialog extends Component {
     });
   }
 
-  handleDateChange = date => {
+  handleDateChange = date =>  {
     const time = this.state.toReturn.event_time;
     const hours = time.split(':');
     date.hours(hours[0]);
@@ -108,8 +155,10 @@ class AddEventDialog extends Component {
   };
 
   render() {
-    const { fullScreen, lectures, speakers } = this.props;
+    const { fullScreen, lectures, speakers, event } = this.props;
     const { selectedDate } = this.state;
+    let defaultLecture = {};
+    let defaultSpeaker = {};
 
     lectures.sort((a, b) => {
       return a.number - b.number;
@@ -136,6 +185,13 @@ class AddEventDialog extends Component {
       };
     });
 
+    if (event.lecture_id) {
+      defaultLecture = suggestedLectures.filter(lecture=> lecture.value.id === event.lecture_id)[0];
+    }
+    if (event.speaker_id) {
+      defaultSpeaker = suggestedSpeakers.filter(speaker=> speaker.value.id === event.speaker_id)[0];
+    }
+
     return (
       <div>
         <Dialog
@@ -158,6 +214,9 @@ class AddEventDialog extends Component {
                     label="Data"
                     value={selectedDate}
                     onChange={this.handleDateChange}
+                    showTodayButton
+                    todayLabel="Dzisiaj"
+                    cancelLabel="Anuluj"
                   />
                   <TimePicker
                     className="form-date-picker"
@@ -165,6 +224,7 @@ class AddEventDialog extends Component {
                     label="Godzina"
                     value={selectedDate}
                     onChange={this.handleTimeChange}
+                    cancelLabel="Anuluj"
                   />
                 </MuiPickersUtilsProvider>
                 <div className="divider" />
@@ -172,12 +232,14 @@ class AddEventDialog extends Component {
                   suggestions={suggestedLectures}
                   label="Wykład"
                   handleSelect={this.handleSelect('lecture_id')}
+                  defaultValue={defaultLecture}
                 />
                 <div className="divider" />
                 <SelectData
                   suggestions={suggestedSpeakers}
                   label="Mówca"
                   handleSelect={this.handleSelect('speaker_id')}
+                  defaultValue={defaultSpeaker}
                 />
                 <div className="divider" />
                 <FormControl className="input-data">
@@ -186,6 +248,7 @@ class AddEventDialog extends Component {
                     id="notes"
                     name="note"
                     onChange={this.handleFormChange('note')}
+                    defaultValue={event.note || null}
                   />
                 </FormControl>
               </div>
@@ -195,7 +258,7 @@ class AddEventDialog extends Component {
                 Anuluj
               </Button>
               <Button type="submit" color="primary" autoFocus>
-                Dodaj
+                Zapisz
               </Button>
             </DialogActions>
           </form>

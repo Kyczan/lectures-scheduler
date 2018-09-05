@@ -53,7 +53,12 @@ class Events extends Component {
 
   handleEventSubmit = event => {
     this.handleAddEventClose();
-    this.props.newEvent(event);
+    console.log(event);
+    if(event.id) {
+      this.props.updateEvent(event);
+    } else {
+      this.props.newEvent(event);
+    }
   };
 
   handleAddEventClose = () => {

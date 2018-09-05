@@ -26,13 +26,15 @@ export const newEvent = event => async dispatch => {
 };
 
 export const updateEvent = event => async dispatch => {
+  const body = {...event};
+  delete body.id;
   const rawRes = await fetch(`api/events/${event.id}`, {
     method: 'put',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(event)
+    body: JSON.stringify(body)
   });
   const retEvent = await rawRes.json();
   return dispatch({

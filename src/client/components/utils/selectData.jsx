@@ -145,13 +145,20 @@ const components = {
 };
 
 class SelectData extends React.Component {
-  state = {
-    selected: {
+
+  constructor(props) {
+    super(props);
+    const defaultValue = props.defaultValue;
+    const hasDefaults = defaultValue.label ? true : false;
+    const selected = {
       value: null,
       label: null
-    },
-    shouldShrink: false
-  };
+    };
+    this.state = {
+      selected: hasDefaults ? defaultValue : selected,
+      shouldShrink: hasDefaults
+    };
+  }
 
   handleChange = () => selected => {
     this.setState({
@@ -209,7 +216,8 @@ SelectData.propTypes = {
   theme: PropTypes.object.isRequired,
   suggestions: PropTypes.array.isRequired,
   label: PropTypes.string.isRequired,
-  handleSelect: PropTypes.func.isRequired
+  handleSelect: PropTypes.func.isRequired,
+  defaultValue: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(SelectData);
