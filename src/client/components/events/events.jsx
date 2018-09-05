@@ -13,6 +13,7 @@ import { fetchSetting } from '../../actions/settingsActions';
 import EventCard from './eventCard';
 import DeleteDialog from './deleteDialog';
 import AddEventDialog from './addEventDialog';
+import SnackbarMessage from '../utils/snackbarMessagge';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -25,7 +26,11 @@ class Events extends Component {
       isDelOpen: false,
       eventToDel: {},
       isAddEventOpen: false,
-      eventToUpdate: {}
+      eventToUpdate: {},
+      flash: {
+        opened: false,
+        msg: ''
+      }
     };
   }
   componentDidMount() {
@@ -43,7 +48,14 @@ class Events extends Component {
   };
 
   handleDelDialogConfirm = () => {
-    this.props.deleteEvent(this.state.eventToDel.id);
+    this.props.deleteEvent(this.state.eventToDel.id).then(() => {
+      this.setState({
+        flash: {
+          opened: true,
+          msg: 'Usunięto wydarzenie!'
+        }
+      });
+    });
     this.setState({ isDelOpen: false });
   };
 
@@ -54,14 +66,37 @@ class Events extends Component {
   handleEventSubmit = event => {
     this.handleAddEventClose();
     if (event.id) {
-      this.props.updateEvent(event);
+      this.props.updateEvent(event).then(() => {
+        this.setState({
+          flash: {
+            opened: true,
+            msg: 'Zaktualizowano wydarzenie!'
+          }
+        });
+      });
     } else {
-      this.props.newEvent(event);
+      this.props.newEvent(event).then(() => {
+        this.setState({
+          flash: {
+            opened: true,
+            msg: 'Dodano nowe wydarzenie!'
+          }
+        });
+      });
     }
   };
 
   handleAddEventClose = () => {
     this.setState({ isAddEventOpen: false });
+  };
+
+  handleFlashClose = () => {
+    this.setState({
+      flash: {
+        opened: false,
+        msg: ''
+      }
+    });
   };
 
   render() {
@@ -90,6 +125,11 @@ class Events extends Component {
 
     return (
       <div className="container">
+        <SnackbarMessage
+          message={this.state.flash.msg}
+          opened={this.state.flash.opened}
+          handleClose={this.handleFlashClose}
+        />
         <AddEventDialog
           lectures={this.props.lectures}
           speakers={this.props.speakers}
