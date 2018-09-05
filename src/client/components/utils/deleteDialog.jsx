@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 class DeleteDialog extends Component {
   render() {
-    const { event } = this.props;
+    const { deleteMsg } = this.props;
     return (
       <div>
         <Dialog
@@ -23,7 +23,7 @@ class DeleteDialog extends Component {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {`${event.event_date} ${event.event_time}`}
+              {deleteMsg}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -41,7 +41,7 @@ class DeleteDialog extends Component {
 }
 
 DeleteDialog.propTypes = {
-  event: PropTypes.object.isRequired,
+  deleteMsg: PropTypes.string.isRequired,
   opened: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired
