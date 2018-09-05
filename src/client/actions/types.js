@@ -9,6 +9,9 @@ export const FETCH_SPEAKERS = 'FETCH_SPEAKERS';
 
 // lectures
 export const FETCH_LECTURES = 'FETCH_LECTURES';
+export const NEW_LECTURE = 'NEW_LECTURE';
+export const UPDATE_LECTURE = 'UPDATE_LECTURE';
+export const DELETE_LECTURE = 'DELETE_LECTURE';
 
 // congregations
 export const FETCH_CONGREGATIONS = 'FETCH_CONGREGATIONS';

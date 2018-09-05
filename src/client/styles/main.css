@@ -12,11 +12,14 @@ div .active-route {
 .card {
   height: 100%;
 }
-.card-header {
+div .card-header {
   padding-bottom: 0;
 }
-.card-content {
+div .card-content {
   padding-top: 0;
+}
+.card-content > h3 {
+  font-size: 18px;
 }
 .toolbar-title {
   flex: 1;

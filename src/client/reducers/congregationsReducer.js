@@ -20,14 +20,20 @@ export default function(state = initialState, action) {
     return {
       ...state,
       items: [
-        ...state.items.filter(event => event.id !== action.payload.id),
+        ...state.items.filter(
+          congregation => congregation.id !== action.payload.id
+        ),
         action.payload
       ]
     };
   case types.DELETE_CONGREGATION:
     return {
       ...state,
-      items: [...state.items.filter(event => event.id !== action.payload.id)]
+      items: [
+        ...state.items.filter(
+          congregation => congregation.id !== action.payload.id
+        )
+      ]
     };
   default:
     return state;
