@@ -10,62 +10,36 @@ import SelectData from '../utils/selectData';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
-import TimePicker from 'material-ui-pickers/TimePicker';
-import DatePicker from 'material-ui-pickers/DatePicker';
-import moment from 'moment';
-import 'moment/locale/pl';
-
-moment.locale('pl');
 
 class AddSpeakerDialog extends Component {
   constructor() {
     super();
     this.state = {
-      clean: true,
-      selectedDate: null,
       toReturn: {
-        lecture_id: null,
-        speaker_id: null,
+        congregation_id: null,
+        first_name: null,
+        last_name: null,
+        phone: null,
+        email: null,
+        privilege: null,
         note: null
       }
     };
   }
 
-  getStringDate(d) {
-    const strDate = d.format('YYYY-MM-DD');
-    const strTime = d.format('HH:mm');
-    return [strDate, strTime];
-  }
-
-  componentDidMount() {
-    this.initializeDate();
-  }
-
   componentDidUpdate(prevProps) {
-    const hasDefaults = this.props.speaker.speaker_date ? true : false;
+    const hasDefaults = this.props.speaker.id ? true : false;
     if (hasDefaults) {
-      const setDate = moment(
-        `${this.props.speaker.speaker_date} ${this.props.speaker.speaker_time}`
-      );
-      if (!this.state.selectedDate.isSame(setDate) && this.state.clean) {
-        this.setState({
-          clean: false,
-          selectedDate: setDate,
-          toReturn: {
-            ...this.state.toReturn
-          }
-        });
-      }
       if (prevProps.speaker.id !== this.props.speaker.id) {
         this.setState({
           toReturn: {
-            lecture_id: this.props.speaker.lecture_id || null,
-            speaker_id: this.props.speaker.speaker_id || null,
+            congregation_id: this.props.speaker.congregation_id || null,
+            first_name: this.props.speaker.first_name || null,
+            last_name: this.props.speaker.last_name || null,
+            phone: this.props.speaker.phone || null,
+            email: this.props.speaker.email || null,
+            privilege: this.props.speaker.privilege || null,
             note: this.props.speaker.note || null,
-            speaker_date: this.props.speaker.speaker_date,
-            speaker_time: this.props.speaker.speaker_time,
             id: this.props.speaker.id
           }
         });
@@ -78,63 +52,19 @@ class AddSpeakerDialog extends Component {
           {
             toReturn: {
               ...toReturn,
-              lecture_id: null,
-              speaker_id: null,
+              congregation_id: null,
+              first_name: null,
+              last_name: null,
+              phone: null,
+              email: null,
+              privilege: null,
               note: null
             }
-          },
-          () => {
-            this.initializeDate();
           }
         );
       }
     }
   }
-
-  initializeDate() {
-    const setDate = moment();
-    const hours = this.props.defaultSpeakerTime.split(':');
-    setDate.hours(hours[0]);
-    setDate.minutes(hours[1]);
-    setDate.second(0);
-    setDate.millisecond(0);
-    const strDate = this.getStringDate(setDate);
-    this.setState({
-      selectedDate: setDate,
-      toReturn: {
-        ...this.state.toReturn,
-        speaker_date: strDate[0],
-        speaker_time: strDate[1]
-      }
-    });
-  }
-
-  handleDateChange = date => {
-    const time = this.state.toReturn.speaker_time;
-    const hours = time.split(':');
-    date.hours(hours[0]);
-    date.minutes(hours[1]);
-    const strDate = this.getStringDate(date);
-    this.setState({
-      selectedDate: date,
-      toReturn: {
-        ...this.state.toReturn,
-        speaker_date: strDate[0],
-        speaker_time: strDate[1]
-      }
-    });
-  };
-
-  handleTimeChange = date => {
-    const strDate = this.getStringDate(date);
-    this.setState({
-      selectedDate: date,
-      toReturn: {
-        ...this.state.toReturn,
-        speaker_time: strDate[1]
-      }
-    });
-  };
 
   handleSelect = field => value => {
     const id = value && value.id ? value.id : null;
@@ -161,44 +91,25 @@ class AddSpeakerDialog extends Component {
   };
 
   render() {
-    const { fullScreen, lectures, speakers, speaker } = this.props;
-    const { selectedDate } = this.state;
-    let defaultLecture = {};
-    let defaultSpeaker = {};
+    const { fullScreen, congregations, speaker } = this.props;
+    let defaultCongregation = {};
 
-    lectures.sort((a, b) => {
-      return a.number - b.number;
-    });
-
-    const suggestedLectures = lectures.map(lecture => ({
-      value: lecture,
-      label: `${lecture.number}. ${lecture.title}`
-    }));
-
-    speakers.sort((a, b) => {
+    congregations.sort((a, b) => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
 
-    const suggestedSpeakers = speakers.map(speaker => {
-      const congregation = speaker.congregation_name
-        ? ` [${speaker.congregation_name}]`
-        : '';
+    const suggestedCongregations = congregations.map(congregation => {
       return {
-        value: speaker,
-        label: `${speaker.name}${congregation}`
+        value: congregation,
+        label: `${congregation.name} (${congregation.number})`
       };
     });
 
-    if (speaker.lecture_id) {
-      defaultLecture = suggestedLectures.filter(
-        lecture => lecture.value.id === speaker.lecture_id
-      )[0];
-    }
-    if (speaker.speaker_id) {
-      defaultSpeaker = suggestedSpeakers.filter(
-        speaker => speaker.value.id === speaker.speaker_id
+    if (speaker.congregation_id) {
+      defaultCongregation = suggestedCongregations.filter(
+        congregation => congregation.value.id === speaker.congregation_id
       )[0];
     }
 
@@ -213,44 +124,66 @@ class AddSpeakerDialog extends Component {
         >
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="responsive-dialog-title">
-              {speaker.id ? 'Edytuj wydarzenie' : 'Dodaj nowe wydarzenie'}
+              {speaker.id ? 'Edytuj mówcę' : 'Dodaj nowego mówcę'}
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                  <DatePicker
-                    className="form-date-picker"
-                    format="DD MMM YYYY"
-                    label="Data"
-                    value={selectedDate}
-                    onChange={this.handleDateChange}
-                    showTodayButton
-                    todayLabel="Dzisiaj"
-                    cancelLabel="Anuluj"
+                <FormControl className="input-data">
+                  <InputLabel htmlFor="first_name">Imię</InputLabel>
+                  <Input
+                    id="first_name"
+                    name="first_name"
+                    onChange={this.handleFormChange('first_name')}
+                    defaultValue={speaker.first_name || null}
                   />
-                  <TimePicker
-                    className="form-date-picker"
-                    ampm={false}
-                    label="Godzina"
-                    value={selectedDate}
-                    onChange={this.handleTimeChange}
-                    cancelLabel="Anuluj"
+                </FormControl>
+                <div className="divider" />
+                <FormControl className="input-data">
+                  <InputLabel htmlFor="last_name">Nazwisko</InputLabel>
+                  <Input
+                    id="last_name"
+                    name="last_name"
+                    onChange={this.handleFormChange('last_name')}
+                    defaultValue={speaker.last_name || null}
                   />
-                </MuiPickersUtilsProvider>
+                </FormControl>
                 <div className="divider" />
                 <SelectData
-                  suggestions={suggestedLectures}
-                  label="Wykład"
-                  handleSelect={this.handleSelect('lecture_id')}
-                  defaultValue={defaultLecture}
+                  suggestions={suggestedCongregations}
+                  label="Zbór"
+                  handleSelect={this.handleSelect('congregation_id')}
+                  defaultValue={defaultCongregation}
                 />
                 <div className="divider" />
-                <SelectData
-                  suggestions={suggestedSpeakers}
-                  label="Mówca"
-                  handleSelect={this.handleSelect('speaker_id')}
-                  defaultValue={defaultSpeaker}
-                />
+                <FormControl className="input-data">
+                  <InputLabel htmlFor="privilege">Przywilej</InputLabel>
+                  <Input
+                    id="privilege"
+                    name="privilege"
+                    onChange={this.handleFormChange('privilege')}
+                    defaultValue={speaker.privilege || null}
+                  />
+                </FormControl>
+                <div className="divider" />
+                <FormControl className="input-data">
+                  <InputLabel htmlFor="email">Email</InputLabel>
+                  <Input
+                    id="email"
+                    name="email"
+                    onChange={this.handleFormChange('email')}
+                    defaultValue={speaker.email || null}
+                  />
+                </FormControl>
+                <div className="divider" />
+                <FormControl className="input-data">
+                  <InputLabel htmlFor="phone">Telefon</InputLabel>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    onChange={this.handleFormChange('phone')}
+                    defaultValue={speaker.phone || null}
+                  />
+                </FormControl>
                 <div className="divider" />
                 <FormControl className="input-data">
                   <InputLabel htmlFor="notes">Uwagi</InputLabel>
@@ -280,9 +213,7 @@ class AddSpeakerDialog extends Component {
 
 AddSpeakerDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
-  lectures: PropTypes.array.isRequired,
-  speakers: PropTypes.array.isRequired,
-  defaultSpeakerTime: PropTypes.string.isRequired,
+  congregations: PropTypes.array.isRequired,
   onSubmitSpeaker: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   opened: PropTypes.bool.isRequired,

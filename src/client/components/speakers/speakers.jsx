@@ -121,13 +121,13 @@ class Speakers extends Component {
           opened={this.state.flash.opened}
           handleClose={this.handleFlashClose}
         />
-        {/* <AddSpeakerDialog
+        <AddSpeakerDialog
           congregations={this.props.congregations}
           onSubmitSpeaker={this.handleSpeakerSubmit}
           onClose={this.handleAddSpeakerClose}
           speaker={this.state.speakerToUpdate}
           opened={this.state.isAddSpeakerOpen}
-        /> */}
+        />
         <DeleteDialog
           deleteMsg={this.state.speakerToDel.name  || ''}
           opened={this.state.isDelOpen}
