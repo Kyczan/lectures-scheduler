@@ -1,7 +1,7 @@
 const select = `
   select l.*,
     (
-      select max(concat(s.event_date, ifnull(' (' || sp.last_name || ' ' || sp.first_name || ')',''))) as a
+      select max(concat(s.event_date, ifnull(concat(' (', sp.last_name, ' ', sp.first_name, ')'),''))) as a
       from schedule s 
       left join speakers sp
       on sp.id = s.speaker_id
