@@ -7,14 +7,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import SelectData from '../utils/selectData';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 
 class AddSpeakerDialog extends Component {
   constructor() {
     super();
     this.state = {
+      error: {},
       toReturn: {
         congregation_id: null,
         first_name: null,
@@ -32,6 +31,7 @@ class AddSpeakerDialog extends Component {
     if (hasDefaults) {
       if (prevProps.speaker.id !== this.props.speaker.id) {
         this.setState({
+          error: {},
           toReturn: {
             congregation_id: this.props.speaker.congregation_id || null,
             first_name: this.props.speaker.first_name || null,
@@ -50,6 +50,7 @@ class AddSpeakerDialog extends Component {
         delete toReturn.id;
         this.setState(
           {
+            error: {},
             toReturn: {
               ...toReturn,
               congregation_id: null,
@@ -78,12 +79,33 @@ class AddSpeakerDialog extends Component {
 
   handleFormChange = field => e => {
     this.setState({
+      error: {
+        ...this.state.error,
+        [field]: e.target.value ? false : true
+      },
       toReturn: {
         ...this.state.toReturn,
         [field]: e.target.value
       }
     });
   };
+
+  validateEmail = e => {
+    let error = false;
+    if(e.target.value && !/\S+@\S+\.\S+/.test(e.target.value)) {
+      error = true;
+    }
+    this.setState({
+      error: {
+        ...this.state.error,
+        email: error
+      },
+      toReturn: {
+        ...this.state.toReturn,
+        email: e.target.value
+      }
+    });
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -122,16 +144,25 @@ class AddSpeakerDialog extends Component {
 
     const suggestedPrivileges = privileges.map(privilege => {
       return {
-        value: privilege,
+        value: {id: privilege},
         label: privilege
       };
     });
 
     if (speaker.privilege) {
       defaultPrivilege = suggestedPrivileges.filter(
-        privilege => privilege.value === speaker.privilege
+        privilege => privilege.value.id === speaker.privilege
       )[0];
     }
+
+    const handleDisabled = () => {
+      const errors = this.state.error;
+      let size = 0;
+      for (let key in errors) {
+        if (errors[key]) size++;
+      }
+      return size ? true : false;
+    };
 
     return (
       <div>
@@ -148,27 +179,27 @@ class AddSpeakerDialog extends Component {
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="first_name">Imię</InputLabel>
-                  <Input
-                    id="first_name"
-                    name="first_name"
-                    onChange={this.handleFormChange('first_name')}
-                    defaultValue={speaker.first_name || null}
-                    required
-                  />
-                </FormControl>
+                <TextField
+                  required 
+                  error={this.state.error.first_name}
+                  id="first_name"
+                  label="Imię"
+                  fullWidth
+                  onChange={this.handleFormChange('first_name')}
+                  defaultValue={speaker.first_name || null}
+                  helperText={this.state.error.first_name ? 'Imię jest wymagane' : ''}
+                />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="last_name">Nazwisko</InputLabel>
-                  <Input
-                    id="last_name"
-                    name="last_name"
-                    onChange={this.handleFormChange('last_name')}
-                    defaultValue={speaker.last_name || null}
-                    required
-                  />
-                </FormControl>
+                <TextField
+                  required 
+                  error={this.state.error.last_name}
+                  id="last_name"
+                  label="Nazwisko"
+                  fullWidth
+                  onChange={this.handleFormChange('last_name')}
+                  defaultValue={speaker.last_name || null}
+                  helperText={this.state.error.last_name ? 'Nazwisko jest wymagane' : ''}
+                />
                 <div className="divider" />
                 <SelectData
                   suggestions={suggestedCongregations}
@@ -184,43 +215,39 @@ class AddSpeakerDialog extends Component {
                   defaultValue={defaultPrivilege}
                 />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="email">Email</InputLabel>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    onChange={this.handleFormChange('email')}
-                    defaultValue={speaker.email || null}
-                  />
-                </FormControl>
+                <TextField
+                  error={this.state.error.email}
+                  id="email"
+                  type="email"
+                  label="Email"
+                  fullWidth
+                  onBlur={this.validateEmail}
+                  defaultValue={speaker.email || null}
+                  helperText={this.state.error.email ? 'Email jest niepoprawny' : ''}
+                />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="phone">Telefon</InputLabel>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    onChange={this.handleFormChange('phone')}
-                    defaultValue={speaker.phone || null}
-                  />
-                </FormControl>
+                <TextField
+                  id="phone"
+                  label="Telefon"
+                  fullWidth
+                  onChange={this.handleFormChange('phone')}
+                  defaultValue={speaker.phone || null}
+                />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="notes">Uwagi</InputLabel>
-                  <Input
-                    id="note"
-                    name="note"
-                    onChange={this.handleFormChange('note')}
-                    defaultValue={speaker.note || null}
-                  />
-                </FormControl>
+                <TextField
+                  id="note"
+                  label="Uwagi"
+                  fullWidth
+                  onChange={this.handleFormChange('note')}
+                  defaultValue={speaker.note || null}
+                />
               </div>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.props.onClose} color="primary">
                 Anuluj
               </Button>
-              <Button type="submit" color="primary" autoFocus>
+              <Button type="submit" color="primary" autoFocus disabled={handleDisabled()}>
                 Zapisz
               </Button>
             </DialogActions>

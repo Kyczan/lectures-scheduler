@@ -6,14 +6,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 
 class AddLectureDialog extends Component {
   constructor() {
     super();
     this.state = {
+      error: {},
       toReturn: {
         number: null,
         title: null
@@ -26,6 +25,7 @@ class AddLectureDialog extends Component {
     if (hasDefaults) {
       if (prevProps.lecture.id !== this.props.lecture.id) {
         this.setState({
+          error: {},
           toReturn: {
             number: this.props.lecture.number || null,
             title: this.props.lecture.title || null,
@@ -38,6 +38,7 @@ class AddLectureDialog extends Component {
         const toReturn = { ...this.state.toReturn };
         delete toReturn.id;
         this.setState({
+          error: {},
           toReturn: {
             ...toReturn,
             number: null,
@@ -50,6 +51,10 @@ class AddLectureDialog extends Component {
 
   handleFormChange = field => e => {
     this.setState({
+      error: {
+        ...this.state.error,
+        [field]: e.target.value ? false : true
+      },
       toReturn: {
         ...this.state.toReturn,
         [field]: e.target.value
@@ -64,6 +69,15 @@ class AddLectureDialog extends Component {
 
   render() {
     const { fullScreen, lecture } = this.props;
+
+    const handleDisabled = () => {
+      const errors = this.state.error;
+      let size = 0;
+      for (let key in errors) {
+        if (errors[key]) size++;
+      }
+      return size ? true : false;
+    };
 
     return (
       <div>
@@ -80,33 +94,35 @@ class AddLectureDialog extends Component {
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="number">Numer</InputLabel>
-                  <Input
-                    id="number"
-                    name="number"
-                    type="number"
-                    onChange={this.handleFormChange('number')}
-                    defaultValue={lecture.number || null}
-                  />
-                </FormControl>
+                <TextField
+                  required 
+                  error={this.state.error.number}
+                  id="number"
+                  label="Numer"
+                  fullWidth
+                  type="number"
+                  onChange={this.handleFormChange('number')}
+                  defaultValue={lecture.number || null}
+                  helperText={this.state.error.number ? 'Numer jest wymagany' : ''}
+                />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="title">Tytuł</InputLabel>
-                  <Input
-                    id="title"
-                    name="title"
-                    onChange={this.handleFormChange('title')}
-                    defaultValue={lecture.title || null}
-                  />
-                </FormControl>
+                <TextField
+                  required 
+                  error={this.state.error.title}
+                  id="title"
+                  label="Tytuł"
+                  fullWidth
+                  onChange={this.handleFormChange('title')}
+                  defaultValue={lecture.title || null}
+                  helperText={this.state.error.title ? 'Tytuł jest wymagany' : ''}
+                />
               </div>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.props.onClose} color="primary">
                 Anuluj
               </Button>
-              <Button type="submit" color="primary" autoFocus>
+              <Button type="submit" color="primary" autoFocus disabled={handleDisabled()}>
                 Zapisz
               </Button>
             </DialogActions>

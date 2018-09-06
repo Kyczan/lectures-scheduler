@@ -9,11 +9,13 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 
 class AddCongregationDialog extends Component {
   constructor() {
     super();
     this.state = {
+      error: {},
       toReturn: {
         number: null,
         name: null
@@ -26,6 +28,7 @@ class AddCongregationDialog extends Component {
     if (hasDefaults) {
       if (prevProps.congregation.id !== this.props.congregation.id) {
         this.setState({
+          error: {},
           toReturn: {
             number: this.props.congregation.number || null,
             name: this.props.congregation.name || null,
@@ -38,6 +41,7 @@ class AddCongregationDialog extends Component {
         const toReturn = { ...this.state.toReturn };
         delete toReturn.id;
         this.setState({
+          error: {},
           toReturn: {
             ...toReturn,
             number: null,
@@ -50,6 +54,10 @@ class AddCongregationDialog extends Component {
 
   handleFormChange = field => e => {
     this.setState({
+      error: {
+        ...this.state.error,
+        [field]: e.target.value ? false : true
+      },
       toReturn: {
         ...this.state.toReturn,
         [field]: e.target.value
@@ -64,6 +72,15 @@ class AddCongregationDialog extends Component {
 
   render() {
     const { fullScreen, congregation } = this.props;
+
+    const handleDisabled = () => {
+      const errors = this.state.error;
+      let size = 0;
+      for (let key in errors) {
+        if (errors[key]) size++;
+      }
+      return size ? true : false;
+    };
 
     return (
       <div>
@@ -80,33 +97,35 @@ class AddCongregationDialog extends Component {
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="number">Numer</InputLabel>
-                  <Input
-                    id="number"
-                    name="number"
-                    type="number"
-                    onChange={this.handleFormChange('number')}
-                    defaultValue={congregation.number || null}
-                  />
-                </FormControl>
+                <TextField
+                  required 
+                  error={this.state.error.number}
+                  id="number"
+                  label="Numer"
+                  fullWidth
+                  type="number"
+                  onChange={this.handleFormChange('number')}
+                  defaultValue={congregation.number || null}
+                  helperText={this.state.error.number ? 'Numer jest wymagany' : ''}
+                />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="name">Nazwa</InputLabel>
-                  <Input
-                    id="name"
-                    name="name"
-                    onChange={this.handleFormChange('name')}
-                    defaultValue={congregation.name || null}
-                  />
-                </FormControl>
+                <TextField
+                  required 
+                  error={this.state.error.name}
+                  id="name"
+                  label="Nazwa"
+                  fullWidth
+                  onChange={this.handleFormChange('name')}
+                  defaultValue={congregation.name || null}
+                  helperText={this.state.error.name ? 'Nazwa jest wymagana' : ''}
+                />
               </div>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.props.onClose} color="primary">
                 Anuluj
               </Button>
-              <Button type="submit" color="primary" autoFocus>
+              <Button type="submit" color="primary" autoFocus disabled={handleDisabled()}>
                 Zapisz
               </Button>
             </DialogActions>
