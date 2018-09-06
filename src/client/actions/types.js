@@ -6,6 +6,9 @@ export const DELETE_EVENT = 'DELETE_EVENT';
 
 // speakers
 export const FETCH_SPEAKERS = 'FETCH_SPEAKERS';
+export const NEW_SPEAKER = 'NEW_SPEAKER';
+export const UPDATE_SPEAKER = 'UPDATE_SPEAKER';
+export const DELETE_SPEAKER = 'DELETE_SPEAKER';
 
 // lectures
 export const FETCH_LECTURES = 'FETCH_LECTURES';
