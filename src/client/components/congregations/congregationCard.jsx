@@ -51,14 +51,21 @@ class CongregationCard extends Component {
 
     const number = congregation.number ? (
       <ListItem className="list-item">
-        <Avatar><CongregationsIcon /></Avatar>
+        <Avatar>
+          <CongregationsIcon />
+        </Avatar>
         <ListItemText primary={congregation.number} secondary="Numer zboru" />
       </ListItem>
     ) : null;
     const speakers_count = congregation.speakers_count ? (
       <ListItem className="list-item">
-        <Avatar><SpeakersIcon /></Avatar>
-        <ListItemText primary={congregation.speakers_count} secondary="Mówców" />
+        <Avatar>
+          <SpeakersIcon />
+        </Avatar>
+        <ListItemText
+          primary={congregation.speakers_count}
+          secondary="Mówców"
+        />
       </ListItem>
     ) : null;
 

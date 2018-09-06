@@ -16,7 +16,8 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon,
   History as LastLectureIcon,
-  FormatListNumbered as NumberIcon
+  Person as LastSpeakerIcon,
+  Assignment as TitleIcon
 } from '@material-ui/icons';
 
 class LectureCard extends Component {
@@ -48,17 +49,30 @@ class LectureCard extends Component {
   render() {
     const { lecture } = this.props;
     const { anchorEl } = this.state;
+    const notes = lecture.notes ? lecture.notes.split('##') : [];
 
-    const number = lecture.number ? (
+    const title = lecture.title ? (
       <ListItem className="list-item">
-        <Avatar><NumberIcon /></Avatar>
-        <ListItemText primary={lecture.number} secondary="Numer" />
+        <Avatar>
+          <TitleIcon />
+        </Avatar>
+        <ListItemText primary={lecture.title} secondary="Tytuł" />
       </ListItem>
     ) : null;
-    const notes = lecture.uwagi ? (
+    const lastTime = notes[0] ? (
       <ListItem className="list-item">
-        <Avatar><LastLectureIcon /></Avatar>
-        <ListItemText primary={lecture.uwagi} secondary="Ostatni wykład" />
+        <Avatar>
+          <LastLectureIcon />
+        </Avatar>
+        <ListItemText primary={notes[0]} secondary="Ostatnie wygłoszenie" />
+      </ListItem>
+    ) : null;
+    const lastSpeaker = notes[1] ? (
+      <ListItem className="list-item">
+        <Avatar>
+          <LastSpeakerIcon />
+        </Avatar>
+        <ListItemText primary={notes[1]} secondary="Ostatni mówca" />
       </ListItem>
     ) : null;
 
@@ -97,12 +111,13 @@ class LectureCard extends Component {
               </Menu>
             </div>
           }
-          title={lecture.title}
+          title={lecture.number}
         />
         <CardContent className="card-content">
           <List>
-            {number}
-            {notes}
+            {title}
+            {lastTime}
+            {lastSpeaker}
           </List>
         </CardContent>
       </Card>

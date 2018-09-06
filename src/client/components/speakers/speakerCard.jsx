@@ -54,37 +54,56 @@ class SpeakerCard extends Component {
     const { anchorEl } = this.state;
     const congregation = speaker.congregation ? (
       <ListItem className="list-item">
-        <Avatar><CongregationsIcon /></Avatar>
+        <Avatar>
+          <CongregationsIcon />
+        </Avatar>
         <ListItemText primary={speaker.congregation} secondary="Zbór" />
       </ListItem>
     ) : null;
-    const privilege = speaker.privilege && speaker.privilege !== '?' ? (
-      <ListItem className="list-item">
-        <Avatar><PrivilegeIcon /></Avatar>
-        <ListItemText primary={speaker.privilege || ''} secondary="Przywilej" />
-      </ListItem>
-    ) : null;
+    const privilege =
+      speaker.privilege && speaker.privilege !== '?' ? (
+        <ListItem className="list-item">
+          <Avatar>
+            <PrivilegeIcon />
+          </Avatar>
+          <ListItemText
+            primary={speaker.privilege || ''}
+            secondary="Przywilej"
+          />
+        </ListItem>
+      ) : null;
     const email = speaker.email ? (
       <ListItem className="list-item">
-        <Avatar><EmailIcon /></Avatar>
+        <Avatar>
+          <EmailIcon />
+        </Avatar>
         <ListItemText primary={speaker.email} secondary="Email" />
       </ListItem>
     ) : null;
     const phone = speaker.phone ? (
       <ListItem className="list-item">
-        <Avatar><PhoneIcon /></Avatar>
+        <Avatar>
+          <PhoneIcon />
+        </Avatar>
         <ListItemText primary={speaker.phone} secondary="Telefon" />
       </ListItem>
     ) : null;
     const last_lecture_date = speaker.last_lecture_date ? (
       <ListItem className="list-item">
-        <Avatar><LastLectureIcon /></Avatar>
-        <ListItemText primary={speaker.last_lecture_date} secondary="Ostatni wykład" />
+        <Avatar>
+          <LastLectureIcon />
+        </Avatar>
+        <ListItemText
+          primary={speaker.last_lecture_date}
+          secondary="Ostatni wykład"
+        />
       </ListItem>
     ) : null;
     const note = speaker.note ? (
       <ListItem className="list-item">
-        <Avatar><NotesIcon /></Avatar>
+        <Avatar>
+          <NotesIcon />
+        </Avatar>
         <ListItemText primary={speaker.note} secondary="Uwagi" />
       </ListItem>
     ) : null;

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import {
   SupervisorAccount as SpeakersIcon,
   EventNote as EventsIcon,
-  FileCopy as LecturesIcon,
+  Assignment as LecturesIcon,
   Public as CongregationsIcon
 } from '@material-ui/icons';
 

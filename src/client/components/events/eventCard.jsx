@@ -15,7 +15,7 @@ import {
   MoreVert as MoreVertIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
-  Title as TitleIcon,
+  Assignment as TitleIcon,
   Person as SpeakerIcon,
   Public as CongregationsIcon,
   Notes as NotesIcon
@@ -53,25 +53,33 @@ class EventCard extends Component {
 
     const lecture = event.lecture ? (
       <ListItem className="list-item">
-        <Avatar><TitleIcon /></Avatar>
+        <Avatar>
+          <TitleIcon />
+        </Avatar>
         <ListItemText primary={event.lecture} secondary="Temat" />
       </ListItem>
     ) : null;
     const speaker = event.speaker ? (
       <ListItem className="list-item">
-        <Avatar><SpeakerIcon /></Avatar>
+        <Avatar>
+          <SpeakerIcon />
+        </Avatar>
         <ListItemText primary={event.speaker} secondary="Mówca" />
       </ListItem>
     ) : null;
     const congregation = event.congregation ? (
       <ListItem className="list-item">
-        <Avatar><CongregationsIcon /></Avatar>
+        <Avatar>
+          <CongregationsIcon />
+        </Avatar>
         <ListItemText primary={event.congregation} secondary="Zbór" />
       </ListItem>
     ) : null;
     const notes = event.note ? (
       <ListItem className="list-item">
-        <Avatar><NotesIcon /></Avatar>
+        <Avatar>
+          <NotesIcon />
+        </Avatar>
         <ListItemText primary={event.note} secondary="Uwagi" />
       </ListItem>
     ) : null;
