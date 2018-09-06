@@ -92,7 +92,14 @@ class AddSpeakerDialog extends Component {
 
   render() {
     const { fullScreen, congregations, speaker } = this.props;
+    const privileges = [
+      '?',
+      'sługa',
+      'starszy',
+      'nie usługuje'
+    ];
     let defaultCongregation = {};
+    let defaultPrivilege = {};
 
     congregations.sort((a, b) => {
       if (a.name < b.name) return -1;
@@ -110,6 +117,19 @@ class AddSpeakerDialog extends Component {
     if (speaker.congregation_id) {
       defaultCongregation = suggestedCongregations.filter(
         congregation => congregation.value.id === speaker.congregation_id
+      )[0];
+    }
+
+    const suggestedPrivileges = privileges.map(privilege => {
+      return {
+        value: privilege,
+        label: privilege
+      };
+    });
+
+    if (speaker.privilege) {
+      defaultPrivilege = suggestedPrivileges.filter(
+        privilege => privilege.value === speaker.privilege
       )[0];
     }
 
@@ -135,6 +155,7 @@ class AddSpeakerDialog extends Component {
                     name="first_name"
                     onChange={this.handleFormChange('first_name')}
                     defaultValue={speaker.first_name || null}
+                    required
                   />
                 </FormControl>
                 <div className="divider" />
@@ -145,6 +166,7 @@ class AddSpeakerDialog extends Component {
                     name="last_name"
                     onChange={this.handleFormChange('last_name')}
                     defaultValue={speaker.last_name || null}
+                    required
                   />
                 </FormControl>
                 <div className="divider" />
@@ -155,21 +177,19 @@ class AddSpeakerDialog extends Component {
                   defaultValue={defaultCongregation}
                 />
                 <div className="divider" />
-                <FormControl className="input-data">
-                  <InputLabel htmlFor="privilege">Przywilej</InputLabel>
-                  <Input
-                    id="privilege"
-                    name="privilege"
-                    onChange={this.handleFormChange('privilege')}
-                    defaultValue={speaker.privilege || null}
-                  />
-                </FormControl>
+                <SelectData
+                  suggestions={suggestedPrivileges}
+                  label="Przywilej"
+                  handleSelect={this.handleSelect('privilege')}
+                  defaultValue={defaultPrivilege}
+                />
                 <div className="divider" />
                 <FormControl className="input-data">
                   <InputLabel htmlFor="email">Email</InputLabel>
                   <Input
                     id="email"
                     name="email"
+                    type="email"
                     onChange={this.handleFormChange('email')}
                     defaultValue={speaker.email || null}
                   />
