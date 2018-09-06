@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Avatar from '@material-ui/core/Avatar';
+import {
+  MoreVert as MoreVertIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  History as LastLectureIcon,
+  FormatListNumbered as NumberIcon
+} from '@material-ui/icons';
 
 class LectureCard extends Component {
   constructor(props) {
@@ -42,6 +48,19 @@ class LectureCard extends Component {
   render() {
     const { lecture } = this.props;
     const { anchorEl } = this.state;
+
+    const number = lecture.number ? (
+      <ListItem className="list-item">
+        <Avatar><NumberIcon /></Avatar>
+        <ListItemText primary={lecture.number} secondary="Numer" />
+      </ListItem>
+    ) : null;
+    const notes = lecture.uwagi ? (
+      <ListItem className="list-item">
+        <Avatar><LastLectureIcon /></Avatar>
+        <ListItemText primary={lecture.uwagi} secondary="Ostatni wykład" />
+      </ListItem>
+    ) : null;
 
     return (
       <Card className="card">
@@ -78,11 +97,13 @@ class LectureCard extends Component {
               </Menu>
             </div>
           }
-          title={`${lecture.number}`}
+          title={lecture.title}
         />
         <CardContent className="card-content">
-          <Typography component="h3">{lecture.title}</Typography>
-          <Typography color="textSecondary">{lecture.uwagi}</Typography>
+          <List>
+            {number}
+            {notes}
+          </List>
         </CardContent>
       </Card>
     );

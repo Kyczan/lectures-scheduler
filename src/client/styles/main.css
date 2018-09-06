@@ -39,3 +39,7 @@ div .fab {
 .form-date-picker {
   width: 50%;
 }
+ul .list-item {
+  padding-left: 0;
+  padding-right: 0;
+}

@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Avatar from '@material-ui/core/Avatar';
+import {
+  MoreVert as MoreVertIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  SupervisorAccount as SpeakersIcon,
+  Public as CongregationsIcon
+} from '@material-ui/icons';
 
 class CongregationCard extends Component {
   constructor(props) {
@@ -42,6 +48,19 @@ class CongregationCard extends Component {
   render() {
     const { congregation } = this.props;
     const { anchorEl } = this.state;
+
+    const number = congregation.number ? (
+      <ListItem className="list-item">
+        <Avatar><CongregationsIcon /></Avatar>
+        <ListItemText primary={congregation.number} secondary="Numer zboru" />
+      </ListItem>
+    ) : null;
+    const speakers_count = congregation.speakers_count ? (
+      <ListItem className="list-item">
+        <Avatar><SpeakersIcon /></Avatar>
+        <ListItemText primary={congregation.speakers_count} secondary="Mówców" />
+      </ListItem>
+    ) : null;
 
     return (
       <Card className="card">
@@ -79,12 +98,12 @@ class CongregationCard extends Component {
             </div>
           }
           title={congregation.name}
-          subheader={`${congregation.number}`}
         />
         <CardContent className="card-content">
-          <Typography color="textSecondary">
-            Mówców: {congregation.speakers_count}
-          </Typography>
+          <List>
+            {number}
+            {speakers_count}
+          </List>
         </CardContent>
       </Card>
     );

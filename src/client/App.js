@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import {
-  Contacts as SpeakersIcon,
+  SupervisorAccount as SpeakersIcon,
   EventNote as EventsIcon,
   FileCopy as LecturesIcon,
   Public as CongregationsIcon
