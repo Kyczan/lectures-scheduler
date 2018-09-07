@@ -8,6 +8,7 @@ import {
   updateSpeaker
 } from '../../actions/speakersActions';
 import { fetchCongregations } from '../../actions/congregationsActions';
+import { fetchLectures } from '../../actions/lecturesActions';
 import SpeakerCard from './speakerCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddSpeakerDialog from './addSpeakerDialog';
@@ -33,6 +34,7 @@ class Speakers extends Component {
   componentDidMount() {
     this.props.fetchSpeakers();
     this.props.fetchCongregations();
+    this.props.fetchLectures();
   }
 
   handleSpeakerDelete = speaker => {
@@ -96,7 +98,7 @@ class Speakers extends Component {
   };
 
   render() {
-    const { speakers } = this.props;
+    const { speakers, lectures } = this.props;
     
     speakers.sort((a, b) => {
       if (a.name < b.name) return -1;
@@ -110,6 +112,7 @@ class Speakers extends Component {
           onDelete={() => this.handleSpeakerDelete(speaker)}
           onUpdate={() => this.handleSpeakerAdd(speaker)}
           speaker={speaker}
+          lectures={lectures}
         />
       </Grid>
     ));
@@ -158,12 +161,15 @@ Speakers.propTypes = {
   deleteSpeaker: PropTypes.func.isRequired,
   fetchCongregations: PropTypes.func.isRequired,
   speakers: PropTypes.array.isRequired,
-  congregations: PropTypes.array.isRequired
+  congregations: PropTypes.array.isRequired,
+  lectures: PropTypes.array.isRequired,
+  fetchLectures: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   speakers: state.speakers.items,
-  congregations: state.congregations.items
+  congregations: state.congregations.items,
+  lectures: state.lectures.items
 });
 
 const mapDispatchToProps = {
@@ -171,7 +177,8 @@ const mapDispatchToProps = {
   newSpeaker,
   updateSpeaker,
   deleteSpeaker,
-  fetchCongregations
+  fetchCongregations,
+  fetchLectures
 };
 
 export default connect(
