@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import {
-  fetchPrepared
-} from '../../actions/preparedActions';
+import { fetchPrepared } from '../../actions/preparedActions';
 import PreparedDialog from './preparedDialog';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -30,7 +28,8 @@ import {
   History as LastLectureIcon,
   Public as CongregationsIcon,
   Assignment as PreparedIcon,
-  OpenInNew as OpenPreparedIcon
+  OpenInNew as OpenPreparedIcon,
+  Autorenew as LoadingPreparedIcon
 } from '@material-ui/icons';
 
 class SpeakerCard extends Component {
@@ -39,7 +38,8 @@ class SpeakerCard extends Component {
     this.state = {
       expanded: false,
       anchorEl: null,
-      isPreparedOpen: false
+      isPreparedOpen: false,
+      loadingPrepared: false
     };
   }
 
@@ -62,13 +62,14 @@ class SpeakerCard extends Component {
   };
 
   handlePreparedOpen = async () => {
+    await this.setState({ loadingPrepared: true });
     await this.props.fetchPrepared(this.props.speaker.id);
-    this.setState({ isPreparedOpen: true });
-  }
+    this.setState({ isPreparedOpen: true, loadingPrepared: false });
+  };
 
   handlePreparedClose = () => {
     this.setState({ isPreparedOpen: false });
-  }
+  };
 
   render() {
     const { speaker, lectures } = this.props;
@@ -135,8 +136,16 @@ class SpeakerCard extends Component {
         </Avatar>
         <ListItemText primary="Przygotowane" secondary="Przygotowane" />
         <ListItemSecondaryAction>
-          <IconButton aria-label="Przygotowane" onClick={this.handlePreparedOpen}>
-            <OpenPreparedIcon />
+          <IconButton
+            aria-label="Przygotowane"
+            onClick={this.handlePreparedOpen}
+            disabled={this.state.loadingPrepared}
+          >
+            {this.state.loadingPrepared ? (
+              <LoadingPreparedIcon className="spinner" />
+            ) : (
+              <OpenPreparedIcon />
+            )}
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
@@ -191,10 +200,10 @@ class SpeakerCard extends Component {
           </List>
         </CardContent>
         <CardActions>
-          <PreparedDialog 
-            prepared={this.props.prepared} 
-            lectures={lectures} 
-            speaker={speaker} 
+          <PreparedDialog
+            prepared={this.props.prepared}
+            lectures={lectures}
+            speaker={speaker}
             onClose={this.handlePreparedClose}
             opened={this.state.isPreparedOpen}
           />

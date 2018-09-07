@@ -14,12 +14,21 @@ export default function(state = initialState, action) {
   case types.NEW_PREPARED:
     return {
       ...state,
-      items: [...state.items, action.payload]
+      items: [
+        ...state.items.filter(
+          prepared => prepared.lecture_id !== action.payload.lecture_id
+        ),
+        action.payload
+      ]
     };
   case types.DELETE_PREPARED:
     return {
       ...state,
-      items: [...state.items.filter(prepared => prepared.lecture_id !== action.payload.lecture_id)]
+      items: [
+        ...state.items.filter(
+          prepared => prepared.lecture_id !== action.payload.lecture_id
+        )
+      ]
     };
   default:
     return state;

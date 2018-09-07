@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import {
-  newPrepared,
-  deletePrepared
-} from '../../actions/preparedActions';
+import { newPrepared, deletePrepared } from '../../actions/preparedActions';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -19,22 +16,25 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import {
-  Delete as DeleteIcon,
-  AddBox as AddIcon
+  RemoveCircle as DeleteIcon,
+  AddCircle as AddIcon
 } from '@material-ui/icons';
 
 class PreparedDialog extends Component {
-
   constructor() {
     super();
     this.state = {
-      selectedLecture: null
+      selectedLecture: null,
+      addingPrepared: false,
+      deletingPrepared: false
     };
   }
 
-  handleDelete = item => {
-    this.props.deletePrepared(item.speaker_id, item.lecture_id);
-  }
+  handleDelete = async item => {
+    await this.setState({ deletingPrepared: true });
+    await this.props.deletePrepared(item.speaker_id, item.lecture_id);
+    this.setState({ deletingPrepared: false });
+  };
 
   handleSelect = value => {
     const id = value && value.id ? value.id : null;
@@ -44,14 +44,18 @@ class PreparedDialog extends Component {
     });
   };
 
-  handleAdd = () => {
+  handleAdd = async () => {
     const { selectedLecture } = this.state;
     const { speaker } = this.props;
     const preparedData = {
       lecture_id: selectedLecture
     };
-    if(selectedLecture) this.props.newPrepared(speaker.id, preparedData);
-  }
+    if (selectedLecture) {
+      await this.setState({ addingPrepared: true });
+      await this.props.newPrepared(speaker.id, preparedData);
+      this.setState({ addingPrepared: false });
+    }
+  };
 
   render() {
     const { fullScreen, prepared, lectures } = this.props;
@@ -69,19 +73,34 @@ class PreparedDialog extends Component {
       label: `${lecture.number}. ${lecture.title}`
     }));
 
-    const preparedItems = prepared.map(item => (
-      <ListItem key={item.lecture_id}>
-        <ListItemText
-          primary={`${item.number}. ${item.title}`}
-          secondary={`Zbór: ${item.last_lecture_date} Mówca: ${item.last_speaker_lecture_date}`}
-        />
-        <ListItemSecondaryAction>
-          <IconButton aria-label="Usuń" onClick={() => this.handleDelete(item)} >
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    ));
+    const preparedItems = prepared.map(item => {
+      const lastLecture = item.last_lecture_date
+        ? `Zbór: ${item.last_lecture_date}`
+        : '';
+      const lastSpeaker = item.last_speaker_lecture_date
+        ? `Mówca: ${item.last_speaker_lecture_date}`
+        : '';
+      const separator = lastLecture && lastSpeaker ? ' | ' : '';
+      return (
+        <ListItem key={item.lecture_id}>
+          <ListItemText
+            primary={`${item.number}. ${item.title}`}
+            secondary={`${lastLecture}${separator}${lastSpeaker}`}
+          />
+          <ListItemSecondaryAction>
+            <IconButton
+              aria-label="Usuń"
+              onClick={() => this.handleDelete(item)}
+              disabled={this.state.deletingPrepared}
+            >
+              <DeleteIcon
+                className={this.state.deletingPrepared ? 'spinner' : ''}
+              />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      );
+    });
 
     return (
       <div>
@@ -108,8 +127,14 @@ class PreparedDialog extends Component {
                     defaultValue={{}}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="Dodaj" onClick={this.handleAdd} >
-                      <AddIcon />
+                    <IconButton
+                      aria-label="Dodaj"
+                      onClick={this.handleAdd}
+                      disabled={this.state.addingPrepared}
+                    >
+                      <AddIcon
+                        className={this.state.addingPrepared ? 'spinner' : ''}
+                      />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -135,11 +160,10 @@ PreparedDialog.propTypes = {
   lectures: PropTypes.array.isRequired,
   speaker: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
-  opened: PropTypes.bool.isRequired,
+  opened: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = () => ({
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   newPrepared,
