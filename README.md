@@ -2,11 +2,9 @@
 
 Fullstack application to schedule lectures with Google authentication.
 
-`mySQL + Express + Angular + Node`
+`mySQL + Express + React + Node`
 
-Frontend uses old Angular 1.x as it was written a long time ago...
-
-In future Angular will be replaced with React (?)
+Frontend uses React + Redux
 
 ## Setup
 
@@ -24,7 +22,7 @@ Then just:
 
 ```
 npm i
-gulp
+npm start
 ```
 
 And navigate to `localhost:3000`
