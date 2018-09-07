@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  background-color: #f2f1ef;
+}
+.container {
+  margin: 12px;
+  margin-top: 76px;
+}
+div .active-route {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.card {
+  height: 100%;
+}
+div .card-header {
+  padding-bottom: 0;
+}
+div .card-content {
+  padding-top: 0;
+}
+.card-content > h3 {
+  font-size: 18px;
+}
+.toolbar-title {
+  flex: 1;
+}
+div .fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 10;
+}
+.input-data {
+  width: 100%;
+}
+.divider {
+  height: 32px;
+}
+.form-date-picker {
+  width: 50%;
+}
+ul .list-item {
+  padding-left: 0;
+  padding-right: 0;
+}
+li .add-prepared {
+  padding-right: 60px;
+}
+.spinner {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

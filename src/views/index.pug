@@ -1,26 +1,11 @@
 doctype html
-html(ng-app="planer" lang="pl")
+html(lang="pl")
   head
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
-    title(ng-bind="title")
-    link(href="lib/bootstrap/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet")
-    link(href="lib/angularjs/angular-loading-bar-0.3.0/src/loading-bar.css" rel="stylesheet")
-    link(href="lib/angularjs/ui-select/select.css" rel="stylesheet")
-    link(href="css/style.css" rel="stylesheet")
-    base(href="/")
-  body(ng-controller="MainCtrl" style="padding-top: 70px;")
-    nav.navbar.navbar-default.navbar-fixed-top(role="navigation" ng-include="'partials/navbar.html'")
-    .container.col-sm-12
-      div(ng-view="")
-    script(src="lib/jquery/jquery-2.1.0/jquery.min.js")
-    script(src="lib/bootstrap/bootstrap-3.1.1-dist/js/bootstrap.min.js")
-    script(src="lib/angularjs/angular-1.2.16/angular.min.js")
-    script(src="lib/angularjs/angular-1.2.16/angular-route.min.js")
-    script(src="lib/angularjs/angular-1.2.16/angular-resource.min.js")
-    script(src="lib/bootstrap/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js")
-    script(src="lib/angularjs/angular-loading-bar-0.3.0/src/loading-bar.js")
-    script(src="lib/angularjs/angular-sanitize/angular-sanitize.js")
-    script(src="lib/angularjs/ui-select/select.js")
-    script(src="lib/angularjs/angular-localize/pl.js")
-    script(src="bundle.js")
+    title="Planer wykładów"
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+  body
+    div(id="root")
+    script(src="app.dist.js")
