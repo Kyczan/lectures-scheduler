@@ -60,7 +60,9 @@ class Events extends Component {
   };
 
   handleEventAdd = event => {
-    this.setState({ isAddEventOpen: true, eventToUpdate: event });
+    this.props.fetchSetting('DEFAULT_EVENT_TIME').then( () =>
+      this.setState({ isAddEventOpen: true, eventToUpdate: event })
+    );
   };
 
   handleEventSubmit = event => {

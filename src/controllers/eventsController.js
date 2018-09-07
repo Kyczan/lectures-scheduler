@@ -1,4 +1,4 @@
-import db, { events as sql } from '../db';
+import db, { events as sql, settings as sqlSettings } from '../db';
 import validateEvent from '../models/events';
 
 export default {
@@ -24,7 +24,13 @@ export default {
       req.body.note
     ];
 
+    const paramsSettings = [
+      req.body.event_time,
+      'DEFAULT_EVENT_TIME'
+    ];
+
     const { insertId } = await db.query(sql.create, params);
+    await db.query(sqlSettings.update, paramsSettings);
     const data = await db.query(sql.findOne, [insertId]);
     res.status(201).json(data[0]);
   },
@@ -43,7 +49,13 @@ export default {
       eventId
     ];
 
+    const paramsSettings = [
+      req.body.event_time,
+      'DEFAULT_EVENT_TIME'
+    ];
+
     await db.query(sql.update, params);
+    await db.query(sqlSettings.update, paramsSettings);
     const data = await db.query(sql.findOne, [eventId]);
     res.status(200).json(data[0]);
   },
