@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,7 +18,6 @@ import {
   Edit as EditIcon,
   Assignment as TitleIcon,
   Person as SpeakerIcon,
-  Public as CongregationsIcon,
   Notes as NotesIcon
 } from '@material-ui/icons';
 
@@ -50,29 +50,23 @@ class EventCard extends Component {
   render() {
     const { event } = this.props;
     const { anchorEl } = this.state;
+    const eventDate = moment(event.event_date).format('D MMMM YYYY');
 
     const lecture = event.lecture ? (
       <ListItem className="list-item">
         <Avatar>
           <TitleIcon />
         </Avatar>
-        <ListItemText primary={event.lecture} secondary="Temat" />
+        <ListItemText primary={event.lecture} />
       </ListItem>
     ) : null;
+    const congregation = event.congregation ? event.congregation : '';
     const speaker = event.speaker ? (
       <ListItem className="list-item">
         <Avatar>
           <SpeakerIcon />
         </Avatar>
-        <ListItemText primary={event.speaker} secondary="Mówca" />
-      </ListItem>
-    ) : null;
-    const congregation = event.congregation ? (
-      <ListItem className="list-item">
-        <Avatar>
-          <CongregationsIcon />
-        </Avatar>
-        <ListItemText primary={event.congregation} secondary="Zbór" />
+        <ListItemText primary={event.speaker} secondary={congregation} />
       </ListItem>
     ) : null;
     const notes = event.note ? (
@@ -119,14 +113,13 @@ class EventCard extends Component {
               </Menu>
             </div>
           }
-          title={event.event_date}
+          title={eventDate}
           subheader={event.event_time}
         />
         <CardContent className="card-content">
           <List>
             {lecture}
             {speaker}
-            {congregation}
             {notes}
           </List>
         </CardContent>

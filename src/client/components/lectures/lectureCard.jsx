@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -64,7 +65,7 @@ class LectureCard extends Component {
         <Avatar>
           <LastLectureIcon />
         </Avatar>
-        <ListItemText primary={notes[0]} secondary="Ostatnie wygłoszenie" />
+        <ListItemText primary={moment(notes[0]).format('D MMMM YYYY')} secondary="Ostatnie wygłoszenie" />
       </ListItem>
     ) : null;
     const lastSpeaker = notes[1] ? (
