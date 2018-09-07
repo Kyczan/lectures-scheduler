@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import {
-  fetchPrepared,
-  newPrepared,
-  deletePrepared
+  fetchPrepared
 } from '../../actions/preparedActions';
 import PreparedDialog from './preparedDialog';
 import Card from '@material-ui/core/Card';
@@ -63,8 +61,8 @@ class SpeakerCard extends Component {
     this.props.onUpdate();
   };
 
-  handlePreparedOpen = () => {
-    this.props.fetchPrepared(this.props.speaker.id);
+  handlePreparedOpen = async () => {
+    await this.props.fetchPrepared(this.props.speaker.id);
     this.setState({ isPreparedOpen: true });
   }
 
@@ -196,6 +194,7 @@ class SpeakerCard extends Component {
           <PreparedDialog 
             prepared={this.props.prepared} 
             lectures={lectures} 
+            speaker={speaker} 
             onClose={this.handlePreparedClose}
             opened={this.state.isPreparedOpen}
           />
@@ -208,12 +207,10 @@ class SpeakerCard extends Component {
 SpeakerCard.propTypes = {
   speaker: PropTypes.object.isRequired,
   lectures: PropTypes.array.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  prepared: PropTypes.array.isRequired,
   fetchPrepared: PropTypes.func.isRequired,
-  newPrepared: PropTypes.func.isRequired,
-  deletePrepared: PropTypes.func.isRequired
+  prepared: PropTypes.array.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -221,9 +218,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchPrepared,
-  newPrepared,
-  deletePrepared
+  fetchPrepared
 };
 
 export default connect(

@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
   case types.DELETE_PREPARED:
     return {
       ...state,
-      items: [...state.items.filter(prepared => prepared.id !== action.payload.id)]
+      items: [...state.items.filter(prepared => prepared.lecture_id !== action.payload.lecture_id)]
     };
   default:
     return state;
