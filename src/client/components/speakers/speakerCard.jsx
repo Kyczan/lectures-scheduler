@@ -17,20 +17,18 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
-import {
-  MoreVert as MoreVertIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  Work as PrivilegeIcon,
-  Notes as NotesIcon,
-  History as LastLectureIcon,
-  Public as CongregationsIcon,
-  Assignment as PreparedIcon,
-  OpenInNew as OpenPreparedIcon,
-  Autorenew as LoadingPreparedIcon
-} from '@material-ui/icons';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import EmailIcon from '@material-ui/icons/Email';
+import LastLectureIcon from '@material-ui/icons/History';
+import PhoneIcon from '@material-ui/icons/Phone';
+import PrivilegeIcon from '@material-ui/icons/Work';
+import NotesIcon from '@material-ui/icons/Notes';
+import CongregationsIcon from '@material-ui/icons/Public';
+import PreparedIcon from '@material-ui/icons/Assignment';
+import OpenPreparedIcon from '@material-ui/icons/OpenInNew';
+import LoadingPreparedIcon from '@material-ui/icons/Autorenew';
 
 class SpeakerCard extends Component {
   constructor() {

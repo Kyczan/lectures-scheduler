@@ -15,10 +15,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
-import {
-  RemoveCircle as DeleteIcon,
-  AddCircle as AddIcon
-} from '@material-ui/icons';
+import DeleteIcon from '@material-ui/icons/RemoveCircle';
+import AddIcon from '@material-ui/icons/AddCircle';
 
 class PreparedDialog extends Component {
   constructor() {

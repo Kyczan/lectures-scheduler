@@ -1,4 +1,6 @@
 import { resolve } from 'path';
+import webpack from 'webpack';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 module.exports = {
   entry: {
@@ -25,5 +27,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
-  }
+  },
+  plugins: [
+    // new BundleAnalyzerPlugin(),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pl/)
+  ],
+  mode: 'development'
 };

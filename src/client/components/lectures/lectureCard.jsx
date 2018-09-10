@@ -12,14 +12,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
-import {
-  MoreVert as MoreVertIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  History as LastLectureIcon,
-  Person as LastSpeakerIcon,
-  Assignment as TitleIcon
-} from '@material-ui/icons';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import TitleIcon from '@material-ui/icons/Assignment';
+import LastLectureIcon from '@material-ui/icons/History';
+import LastSpeakerIcon from '@material-ui/icons/Person';
 
 class LectureCard extends Component {
   constructor(props) {

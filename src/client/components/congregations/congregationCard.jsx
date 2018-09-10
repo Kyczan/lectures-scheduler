@@ -11,13 +11,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
-import {
-  MoreVert as MoreVertIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  SupervisorAccount as SpeakersIcon,
-  Public as CongregationsIcon
-} from '@material-ui/icons';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
+import CongregationsIcon from '@material-ui/icons/Public';
 
 class CongregationCard extends Component {
   constructor(props) {

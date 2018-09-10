@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {
-  SupervisorAccount as SpeakersIcon,
-  EventNote as EventsIcon,
-  Assignment as LecturesIcon,
-  Public as CongregationsIcon
-} from '@material-ui/icons';
+import CongregationsIcon from '@material-ui/icons/Public';
+import LecturesIcon from '@material-ui/icons/Assignment';
+import EventsIcon from '@material-ui/icons/EventNote';
+import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
 
 import store from './store';
 import NavBar from './components/utils/navBar';
