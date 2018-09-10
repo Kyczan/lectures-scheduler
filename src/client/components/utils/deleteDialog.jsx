@@ -17,6 +17,7 @@ class DeleteDialog extends Component {
           onClose={this.props.onClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          fullWidth
         >
           <DialogTitle id="alert-dialog-title">
             Usunąć wybraną kartę?

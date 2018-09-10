@@ -86,7 +86,7 @@ class AddLectureDialog extends Component {
           open={this.props.opened}
           onClose={this.props.onClose}
           aria-labelledby="responsive-dialog-title"
-          scroll="body"
+          fullWidth
         >
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="responsive-dialog-title">
@@ -95,7 +95,7 @@ class AddLectureDialog extends Component {
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
                 <TextField
-                  required 
+                  required
                   error={this.state.error.number}
                   id="number"
                   label="Numer"
@@ -103,18 +103,22 @@ class AddLectureDialog extends Component {
                   type="number"
                   onChange={this.handleFormChange('number')}
                   defaultValue={lecture.number || null}
-                  helperText={this.state.error.number ? 'Numer jest wymagany' : ''}
+                  helperText={
+                    this.state.error.number ? 'Numer jest wymagany' : ''
+                  }
                 />
                 <div className="divider" />
                 <TextField
-                  required 
+                  required
                   error={this.state.error.title}
                   id="title"
                   label="Tytuł"
                   fullWidth
                   onChange={this.handleFormChange('title')}
                   defaultValue={lecture.title || null}
-                  helperText={this.state.error.title ? 'Tytuł jest wymagany' : ''}
+                  helperText={
+                    this.state.error.title ? 'Tytuł jest wymagany' : ''
+                  }
                 />
               </div>
             </DialogContent>
@@ -122,7 +126,12 @@ class AddLectureDialog extends Component {
               <Button onClick={this.props.onClose} color="primary">
                 Anuluj
               </Button>
-              <Button type="submit" color="primary" autoFocus disabled={handleDisabled()}>
+              <Button
+                type="submit"
+                color="primary"
+                autoFocus
+                disabled={handleDisabled()}
+              >
                 Zapisz
               </Button>
             </DialogActions>

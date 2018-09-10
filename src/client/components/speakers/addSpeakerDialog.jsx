@@ -48,21 +48,19 @@ class AddSpeakerDialog extends Component {
       if (prevProps.speaker.id && !this.props.speaker.id) {
         const toReturn = { ...this.state.toReturn };
         delete toReturn.id;
-        this.setState(
-          {
-            error: {},
-            toReturn: {
-              ...toReturn,
-              congregation_id: null,
-              first_name: null,
-              last_name: null,
-              phone: null,
-              email: null,
-              privilege: null,
-              note: null
-            }
+        this.setState({
+          error: {},
+          toReturn: {
+            ...toReturn,
+            congregation_id: null,
+            first_name: null,
+            last_name: null,
+            phone: null,
+            email: null,
+            privilege: null,
+            note: null
           }
-        );
+        });
       }
     }
   }
@@ -92,7 +90,7 @@ class AddSpeakerDialog extends Component {
 
   validateEmail = e => {
     let error = false;
-    if(e.target.value && !/\S+@\S+\.\S+/.test(e.target.value)) {
+    if (e.target.value && !/\S+@\S+\.\S+/.test(e.target.value)) {
       error = true;
     }
     this.setState({
@@ -105,7 +103,7 @@ class AddSpeakerDialog extends Component {
         email: e.target.value
       }
     });
-  }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -114,12 +112,7 @@ class AddSpeakerDialog extends Component {
 
   render() {
     const { fullScreen, congregations, speaker } = this.props;
-    const privileges = [
-      '?',
-      'sługa',
-      'starszy',
-      'nie usługuje'
-    ];
+    const privileges = ['?', 'sługa', 'starszy', 'nie usługuje'];
     let defaultCongregation = {};
     let defaultPrivilege = {};
 
@@ -144,7 +137,7 @@ class AddSpeakerDialog extends Component {
 
     const suggestedPrivileges = privileges.map(privilege => {
       return {
-        value: {id: privilege},
+        value: { id: privilege },
         label: privilege
       };
     });
@@ -171,7 +164,7 @@ class AddSpeakerDialog extends Component {
           open={this.props.opened}
           onClose={this.props.onClose}
           aria-labelledby="responsive-dialog-title"
-          scroll="body"
+          fullWidth
         >
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="responsive-dialog-title">
@@ -180,25 +173,29 @@ class AddSpeakerDialog extends Component {
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
                 <TextField
-                  required 
+                  required
                   error={this.state.error.first_name}
                   id="first_name"
                   label="Imię"
                   fullWidth
                   onChange={this.handleFormChange('first_name')}
                   defaultValue={speaker.first_name || null}
-                  helperText={this.state.error.first_name ? 'Imię jest wymagane' : ''}
+                  helperText={
+                    this.state.error.first_name ? 'Imię jest wymagane' : ''
+                  }
                 />
                 <div className="divider" />
                 <TextField
-                  required 
+                  required
                   error={this.state.error.last_name}
                   id="last_name"
                   label="Nazwisko"
                   fullWidth
                   onChange={this.handleFormChange('last_name')}
                   defaultValue={speaker.last_name || null}
-                  helperText={this.state.error.last_name ? 'Nazwisko jest wymagane' : ''}
+                  helperText={
+                    this.state.error.last_name ? 'Nazwisko jest wymagane' : ''
+                  }
                 />
                 <div className="divider" />
                 <SelectData
@@ -223,7 +220,9 @@ class AddSpeakerDialog extends Component {
                   fullWidth
                   onBlur={this.validateEmail}
                   defaultValue={speaker.email || null}
-                  helperText={this.state.error.email ? 'Email jest niepoprawny' : ''}
+                  helperText={
+                    this.state.error.email ? 'Email jest niepoprawny' : ''
+                  }
                 />
                 <div className="divider" />
                 <TextField
@@ -247,7 +246,12 @@ class AddSpeakerDialog extends Component {
               <Button onClick={this.props.onClose} color="primary">
                 Anuluj
               </Button>
-              <Button type="submit" color="primary" autoFocus disabled={handleDisabled()}>
+              <Button
+                type="submit"
+                color="primary"
+                autoFocus
+                disabled={handleDisabled()}
+              >
                 Zapisz
               </Button>
             </DialogActions>

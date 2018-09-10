@@ -7,6 +7,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "rimraf ./dist && babel ./src -d ./dist --copy-files && webpack -d",
+    "build:prod": "rimraf ./dist && babel ./src -d ./dist --copy-files && webpack -p",
     "build:watch": "npm run build -- --watch",
     "lint": "esw webpack.config.babel.js src --color",
     "lint:watch": "npm run lint -- --watch",

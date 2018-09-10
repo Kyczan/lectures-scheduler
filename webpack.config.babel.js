@@ -21,7 +21,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
@@ -32,5 +32,5 @@ module.exports = {
     // new BundleAnalyzerPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pl/)
   ],
-  mode: 'development'
+  mode: 'production'
 };

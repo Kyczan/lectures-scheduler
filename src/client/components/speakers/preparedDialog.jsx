@@ -107,7 +107,7 @@ class PreparedDialog extends Component {
           open={this.props.opened}
           onClose={this.props.onClose}
           aria-labelledby="responsive-dialog-title"
-          scroll="body"
+          fullWidth
         >
           <form onSubmit={this.handleSubmit}>
             <DialogTitle id="responsive-dialog-title">
