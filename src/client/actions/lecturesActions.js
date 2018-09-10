@@ -1,55 +1,37 @@
 import * as types from './types';
+import axios from 'axios';
 
-export const fetchLectures = () => async dispatch => {
-  const rawRes = await fetch('api/lectures');
-  const lectures = await rawRes.json();
-  return dispatch({
-    type: types.FETCH_LECTURES,
-    payload: lectures
-  });
-};
+export const fetchLectures = () => dispatch =>
+  axios.get('api/lectures').then(res =>
+    dispatch({
+      type: types.FETCH_LECTURES,
+      payload: res.data
+    })
+  );
 
-export const newLecture = lecture => async dispatch => {
-  const rawRes = await fetch('api/lectures', {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(lecture)
-  });
-  const retLecture = await rawRes.json();
-  return dispatch({
-    type: types.NEW_LECTURE,
-    payload: retLecture
-  });
-};
+export const newLecture = lecture => dispatch =>
+  axios.post('api/lectures', lecture).then(res =>
+    dispatch({
+      type: types.NEW_LECTURE,
+      payload: res.data
+    })
+  );
 
-export const updateLecture = lecture => async dispatch => {
+export const updateLecture = lecture => dispatch => {
   const body = { ...lecture };
   delete body.id;
-  const rawRes = await fetch(`api/lectures/${lecture.id}`, {
-    method: 'put',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  const retLecture = await rawRes.json();
-  return dispatch({
-    type: types.UPDATE_LECTURE,
-    payload: retLecture
-  });
+  return axios.put(`api/lectures/${lecture.id}`, body).then(res =>
+    dispatch({
+      type: types.UPDATE_LECTURE,
+      payload: res.data
+    })
+  );
 };
 
-export const deleteLecture = lectureId => async dispatch => {
-  const rawRes = await fetch(`api/lectures/${lectureId}`, {
-    method: 'delete'
-  });
-  const lecture = await rawRes.json();
-  return dispatch({
-    type: types.DELETE_LECTURE,
-    payload: lecture
-  });
-};
+export const deleteLecture = lectureId => dispatch =>
+  axios.delete(`api/lectures/${lectureId}`).then(res =>
+    dispatch({
+      type: types.DELETE_LECTURE,
+      payload: res.data
+    })
+  );

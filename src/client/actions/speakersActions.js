@@ -1,55 +1,37 @@
 import * as types from './types';
+import axios from 'axios';
 
-export const fetchSpeakers = () => async dispatch => {
-  const rawRes = await fetch('api/speakers');
-  const speakers = await rawRes.json();
-  return dispatch({
-    type: types.FETCH_SPEAKERS,
-    payload: speakers
-  });
-};
+export const fetchSpeakers = () => dispatch =>
+  axios.get('api/speakers').then(speakers =>
+    dispatch({
+      type: types.FETCH_SPEAKERS,
+      payload: speakers.data
+    })
+  );
 
-export const newSpeaker = speaker => async dispatch => {
-  const rawRes = await fetch('api/speakers', {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(speaker)
-  });
-  const retSpeaker = await rawRes.json();
-  return dispatch({
-    type: types.NEW_SPEAKER,
-    payload: retSpeaker
-  });
-};
+export const newSpeaker = speaker => dispatch =>
+  axios.post('api/speakers', speaker).then(res =>
+    dispatch({
+      type: types.NEW_SPEAKER,
+      payload: res.data
+    })
+  );
 
-export const updateSpeaker = speaker => async dispatch => {
+export const updateSpeaker = speaker => dispatch => {
   const body = { ...speaker };
   delete body.id;
-  const rawRes = await fetch(`api/speakers/${speaker.id}`, {
-    method: 'put',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  const retSpeaker = await rawRes.json();
-  return dispatch({
-    type: types.UPDATE_SPEAKER,
-    payload: retSpeaker
-  });
+  return axios.put(`api/speakers/${speaker.id}`, body).then(res =>
+    dispatch({
+      type: types.UPDATE_SPEAKER,
+      payload: res.data
+    })
+  );
 };
 
-export const deleteSpeaker = speakerId => async dispatch => {
-  const rawRes = await fetch(`api/speakers/${speakerId}`, {
-    method: 'delete'
-  });
-  const speaker = await rawRes.json();
-  return dispatch({
-    type: types.DELETE_SPEAKER,
-    payload: speaker
-  });
-};
+export const deleteSpeaker = speakerId => dispatch =>
+  axios.delete(`api/speakers/${speakerId}`).then(res =>
+    dispatch({
+      type: types.DELETE_SPEAKER,
+      payload: res.data
+    })
+  );

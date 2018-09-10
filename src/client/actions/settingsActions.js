@@ -1,10 +1,10 @@
 import * as types from './types';
+import axios from 'axios';
 
-export const fetchSetting = settingName => async dispatch => {
-  const rawRes = await fetch(`api/settings/${settingName}`);
-  const setting = await rawRes.json();
-  return dispatch({
-    type: types.FETCH_SETTING,
-    payload: setting
-  });
-};
+export const fetchSetting = settingName => dispatch =>
+  axios.get(`api/settings/${settingName}`).then(res =>
+    dispatch({
+      type: types.FETCH_SETTING,
+      payload: res.data
+    })
+  );

@@ -1,55 +1,37 @@
 import * as types from './types';
+import axios from 'axios';
 
-export const fetchCongregations = () => async dispatch => {
-  const rawRes = await fetch('api/congregations');
-  const congregations = await rawRes.json();
-  return dispatch({
-    type: types.FETCH_CONGREGATIONS,
-    payload: congregations
-  });
-};
+export const fetchCongregations = () => dispatch =>
+  axios.get('api/congregations').then(res =>
+    dispatch({
+      type: types.FETCH_CONGREGATIONS,
+      payload: res.data
+    })
+  );
 
-export const newCongregation = congregation => async dispatch => {
-  const rawRes = await fetch('api/congregations', {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(congregation)
-  });
-  const retCongregation = await rawRes.json();
-  return dispatch({
-    type: types.NEW_CONGREGATION,
-    payload: retCongregation
-  });
-};
+export const newCongregation = congregation => dispatch =>
+  axios.post('api/congregations', congregation).then(res =>
+    dispatch({
+      type: types.NEW_CONGREGATION,
+      payload: res.data
+    })
+  );
 
-export const updateCongregation = congregation => async dispatch => {
+export const updateCongregation = congregation => dispatch => {
   const body = { ...congregation };
   delete body.id;
-  const rawRes = await fetch(`api/congregations/${congregation.id}`, {
-    method: 'put',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-  const retCongregation = await rawRes.json();
-  return dispatch({
-    type: types.UPDATE_CONGREGATION,
-    payload: retCongregation
-  });
+  return axios.put(`api/congregations/${congregation.id}`, body).then(res =>
+    dispatch({
+      type: types.UPDATE_CONGREGATION,
+      payload: res.data
+    })
+  );
 };
 
-export const deleteCongregation = congregationId => async dispatch => {
-  const rawRes = await fetch(`api/congregations/${congregationId}`, {
-    method: 'delete'
-  });
-  const congregation = await rawRes.json();
-  return dispatch({
-    type: types.DELETE_CONGREGATION,
-    payload: congregation
-  });
-};
+export const deleteCongregation = congregationId => dispatch =>
+  axios.delete(`api/congregations/${congregationId}`).then(res =>
+    dispatch({
+      type: types.DELETE_CONGREGATION,
+      payload: res.data
+    })
+  );

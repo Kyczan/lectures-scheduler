@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
   case types.FETCH_SETTING:
     return {
       ...state,
-      item: {...action.payload}
+      item: { ...action.payload }
     };
   default:
     return state;
