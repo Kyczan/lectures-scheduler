@@ -36,7 +36,9 @@ class Events extends Component {
     };
   }
   componentDidMount() {
-    this.props.fetchEvents();
+    this.props
+      .fetchEvents()
+      .then(() => this.setState({ filteredData: this.props.events }));
     this.props.fetchSpeakers();
     this.props.fetchLectures();
   }
@@ -112,22 +114,20 @@ class Events extends Component {
     this.setState({
       filteredData
     });
-  }
+  };
 
   render() {
     if (!this.props.defaultEventTime.value) return null;
-    const lastYear = new Date() - 1000 * 60 * 60 * 24 * 365; // today - 1 yr
-    const lastYearStr = new Date(lastYear).toJSON().substring(0, 10); // format yyyy-mm-dd
-    const dataToRender = this.state.filteredData.length ? this.state.filteredData : this.props.events;
-    const filtered = dataToRender.filter(
-      event => event.event_date > lastYearStr
-    );
+
+    let filtered = this.state.filteredData;
 
     filtered.sort((a, b) => {
       if (a.event_date < b.event_date) return 1;
       if (a.event_date > b.event_date) return -1;
       return 0;
     });
+
+    filtered = filtered.slice(0, 60);
 
     const eventsItems = filtered.map(event => (
       <Grid key={event.id} item xs={12} sm={6} md={4} lg={3}>
@@ -174,7 +174,7 @@ class Events extends Component {
         </Button>
         <SearchBar
           searchArray={this.props.events}
-          searchKeys={['lecture','speaker']}
+          searchKeys={['lecture', 'speaker']}
           onFilter={this.handleFilter}
         />
         <Grid container alignItems="stretch" spacing={16}>

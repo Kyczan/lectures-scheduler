@@ -19,8 +19,8 @@ class App extends Component {
   render() {
     const theme = createMuiTheme({
       palette: {
-        primary: blue,
-      },
+        primary: blue
+      }
     });
     const routesData = [
       {

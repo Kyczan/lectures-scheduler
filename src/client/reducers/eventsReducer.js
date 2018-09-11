@@ -1,7 +1,9 @@
 import * as types from '../actions/types';
 
 const initialState = {
-  items: []
+  items: [],
+  counter: 0,
+  filtered: []
 };
 
 export default function(state = initialState, action) {
@@ -28,6 +30,12 @@ export default function(state = initialState, action) {
     return {
       ...state,
       items: [...state.items.filter(event => event.id !== action.payload.id)]
+    };
+  case types.SEARCH_EVENTS:
+    return {
+      ...state,
+      counter: action.payload.counter,
+      filtered: action.payload.filtered
     };
   default:
     return state;
