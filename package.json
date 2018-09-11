@@ -6,12 +6,13 @@
   "main": "app.js",
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf ./dist && babel ./src -d ./dist --copy-files && webpack -d",
-    "build:prod": "rimraf ./dist && babel ./src -d ./dist --copy-files && webpack -p",
-    "build:watch": "npm run build -- --watch",
+    "build": "rimraf ./dist && babel ./src -d ./dist --copy-files && webpack",
+    "build:dev": "npm run build -- -d",
+    "build:prod": "npm run build -- -p",
+    "build:watch": "npm run build:dev -- --watch",
     "lint": "esw webpack.config.babel.js src --color",
     "lint:watch": "npm run lint -- --watch",
-    "nodemon": "npm run build && nodemon -w ./src --exec \"node ./dist/app\"",
+    "nodemon": "npm run build:dev && nodemon -w ./src --exec \"node ./dist/app\"",
     "start": "npm-run-all --parallel build:watch lint:watch nodemon"
   },
   "keywords": [],
