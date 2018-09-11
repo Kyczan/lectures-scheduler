@@ -5,6 +5,8 @@ import CongregationsIcon from '@material-ui/icons/Public';
 import LecturesIcon from '@material-ui/icons/Assignment';
 import EventsIcon from '@material-ui/icons/EventNote';
 import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
 
 import store from './store';
 import NavBar from './components/utils/navBar';
@@ -15,6 +17,11 @@ import Congregations from './components/congregations/congregations';
 
 class App extends Component {
   render() {
+    const theme = createMuiTheme({
+      palette: {
+        primary: blue,
+      },
+    });
     const routesData = [
       {
         label: 'Plan',
@@ -51,12 +58,14 @@ class App extends Component {
     ));
     return (
       <Provider store={store}>
-        <Router>
-          <div>
-            <NavBar buttonsData={routesData} />
-            {Routes}
-          </div>
-        </Router>
+        <MuiThemeProvider theme={theme}>
+          <Router>
+            <div>
+              <NavBar buttonsData={routesData} />
+              {Routes}
+            </div>
+          </Router>
+        </MuiThemeProvider>
       </Provider>
     );
   }
