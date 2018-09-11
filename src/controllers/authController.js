@@ -1,6 +1,7 @@
 import passport from 'passport';
 import passportGoogleOauth from 'passport-google-oauth';
 import db, { users as sql } from '../db';
+import validateUser from '../models/users';
 
 const GoogleStrategy = passportGoogleOauth.OAuth2Strategy;
 
@@ -9,10 +10,9 @@ passport.serializeUser( (user, done) => {
 });
 
 passport.deserializeUser(async (userData, done) => {
-  console.log('userData',userData);
   const data = await db.query(sql.findOne, [userData.id]);
   let user = false;
-  if (data.length) user = data[0];
+  if (data.length && data[0].access_privilege === 'T') user = data[0];
   done(null, user);
 });
 
@@ -22,11 +22,29 @@ passport.use(new GoogleStrategy({
   callbackURL: process.env.GOOGLE_CALLBACK_URL
 },
 async (accessToken, refreshToken, profile, done) => {
-  console.log('profile',profile);
-  const data = await db.query(sql.findOne, [profile.id]);
+  const userData = {
+    id: profile.id,
+    name: `${profile.name.givenName} ${profile.name.familyName}`,
+    email: profile.emails[0].value
+  };
+  const { error } = validateUser(userData);
+  let data = await db.query(sql.findOne, [userData.id]);
   let user = false;
-  if (data.length) user = data[0];
-  return done(null, user);
+
+  if (data.length) {
+    if (data[0].access_privilege === 'T') {
+      user = data[0];
+    }
+  } else {
+    const params = [
+      userData.id,
+      userData.name,
+      userData.email
+    ];
+    await db.query(sql.create, params);
+  }
+
+  return done(error, user);
 }));
 
 export default passport;
