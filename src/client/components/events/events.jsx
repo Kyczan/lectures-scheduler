@@ -14,6 +14,7 @@ import EventCard from './eventCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddEventDialog from './addEventDialog';
 import SnackbarMessage from '../utils/snackbarMessage';
+import SearchBar from '../utils/searchBar';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -23,6 +24,7 @@ class Events extends Component {
     super(props);
     props.fetchSetting('DEFAULT_EVENT_TIME');
     this.state = {
+      filteredData: this.props.events,
       isDelOpen: false,
       eventToDel: {},
       isAddEventOpen: false,
@@ -50,6 +52,7 @@ class Events extends Component {
   handleDelDialogConfirm = () => {
     this.props.deleteEvent(this.state.eventToDel.id).then(() => {
       this.setState({
+        filteredData: this.props.events,
         flash: {
           opened: true,
           msg: 'Usunięto wydarzenie!'
@@ -72,6 +75,7 @@ class Events extends Component {
     if (event.id) {
       this.props.updateEvent(event).then(() => {
         this.setState({
+          filteredData: this.props.events,
           flash: {
             opened: true,
             msg: 'Zaktualizowano wydarzenie!'
@@ -81,6 +85,7 @@ class Events extends Component {
     } else {
       this.props.newEvent(event).then(() => {
         this.setState({
+          filteredData: this.props.events,
           flash: {
             opened: true,
             msg: 'Dodano nowe wydarzenie!'
@@ -103,11 +108,18 @@ class Events extends Component {
     });
   };
 
+  handleFilter = filteredData => {
+    this.setState({
+      filteredData
+    });
+  }
+
   render() {
     if (!this.props.defaultEventTime.value) return null;
     const lastYear = new Date() - 1000 * 60 * 60 * 24 * 365; // today - 1 yr
     const lastYearStr = new Date(lastYear).toJSON().substring(0, 10); // format yyyy-mm-dd
-    const filtered = this.props.events.filter(
+    const dataToRender = this.state.filteredData.length ? this.state.filteredData : this.props.events;
+    const filtered = dataToRender.filter(
       event => event.event_date > lastYearStr
     );
 
@@ -160,6 +172,11 @@ class Events extends Component {
         >
           <AddIcon />
         </Button>
+        <SearchBar
+          searchArray={this.props.events}
+          searchKeys={['lecture','speaker']}
+          onFilter={this.handleFilter}
+        />
         <Grid container alignItems="stretch" spacing={16}>
           {eventsItems}
         </Grid>
