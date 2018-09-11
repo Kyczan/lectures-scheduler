@@ -9,6 +9,7 @@ passport.serializeUser( (user, done) => {
 });
 
 passport.deserializeUser(async (userData, done) => {
+  console.log('userData',userData);
   const data = await db.query(sql.findOne, [userData.id]);
   let user = false;
   if (data.length) user = data[0];
@@ -21,6 +22,7 @@ passport.use(new GoogleStrategy({
   callbackURL: process.env.GOOGLE_CALLBACK_URL
 },
 async (accessToken, refreshToken, profile, done) => {
+  console.log('profile',profile);
   const data = await db.query(sql.findOne, [profile.id]);
   let user = false;
   if (data.length) user = data[0];

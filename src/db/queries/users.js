@@ -2,7 +2,8 @@ const sql = {
   findOne: `
     select *
     from users
-    where id = ?;
+    where id = ?
+      and access_privilege = 'T';
   `
 };
 

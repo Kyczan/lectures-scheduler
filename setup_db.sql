@@ -55,7 +55,9 @@ CREATE TABLE `speakers` (
 
 CREATE TABLE `users` (
   `id` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `access_privilege` varchar(1) NOT NULL DEFAULT 'F'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `congregations`
