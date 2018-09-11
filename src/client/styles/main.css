@@ -12,6 +12,9 @@ div .active-route {
 .card {
   height: 100%;
 }
+.card:hover {
+  box-shadow: 0px 0px 4px 4px rgba(26,35,126, 0.4);
+}
 div .card-header {
   padding-bottom: 0;
 }
@@ -20,6 +23,15 @@ div .card-content {
 }
 .card-content > h3 {
   font-size: 18px;
+}
+div .empty-card {
+  background-color: #E8EAF6;
+}
+div .past-card {
+  background-color: #F5F5F5;
+}
+div .past-card span {
+  color: #757575;
 }
 .toolbar-title {
   flex: 1;

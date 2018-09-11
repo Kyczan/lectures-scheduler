@@ -48,6 +48,7 @@ class EventCard extends Component {
   render() {
     const { event } = this.props;
     const { anchorEl } = this.state;
+    const today = new Date().toJSON().substring(0, 10);
     const eventDate = moment(event.event_date).format('D MMMM YYYY');
 
     const lecture = event.lecture ? (
@@ -76,8 +77,15 @@ class EventCard extends Component {
       </ListItem>
     ) : null;
 
+    const getCardClass = () => {
+      let classes = 'card';
+      classes += (!event.lecture && !event.speaker && !event.note ? ' empty-card' : '');
+      classes += (event.event_date < today ? ' past-card' : '');
+      return classes;
+    };
+
     return (
-      <Card className="card">
+      <Card className={getCardClass()}>
         <CardHeader
           className="card-header"
           action={

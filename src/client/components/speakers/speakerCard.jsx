@@ -149,8 +149,14 @@ class SpeakerCard extends Component {
       </ListItem>
     );
 
+    const getCardClass = () => {
+      let classes = 'card';
+      classes += (!speaker.email && !speaker.phone ? ' empty-card' : '');
+      return classes;
+    };
+
     return (
-      <Card className="card">
+      <Card className={getCardClass()}>
         <CardHeader
           className="card-header"
           action={
