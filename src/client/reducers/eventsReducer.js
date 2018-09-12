@@ -2,7 +2,6 @@ import * as types from '../actions/types';
 
 const initialState = {
   items: [],
-  counter: 0,
   filtered: []
 };
 

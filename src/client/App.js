@@ -8,7 +8,6 @@ import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';
-
 import store from './store';
 import NavBar from './components/utils/navBar';
 import Events from './components/events/events';
@@ -17,6 +16,17 @@ import Lectures from './components/lectures/lectures';
 import Congregations from './components/congregations/congregations';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      searchText: ''
+    };
+  }
+
+  handleFilter = searchText => {
+    this.setState({searchText});
+  };
+
   render() {
     const theme = createMuiTheme({
       palette: {
@@ -50,20 +60,23 @@ class App extends Component {
         component: Congregations
       }
     ];
-    const Routes = routesData.map(route => (
-      <Route
-        key={route.link}
-        exact
-        path={route.link}
-        component={route.component}
-      />
-    ));
+    const Routes = routesData.map(route => {
+      const Comp = route.component;
+      return(
+        <Route
+          key={route.link}
+          exact
+          path={route.link}
+          render={() => <Comp searchText={this.state.searchText} />}
+        />
+      );
+    });
     return (
       <Provider store={store}>
         <MuiThemeProvider theme={theme}>
           <Router>
             <div>
-              <NavBar buttonsData={routesData} />
+              <NavBar buttonsData={routesData} onFilter={this.handleFilter}/>
               {Routes}
             </div>
           </Router>

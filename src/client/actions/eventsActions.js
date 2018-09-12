@@ -41,10 +41,7 @@ export const searchEvents = searchData => dispatch => {
   if (searchString.length === 0) {
     return dispatch({
       type: types.SEARCH_EVENTS,
-      payload: {
-        counter: 0,
-        filtered: searchArray
-      }
+      payload: searchArray
     });
   }
   const filtered = searchArray.filter(obj => {
@@ -56,9 +53,6 @@ export const searchEvents = searchData => dispatch => {
   });
   return dispatch({
     type: types.SEARCH_EVENTS,
-    payload: {
-      counter: filtered.length,
-      filtered: filtered
-    }
+    payload: filtered
   });
 };

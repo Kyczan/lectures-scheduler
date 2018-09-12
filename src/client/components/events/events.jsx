@@ -5,7 +5,8 @@ import {
   fetchEvents,
   newEvent,
   deleteEvent,
-  updateEvent
+  updateEvent,
+  searchEvents
 } from '../../actions/eventsActions';
 import { fetchSpeakers } from '../../actions/speakersActions';
 import { fetchLectures } from '../../actions/lecturesActions';
@@ -14,7 +15,6 @@ import EventCard from './eventCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddEventDialog from './addEventDialog';
 import SnackbarMessage from '../utils/snackbarMessage';
-import SearchBar from '../utils/searchBar';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -35,12 +35,27 @@ class Events extends Component {
       }
     };
   }
+
   componentDidMount() {
     this.props
       .fetchEvents()
       .then(() => this.setState({ filteredData: this.props.events }));
     this.props.fetchSpeakers();
     this.props.fetchLectures();
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.searchText !== this.props.searchText){
+      const data = {
+        searchArray: this.props.events,
+        searchKeys: ['lecture', 'speaker'], 
+        searchString: this.props.searchText
+      };
+      const filtered = this.props.searchEvents(data).payload;
+      this.setState({
+        filteredData: filtered
+      });
+    }
   }
 
   handleEventDelete = event => {
@@ -110,12 +125,6 @@ class Events extends Component {
     });
   };
 
-  handleFilter = filteredData => {
-    this.setState({
-      filteredData
-    });
-  };
-
   render() {
     if (!this.props.defaultEventTime.value) return null;
 
@@ -172,11 +181,6 @@ class Events extends Component {
         >
           <AddIcon />
         </Button>
-        <SearchBar
-          searchArray={this.props.events}
-          searchKeys={['lecture', 'speaker']}
-          onFilter={this.handleFilter}
-        />
         <Grid container alignItems="stretch" spacing={16}>
           {eventsItems}
         </Grid>
@@ -196,7 +200,9 @@ Events.propTypes = {
   events: PropTypes.array.isRequired,
   lectures: PropTypes.array.isRequired,
   speakers: PropTypes.array.isRequired,
-  defaultEventTime: PropTypes.object.isRequired
+  defaultEventTime: PropTypes.object.isRequired,
+  searchEvents: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -213,7 +219,8 @@ const mapDispatchToProps = {
   deleteEvent,
   fetchSpeakers,
   fetchLectures,
-  fetchSetting
+  fetchSetting,
+  searchEvents
 };
 
 export default connect(
