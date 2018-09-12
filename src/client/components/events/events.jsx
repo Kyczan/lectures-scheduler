@@ -165,8 +165,8 @@ class Events extends Component {
         />
         <Button
           onClick={() => this.handleEventAdd({})}
+          color="secondary"
           variant="fab"
-          color="primary"
           aria-label="Dodaj"
           className="fab"
         >

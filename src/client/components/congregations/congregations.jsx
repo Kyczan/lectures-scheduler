@@ -138,7 +138,7 @@ class Congregations extends Component {
         <Button
           onClick={() => this.handleCongregationAdd({})}
           variant="fab"
-          color="primary"
+          color="secondary"
           aria-label="Dodaj"
           className="fab"
         >

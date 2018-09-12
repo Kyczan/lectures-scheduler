@@ -138,7 +138,7 @@ class Lectures extends Component {
         <Button
           onClick={() => this.handleLectureAdd({})}
           variant="fab"
-          color="primary"
+          color="secondary"
           aria-label="Dodaj"
           className="fab"
         >

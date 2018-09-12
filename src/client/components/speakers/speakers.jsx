@@ -140,7 +140,7 @@ class Speakers extends Component {
         <Button
           onClick={() => this.handleSpeakerAdd({})}
           variant="fab"
-          color="primary"
+          color="secondary"
           aria-label="Dodaj"
           className="fab"
         >

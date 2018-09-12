@@ -7,6 +7,7 @@ import EventsIcon from '@material-ui/icons/EventNote';
 import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
+import pink from '@material-ui/core/colors/pink';
 
 import store from './store';
 import NavBar from './components/utils/navBar';
@@ -19,7 +20,8 @@ class App extends Component {
   render() {
     const theme = createMuiTheme({
       palette: {
-        primary: blue
+        primary: blue,
+        secondary: pink
       }
     });
     const routesData = [
