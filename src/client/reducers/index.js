@@ -5,6 +5,7 @@ import speakersReducer from './speakersReducer';
 import settingsReducer from './settingsReducer';
 import congregationsReducer from './congregationsReducer';
 import preparedReducer from './preparedReducer';
+import searchReducer from './searchReducer';
 
 export default combineReducers({
   events: eventsReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   speakers: speakersReducer,
   congregations: congregationsReducer,
   setting: settingsReducer,
-  prepared: preparedReducer
+  prepared: preparedReducer,
+  search: searchReducer
 });

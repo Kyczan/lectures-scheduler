@@ -5,12 +5,12 @@ import {
   fetchEvents,
   newEvent,
   deleteEvent,
-  updateEvent,
-  searchEvents
+  updateEvent
 } from '../../actions/eventsActions';
 import { fetchSpeakers } from '../../actions/speakersActions';
 import { fetchLectures } from '../../actions/lecturesActions';
 import { fetchSetting } from '../../actions/settingsActions';
+import { searchData } from '../../actions/searchActions';
 import EventCard from './eventCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddEventDialog from './addEventDialog';
@@ -51,7 +51,7 @@ class Events extends Component {
         searchKeys: ['lecture', 'speaker'], 
         searchString: this.props.searchText
       };
-      const filtered = this.props.searchEvents(data).payload;
+      const filtered = this.props.searchData(data).payload;
       this.setState({
         filteredData: filtered
       });
@@ -201,7 +201,7 @@ Events.propTypes = {
   lectures: PropTypes.array.isRequired,
   speakers: PropTypes.array.isRequired,
   defaultEventTime: PropTypes.object.isRequired,
-  searchEvents: PropTypes.func.isRequired,
+  searchData: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired
 };
 
@@ -220,7 +220,7 @@ const mapDispatchToProps = {
   fetchSpeakers,
   fetchLectures,
   fetchSetting,
-  searchEvents
+  searchData
 };
 
 export default connect(
