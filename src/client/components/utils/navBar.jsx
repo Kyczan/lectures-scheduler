@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { DebounceInput } from 'react-debounce-input';
 import { NavLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -159,12 +160,15 @@ class NavBar extends Component {
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
-              <Input
+              <DebounceInput
+                element={Input}
                 disableUnderline
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
+                minLength={2}
+                debounceTimeout={300}
                 onChange={e => this.props.onFilter(e.target.value)}
               />
             </div>

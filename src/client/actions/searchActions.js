@@ -9,17 +9,16 @@ export const searchData = search => dispatch => {
     });
   }
   const filtered = searchArray.filter(obj => {
-    let sum = 0;
-    searchKeys.forEach(key => {
+    for (let i = 0; i < searchKeys.length; i++) {
       if (
-        obj[key] &&
-        String(obj[key])
+        obj[searchKeys[i]] &&
+        String(obj[searchKeys[i]])
           .toLowerCase()
           .indexOf(searchString) > -1
       )
-        sum++;
-    });
-    return sum ? true : false;
+        return true;
+    }
+    return false;
   });
   return dispatch({
     type: types.SEARCH_DATA,
