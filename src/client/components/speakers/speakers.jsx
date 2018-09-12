@@ -9,6 +9,7 @@ import {
 } from '../../actions/speakersActions';
 import { fetchCongregations } from '../../actions/congregationsActions';
 import { fetchLectures } from '../../actions/lecturesActions';
+import { searchData } from '../../actions/searchActions';
 import SpeakerCard from './speakerCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddSpeakerDialog from './addSpeakerDialog';
@@ -18,9 +19,10 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 class Speakers extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      filteredData: props.speakers,
       isDelOpen: false,
       speakerToDel: {},
       isAddSpeakerOpen: false,
@@ -32,9 +34,32 @@ class Speakers extends Component {
     };
   }
   componentDidMount() {
-    this.props.fetchSpeakers();
+    this.props
+      .fetchSpeakers()
+      .then(() => this.setState({ filteredData: this.props.speakers }));
     this.props.fetchCongregations();
     this.props.fetchLectures();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchText !== this.props.searchText) {
+      const data = {
+        searchArray: this.props.speakers,
+        searchKeys: [
+          'name',
+          'note',
+          'privilege',
+          'phone',
+          'email',
+          'congregation'
+        ],
+        searchString: this.props.searchText
+      };
+      const filtered = this.props.searchData(data).payload;
+      this.setState({
+        filteredData: filtered
+      });
+    }
   }
 
   handleSpeakerDelete = speaker => {
@@ -48,6 +73,7 @@ class Speakers extends Component {
   handleDelDialogConfirm = () => {
     this.props.deleteSpeaker(this.state.speakerToDel.id).then(() => {
       this.setState({
+        filteredData: this.props.speakers,
         flash: {
           opened: true,
           msg: 'Usunięto mówcę!'
@@ -67,6 +93,7 @@ class Speakers extends Component {
       this.props.updateSpeaker(speaker).then(() => {
         this.setState({
           flash: {
+            filteredData: this.props.speakers,
             opened: true,
             msg: 'Zaktualizowano mówcę!'
           }
@@ -76,6 +103,7 @@ class Speakers extends Component {
       this.props.newSpeaker(speaker).then(() => {
         this.setState({
           flash: {
+            filteredData: this.props.speakers,
             opened: true,
             msg: 'Dodano nowego mówcę!'
           }
@@ -98,15 +126,16 @@ class Speakers extends Component {
   };
 
   render() {
-    const { speakers, lectures } = this.props;
-    
-    speakers.sort((a, b) => {
+    const { lectures } = this.props;
+    const filtered = this.state.filteredData;
+
+    filtered.sort((a, b) => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
 
-    const speakersItems = speakers.map(speaker => (
+    const speakersItems = filtered.map(speaker => (
       <Grid key={speaker.id} item xs={12} sm={6} md={4} lg={3}>
         <SpeakerCard
           onDelete={() => this.handleSpeakerDelete(speaker)}
@@ -132,7 +161,7 @@ class Speakers extends Component {
           opened={this.state.isAddSpeakerOpen}
         />
         <DeleteDialog
-          deleteMsg={this.state.speakerToDel.name  || ''}
+          deleteMsg={this.state.speakerToDel.name || ''}
           opened={this.state.isDelOpen}
           onClose={this.handleDelDialogClose}
           onConfirm={this.handleDelDialogConfirm}
@@ -163,7 +192,9 @@ Speakers.propTypes = {
   speakers: PropTypes.array.isRequired,
   congregations: PropTypes.array.isRequired,
   lectures: PropTypes.array.isRequired,
-  fetchLectures: PropTypes.func.isRequired
+  fetchLectures: PropTypes.func.isRequired,
+  searchData: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -178,7 +209,8 @@ const mapDispatchToProps = {
   updateSpeaker,
   deleteSpeaker,
   fetchCongregations,
-  fetchLectures
+  fetchLectures,
+  searchData
 };
 
 export default connect(

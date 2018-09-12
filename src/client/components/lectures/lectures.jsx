@@ -7,6 +7,7 @@ import {
   deleteLecture,
   updateLecture
 } from '../../actions/lecturesActions';
+import { searchData } from '../../actions/searchActions';
 import LectureCard from './lectureCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddLectureDialog from './addLectureDialog';
@@ -16,9 +17,10 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 class Lectures extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      filteredData: props.lectures,
       isDelOpen: false,
       lectureToDel: {},
       isAddLectureOpen: false,
@@ -29,8 +31,25 @@ class Lectures extends Component {
       }
     };
   }
+
   componentDidMount() {
-    this.props.fetchLectures();
+    this.props
+      .fetchLectures()
+      .then(() => this.setState({ filteredData: this.props.lectures }));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchText !== this.props.searchText) {
+      const data = {
+        searchArray: this.props.lectures,
+        searchKeys: ['number', 'title'],
+        searchString: this.props.searchText
+      };
+      const filtered = this.props.searchData(data).payload;
+      this.setState({
+        filteredData: filtered
+      });
+    }
   }
 
   handleLectureDelete = lecture => {
@@ -44,6 +63,7 @@ class Lectures extends Component {
   handleDelDialogConfirm = () => {
     this.props.deleteLecture(this.state.lectureToDel.id).then(() => {
       this.setState({
+        filteredData: this.props.lectures,
         flash: {
           opened: true,
           msg: 'Usunięto wykład!'
@@ -65,6 +85,7 @@ class Lectures extends Component {
     if (lecture.id) {
       this.props.updateLecture(lecture).then(() => {
         this.setState({
+          filteredData: this.props.lectures,
           flash: {
             opened: true,
             msg: 'Zaktualizowano wykład!'
@@ -74,6 +95,7 @@ class Lectures extends Component {
     } else {
       this.props.newLecture(lecture).then(() => {
         this.setState({
+          filteredData: this.props.lectures,
           flash: {
             opened: true,
             msg: 'Dodano nowy wykład!'
@@ -98,15 +120,16 @@ class Lectures extends Component {
 
   render() {
     if (!this.props.lectures.length) return null;
-    const { lectures } = this.props;
 
-    lectures.sort((a, b) => {
+    const filtered = this.state.filteredData;
+
+    filtered.sort((a, b) => {
       if (a.number < b.number) return -1;
       if (a.number > b.number) return 1;
       return 0;
     });
 
-    const lecturesItems = lectures.map(lecture => (
+    const lecturesItems = filtered.map(lecture => (
       <Grid key={lecture.id} item xs={12} sm={6} md={4} lg={3}>
         <LectureCard
           onDelete={() => this.handleLectureDelete(lecture)}
@@ -157,7 +180,9 @@ Lectures.propTypes = {
   newLecture: PropTypes.func.isRequired,
   updateLecture: PropTypes.func.isRequired,
   deleteLecture: PropTypes.func.isRequired,
-  lectures: PropTypes.array.isRequired
+  lectures: PropTypes.array.isRequired,
+  searchData: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -168,7 +193,8 @@ const mapDispatchToProps = {
   fetchLectures,
   newLecture,
   updateLecture,
-  deleteLecture
+  deleteLecture,
+  searchData
 };
 
 export default connect(

@@ -31,4 +31,4 @@ export const DELETE_PREPARED = 'DELETE_PREPARED';
 export const FETCH_SETTING = 'FETCH_SETTING';
 
 // search
-export const SEARCH_EVENTS = 'SEARCH_EVENTS';
+export const SEARCH_DATA = 'SEARCH_DATA';

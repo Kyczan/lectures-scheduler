@@ -7,6 +7,7 @@ import {
   deleteCongregation,
   updateCongregation
 } from '../../actions/congregationsActions';
+import { searchData } from '../../actions/searchActions';
 import CongregationCard from './congregationCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddCongregationDialog from './addCongregationDialog';
@@ -16,9 +17,10 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 class Congregations extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      filteredData: props.congregations,
       isDelOpen: false,
       congregationToDel: {},
       isAddCongregationOpen: false,
@@ -29,8 +31,25 @@ class Congregations extends Component {
       }
     };
   }
+
   componentDidMount() {
-    this.props.fetchCongregations();
+    this.props
+      .fetchCongregations()
+      .then(() => this.setState({ filteredData: this.props.congregations }));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchText !== this.props.searchText) {
+      const data = {
+        searchArray: this.props.congregations,
+        searchKeys: ['number', 'name'],
+        searchString: this.props.searchText
+      };
+      const filtered = this.props.searchData(data).payload;
+      this.setState({
+        filteredData: filtered
+      });
+    }
   }
 
   handleCongregationDelete = congregation => {
@@ -44,6 +63,7 @@ class Congregations extends Component {
   handleDelDialogConfirm = () => {
     this.props.deleteCongregation(this.state.congregationToDel.id).then(() => {
       this.setState({
+        filteredData: this.props.congregations,
         flash: {
           opened: true,
           msg: 'Usunięto zbór!'
@@ -65,6 +85,7 @@ class Congregations extends Component {
     if (congregation.id) {
       this.props.updateCongregation(congregation).then(() => {
         this.setState({
+          filteredData: this.props.congregations,
           flash: {
             opened: true,
             msg: 'Zaktualizowano zbór!'
@@ -74,6 +95,7 @@ class Congregations extends Component {
     } else {
       this.props.newCongregation(congregation).then(() => {
         this.setState({
+          filteredData: this.props.congregations,
           flash: {
             opened: true,
             msg: 'Dodano nowy zbór!'
@@ -98,15 +120,16 @@ class Congregations extends Component {
 
   render() {
     if (!this.props.congregations.length) return null;
-    const { congregations } = this.props;
 
-    congregations.sort((a, b) => {
+    const filtered = this.state.filteredData;
+
+    filtered.sort((a, b) => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
 
-    const congregationsItems = congregations.map(congregation => (
+    const congregationsItems = filtered.map(congregation => (
       <Grid key={congregation.id} item xs={12} sm={6} md={4} lg={3}>
         <CongregationCard
           onDelete={() => this.handleCongregationDelete(congregation)}
@@ -157,7 +180,9 @@ Congregations.propTypes = {
   newCongregation: PropTypes.func.isRequired,
   updateCongregation: PropTypes.func.isRequired,
   deleteCongregation: PropTypes.func.isRequired,
-  congregations: PropTypes.array.isRequired
+  congregations: PropTypes.array.isRequired,
+  searchData: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -168,7 +193,8 @@ const mapDispatchToProps = {
   fetchCongregations,
   newCongregation,
   updateCongregation,
-  deleteCongregation
+  deleteCongregation,
+  searchData
 };
 
 export default connect(

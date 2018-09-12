@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   handleFilter = searchText => {
-    this.setState({searchText});
+    this.setState({ searchText });
   };
 
   render() {
@@ -62,7 +62,7 @@ class App extends Component {
     ];
     const Routes = routesData.map(route => {
       const Comp = route.component;
-      return(
+      return (
         <Route
           key={route.link}
           exact
@@ -76,7 +76,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <Router>
             <div>
-              <NavBar buttonsData={routesData} onFilter={this.handleFilter}/>
+              <NavBar buttonsData={routesData} onFilter={this.handleFilter} />
               {Routes}
             </div>
           </Router>

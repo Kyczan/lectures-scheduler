@@ -15,35 +15,35 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '100%'
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+      display: 'block'
+    }
   },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade(theme.palette.common.white, 0.25)
     },
     marginRight: theme.spacing.unit * 2,
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 3,
-      width: 'auto',
-    },
+      width: 'auto'
+    }
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -52,11 +52,11 @@ const styles = theme => ({
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   inputRoot: {
     color: 'inherit',
-    width: '100%',
+    width: '100%'
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -66,26 +66,26 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
+      width: 200
+    }
   },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+      display: 'flex'
+    }
   },
   sectionMobile: {
     display: 'flex',
     [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
+      display: 'none'
+    }
+  }
 });
 
 class NavBar extends Component {
   state = {
-    mobileMoreAnchorEl: null,
+    mobileMoreAnchorEl: null
   };
 
   handleMobileMenuOpen = event => {
@@ -116,18 +116,15 @@ class NavBar extends Component {
     ));
 
     const IconButtonsMobile = buttonsData.map(btn => (
-      <MenuItem 
-        key={btn.link} 
-        component={NavLink} 
-        activeClassName="active-route" 
-        exact 
+      <MenuItem
+        key={btn.link}
+        component={NavLink}
+        activeClassName="active-route"
+        exact
         to={btn.link}
         onClick={this.handleMobileMenuClose}
       >
-        <IconButton
-          color="inherit"
-          aria-label={btn.label}
-        >
+        <IconButton color="inherit" aria-label={btn.label}>
           {btn.icon}
         </IconButton>
         <p>{btn.label}</p>
@@ -145,13 +142,18 @@ class NavBar extends Component {
         {IconButtonsMobile}
       </Menu>
     );
-    
+
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
-            <Typography className={classes.title} variant="title" color="inherit" noWrap>
-          Planer
+            <Typography
+              className={classes.title}
+              variant="title"
+              color="inherit"
+              noWrap
+            >
+              Planer
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -161,17 +163,19 @@ class NavBar extends Component {
                 disableUnderline
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput,
+                  input: classes.inputInput
                 }}
                 onChange={e => this.props.onFilter(e.target.value)}
               />
             </div>
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              {IconButtons}
-            </div>
+            <div className={classes.sectionDesktop}>{IconButtons}</div>
             <div className={classes.sectionMobile}>
-              <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+              <IconButton
+                aria-haspopup="true"
+                onClick={this.handleMobileMenuOpen}
+                color="inherit"
+              >
                 <MoreIcon />
               </IconButton>
             </div>

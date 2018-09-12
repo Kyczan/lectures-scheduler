@@ -24,7 +24,7 @@ class Events extends Component {
     super(props);
     props.fetchSetting('DEFAULT_EVENT_TIME');
     this.state = {
-      filteredData: this.props.events,
+      filteredData: props.events,
       isDelOpen: false,
       eventToDel: {},
       isAddEventOpen: false,
@@ -45,10 +45,10 @@ class Events extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.searchText !== this.props.searchText){
+    if (prevProps.searchText !== this.props.searchText) {
       const data = {
         searchArray: this.props.events,
-        searchKeys: ['lecture', 'speaker'], 
+        searchKeys: ['lecture', 'speaker', 'note', 'event_date'],
         searchString: this.props.searchText
       };
       const filtered = this.props.searchData(data).payload;
