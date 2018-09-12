@@ -227,6 +227,8 @@ class AddEventDialog extends Component {
                     showTodayButton
                     todayLabel="Dzisiaj"
                     cancelLabel="Anuluj"
+                    leftArrowIcon="<"
+                    rightArrowIcon=">"
                   />
                   <TimePicker
                     className="form-date-picker"
