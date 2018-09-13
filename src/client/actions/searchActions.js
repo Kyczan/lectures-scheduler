@@ -2,7 +2,8 @@ import * as types from './types';
 
 export const searchData = search => dispatch => {
   const { searchArray, searchKeys, searchString } = search;
-  if (searchString.length === 0) {
+  const toSearch = String(searchString).toLowerCase().trim();
+  if (toSearch.length === 0) {
     return dispatch({
       type: types.SEARCH_DATA,
       payload: searchArray
@@ -14,7 +15,7 @@ export const searchData = search => dispatch => {
         obj[searchKeys[i]] &&
         String(obj[searchKeys[i]])
           .toLowerCase()
-          .indexOf(searchString) > -1
+          .indexOf(toSearch) > -1
       )
         return true;
     }
