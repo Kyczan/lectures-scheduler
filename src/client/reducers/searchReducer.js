@@ -1,7 +1,8 @@
 import * as types from '../actions/types';
 
 const initialState = {
-  filtered: []
+  filtered: [],
+  sorted: []
 };
 
 export default function(state = initialState, action) {
@@ -9,7 +10,12 @@ export default function(state = initialState, action) {
   case types.SEARCH_DATA:
     return {
       ...state,
-      filtered: action.payload.filtered
+      filtered: action.payload
+    };
+  case types.SORT_DATA:
+    return {
+      ...state,
+      sorted: action.payload
     };
   default:
     return state;

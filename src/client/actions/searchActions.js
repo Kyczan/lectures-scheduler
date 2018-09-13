@@ -2,7 +2,9 @@ import * as types from './types';
 
 export const searchData = search => dispatch => {
   const { searchArray, searchKeys, searchString } = search;
-  const toSearch = String(searchString).toLowerCase().trim();
+  const toSearch = String(searchString)
+    .toLowerCase()
+    .trim();
   if (toSearch.length === 0) {
     return dispatch({
       type: types.SEARCH_DATA,
@@ -24,5 +26,19 @@ export const searchData = search => dispatch => {
   return dispatch({
     type: types.SEARCH_DATA,
     payload: filtered
+  });
+};
+
+export const sortData = sort => dispatch => {
+  const { sortArray, sortKey, direction } = sort;
+  const asc = direction === 'asc' ? 1 : -1;
+  sortArray.sort((a, b) => {
+    if (a[sortKey] < b[sortKey]) return -asc;
+    if (a[sortKey] > b[sortKey]) return asc;
+    return 0;
+  });
+  return dispatch({
+    type: types.SORT_DATA,
+    payload: sortArray
   });
 };

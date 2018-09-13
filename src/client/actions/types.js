@@ -32,3 +32,4 @@ export const FETCH_SETTING = 'FETCH_SETTING';
 
 // search
 export const SEARCH_DATA = 'SEARCH_DATA';
+export const SORT_DATA = 'SORT_DATA';
