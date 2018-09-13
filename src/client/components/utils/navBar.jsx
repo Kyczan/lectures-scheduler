@@ -15,6 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Close';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import SortIcon from '@material-ui/icons/Sort';
 
 const styles = theme => ({
   root: {
@@ -100,9 +101,19 @@ const styles = theme => ({
 
 class NavBar extends Component {
   state = {
+    anchorEl: null,
     mobileMoreAnchorEl: null,
     searchInputValue: ''
   };
+
+  handleSortMenuOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleSortMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
 
   handleMobileMenuOpen = event => {
     this.setState({ mobileMoreAnchorEl: event.currentTarget });
@@ -124,9 +135,14 @@ class NavBar extends Component {
     }, this.props.onFilter(''));
   }
 
+  handleSort = () => {
+    this.handleSortMenuClose();
+  }
+
   render() {
-    const { mobileMoreAnchorEl } = this.state;
+    const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, buttonsData } = this.props;
+    const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const IconButtons = buttonsData.map(btn => (
@@ -171,6 +187,19 @@ class NavBar extends Component {
       </Menu>
     );
 
+    const renderSortMenu = (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMenuOpen}
+        onClose={this.handleSortMenuClose}
+      >
+        <MenuItem onClick={this.handleSort}>Rosnąco</MenuItem>
+        <MenuItem onClick={this.handleSort}>Malejąco</MenuItem>
+      </Menu>
+    );
+
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
@@ -210,6 +239,12 @@ class NavBar extends Component {
                 }
               />
             </div>
+            <IconButton
+              onClick={this.handleSortMenuOpen}
+              color="inherit"
+            >
+              <SortIcon />
+            </IconButton>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>{IconButtons}</div>
             <div className={classes.sectionMobile}>
@@ -223,6 +258,7 @@ class NavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
+        {renderSortMenu}
         {renderMobileMenu}
       </div>
     );
