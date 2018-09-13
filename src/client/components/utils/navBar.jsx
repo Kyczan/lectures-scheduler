@@ -9,9 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import DeleteIcon from '@material-ui/icons/Close';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 const styles = theme => ({
@@ -55,6 +57,18 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  deleteIcon: {
+    position: 'absolute',
+    display: 'flex',
+    right: '3px',
+    top: '6px',
+    '&:hover': {
+      cursor: 'pointer'
+    },
+  },
+  searchAdornment: {
+    marginLeft: '28px'
+  },
   inputRoot: {
     color: 'inherit',
     width: '100%'
@@ -86,7 +100,8 @@ const styles = theme => ({
 
 class NavBar extends Component {
   state = {
-    mobileMoreAnchorEl: null
+    mobileMoreAnchorEl: null,
+    searchInputValue: ''
   };
 
   handleMobileMenuOpen = event => {
@@ -96,6 +111,18 @@ class NavBar extends Component {
   handleMobileMenuClose = () => {
     this.setState({ mobileMoreAnchorEl: null });
   };
+
+  handleSearchChange = e => {
+    this.setState({
+      searchInputValue: e.target.value
+    }, this.props.onFilter(e.target.value));
+  }
+
+  resetSearch = () => {
+    this.setState({
+      searchInputValue: ''
+    }, this.props.onFilter(''));
+  }
 
   render() {
     const { mobileMoreAnchorEl } = this.state;
@@ -163,13 +190,24 @@ class NavBar extends Component {
               <DebounceInput
                 element={Input}
                 disableUnderline
+                value={this.state.searchInputValue}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
                 minLength={2}
                 debounceTimeout={300}
-                onChange={e => this.props.onFilter(e.target.value)}
+                onChange={this.handleSearchChange}
+                endAdornment={
+                  <InputAdornment position="end" className={classes.searchAdornment}>
+                    <div 
+                      className={classes.deleteIcon}
+                      onClick={this.resetSearch}
+                    >
+                      {this.state.searchInputValue ? <DeleteIcon /> : null}
+                    </div>
+                  </InputAdornment>
+                }
               />
             </div>
             <div className={classes.grow} />
