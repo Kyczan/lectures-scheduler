@@ -7,7 +7,7 @@ import {
   deleteCongregation,
   updateCongregation
 } from '../../actions/congregationsActions';
-import { searchData } from '../../actions/searchActions';
+import { searchData, sortData } from '../../actions/searchActions';
 import CongregationCard from './congregationCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddCongregationDialog from './addCongregationDialog';
@@ -33,21 +33,47 @@ class Congregations extends Component {
   }
 
   componentDidMount() {
-    this.props
-      .fetchCongregations()
-      .then(() => this.setState({ filteredData: this.props.congregations }));
+    this.props.handleInit({
+      sortKeys: [
+        { key: 'name', name: 'Nazwa' },
+        { key: 'number', name: 'Numer' },
+        { key: 'speakers_count', name: 'Liczba mówców' }
+      ],
+      sortInput: {
+        sortKey: 'name',
+        direction: 'asc'
+      },
+      label: 'Zbory'
+    });
+    this.props.fetchCongregations().then(() => {
+      const data = {
+        sortArray: this.props.congregations,
+        ...this.props.sortInput
+      };
+      const sorted = this.props.sortData(data).payload;
+      this.setState({ filteredData: sorted });
+    });
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.searchText !== this.props.searchText) {
-      const data = {
+    if (
+      prevProps.searchText !== this.props.searchText ||
+      prevProps.sortInput.direction !== this.props.sortInput.direction ||
+      prevProps.sortInput.sortKey !== this.props.sortInput.sortKey
+    ) {
+      const searchData = {
         searchArray: this.props.congregations,
         searchKeys: ['number', 'name'],
         searchString: this.props.searchText
       };
-      const filtered = this.props.searchData(data).payload;
+      const filtered = this.props.searchData(searchData).payload;
+      const sortData = {
+        sortArray: filtered,
+        ...this.props.sortInput
+      };
+      const sorted = this.props.sortData(sortData).payload;
       this.setState({
-        filteredData: filtered
+        filteredData: sorted
       });
     }
   }
@@ -122,13 +148,6 @@ class Congregations extends Component {
     if (!this.props.congregations.length) return null;
 
     const filtered = this.state.filteredData;
-
-    filtered.sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
-      return 0;
-    });
-
     const congregationsItems = filtered.map(congregation => (
       <Grid key={congregation.id} item xs={12} sm={6} md={4} lg={3}>
         <CongregationCard
@@ -182,7 +201,10 @@ Congregations.propTypes = {
   deleteCongregation: PropTypes.func.isRequired,
   congregations: PropTypes.array.isRequired,
   searchData: PropTypes.func.isRequired,
-  searchText: PropTypes.string.isRequired
+  searchText: PropTypes.string.isRequired,
+  sortData: PropTypes.func.isRequired,
+  sortInput: PropTypes.object,
+  handleInit: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -194,7 +216,8 @@ const mapDispatchToProps = {
   newCongregation,
   updateCongregation,
   deleteCongregation,
-  searchData
+  searchData,
+  sortData
 };
 
 export default connect(

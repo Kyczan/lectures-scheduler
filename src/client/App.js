@@ -19,12 +19,36 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      searchText: ''
+      searchText: '',
+      sortInput: {
+        sortKey: null,
+        direction: null
+      },
+      sortKeys: [],
+      label: ''
     };
   }
 
   handleFilter = searchText => {
     this.setState({ searchText });
+  };
+
+  handleSort = sortObj => {
+    this.setState({
+      sortInput: {
+        ...this.state.sortInput,
+        ...sortObj
+      }
+    });
+  };
+
+  handleInit = obj => {
+    this.setState({
+      ...this.state,
+      sortInput: obj.sortInput,
+      sortKeys: obj.sortKeys,
+      label: obj.label
+    });
   };
 
   render() {
@@ -67,7 +91,13 @@ class App extends Component {
           key={route.link}
           exact
           path={route.link}
-          render={() => <Comp searchText={this.state.searchText} />}
+          render={() => (
+            <Comp
+              searchText={this.state.searchText}
+              sortInput={this.state.sortInput}
+              handleInit={this.handleInit}
+            />
+          )}
         />
       );
     });
@@ -76,7 +106,15 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <Router>
             <div>
-              <NavBar buttonsData={routesData} onFilter={this.handleFilter} />
+              <NavBar
+                handleInit={this.handleInit}
+                buttonsData={routesData}
+                onFilter={this.handleFilter}
+                onSort={this.handleSort}
+                sortKeys={this.state.sortKeys}
+                sortInput={this.state.sortInput}
+                label={this.state.label}
+              />
               {Routes}
             </div>
           </Router>

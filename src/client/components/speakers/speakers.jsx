@@ -9,7 +9,7 @@ import {
 } from '../../actions/speakersActions';
 import { fetchCongregations } from '../../actions/congregationsActions';
 import { fetchLectures } from '../../actions/lecturesActions';
-import { searchData } from '../../actions/searchActions';
+import { searchData, sortData } from '../../actions/searchActions';
 import SpeakerCard from './speakerCard';
 import DeleteDialog from '../utils/deleteDialog';
 import AddSpeakerDialog from './addSpeakerDialog';
@@ -34,16 +34,37 @@ class Speakers extends Component {
     };
   }
   componentDidMount() {
-    this.props
-      .fetchSpeakers()
-      .then(() => this.setState({ filteredData: this.props.speakers }));
+    this.props.handleInit({
+      sortKeys: [
+        { key: 'name', name: 'Nazwisko' },
+        { key: 'congregation_name', name: 'Zbór' },
+        { key: 'last_lecture_date', name: 'Ostatni wykład' }
+      ],
+      sortInput: {
+        sortKey: 'name',
+        direction: 'asc'
+      },
+      label: 'Mówcy'
+    });
+    this.props.fetchSpeakers().then(() => {
+      const data = {
+        sortArray: this.props.speakers,
+        ...this.props.sortInput
+      };
+      const sorted = this.props.sortData(data).payload;
+      this.setState({ filteredData: sorted });
+    });
     this.props.fetchCongregations();
     this.props.fetchLectures();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.searchText !== this.props.searchText) {
-      const data = {
+    if (
+      prevProps.searchText !== this.props.searchText ||
+      prevProps.sortInput.direction !== this.props.sortInput.direction ||
+      prevProps.sortInput.sortKey !== this.props.sortInput.sortKey
+    ) {
+      const searchData = {
         searchArray: this.props.speakers,
         searchKeys: [
           'name',
@@ -55,9 +76,14 @@ class Speakers extends Component {
         ],
         searchString: this.props.searchText
       };
-      const filtered = this.props.searchData(data).payload;
+      const filtered = this.props.searchData(searchData).payload;
+      const sortData = {
+        sortArray: filtered,
+        ...this.props.sortInput
+      };
+      const sorted = this.props.sortData(sortData).payload;
       this.setState({
-        filteredData: filtered
+        filteredData: sorted
       });
     }
   }
@@ -128,13 +154,6 @@ class Speakers extends Component {
   render() {
     const { lectures } = this.props;
     const filtered = this.state.filteredData;
-
-    filtered.sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
-      return 0;
-    });
-
     const speakersItems = filtered.map(speaker => (
       <Grid key={speaker.id} item xs={12} sm={6} md={4} lg={3}>
         <SpeakerCard
@@ -194,7 +213,10 @@ Speakers.propTypes = {
   lectures: PropTypes.array.isRequired,
   fetchLectures: PropTypes.func.isRequired,
   searchData: PropTypes.func.isRequired,
-  searchText: PropTypes.string.isRequired
+  searchText: PropTypes.string.isRequired,
+  sortData: PropTypes.func.isRequired,
+  sortInput: PropTypes.object,
+  handleInit: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -210,7 +232,8 @@ const mapDispatchToProps = {
   deleteSpeaker,
   fetchCongregations,
   fetchLectures,
-  searchData
+  searchData,
+  sortData
 };
 
 export default connect(

@@ -12,10 +12,13 @@ import Menu from '@material-ui/core/Menu';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Close';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SortIcon from '@material-ui/icons/Sort';
+import CheckIcon from '@material-ui/icons/Check';
 
 const styles = theme => ({
   root: {
@@ -65,7 +68,7 @@ const styles = theme => ({
     top: '6px',
     '&:hover': {
       cursor: 'pointer'
-    },
+    }
   },
   searchAdornment: {
     marginLeft: '28px'
@@ -96,15 +99,35 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none'
     }
+  },
+  menuSectionTitle: {
+    paddingBottom: 0
   }
 });
 
 class NavBar extends Component {
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-    searchInputValue: ''
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      anchorEl: null,
+      mobileMoreAnchorEl: null,
+      searchInputValue: '',
+      sortInput: {
+        ...props.sortInput
+      }
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.sortInput.sortKey !== this.props.sortInput.sortKey) {
+      this.setState({
+        ...this.state,
+        sortInput: {
+          ...this.props.sortInput
+        }
+      });
+    }
+  }
 
   handleSortMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -113,7 +136,6 @@ class NavBar extends Component {
   handleSortMenuClose = () => {
     this.setState({ anchorEl: null });
   };
-
 
   handleMobileMenuOpen = event => {
     this.setState({ mobileMoreAnchorEl: event.currentTarget });
@@ -124,20 +146,34 @@ class NavBar extends Component {
   };
 
   handleSearchChange = e => {
-    this.setState({
-      searchInputValue: e.target.value
-    }, this.props.onFilter(e.target.value));
-  }
+    this.setState(
+      {
+        searchInputValue: e.target.value
+      },
+      this.props.onFilter(e.target.value)
+    );
+  };
 
   resetSearch = () => {
-    this.setState({
-      searchInputValue: ''
-    }, this.props.onFilter(''));
-  }
+    this.setState(
+      {
+        searchInputValue: ''
+      },
+      this.props.onFilter('')
+    );
+  };
 
-  handleSort = () => {
+  handleSort = obj => {
+    this.setState({
+      ...this.state,
+      sortInput: {
+        ...this.state.sortInput,
+        ...obj
+      }
+    });
+    this.props.onSort(obj);
     this.handleSortMenuClose();
-  }
+  };
 
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
@@ -187,6 +223,16 @@ class NavBar extends Component {
       </Menu>
     );
 
+    const sortKeys = this.props.sortKeys.map(key => (
+      <MenuItem
+        key={key.key}
+        onClick={() => this.handleSort({ sortKey: key.key })}
+      >
+        {key.name}{' '}
+        {this.state.sortInput.sortKey === key.key ? <CheckIcon /> : ''}
+      </MenuItem>
+    ));
+
     const renderSortMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -195,8 +241,22 @@ class NavBar extends Component {
         open={isMenuOpen}
         onClose={this.handleSortMenuClose}
       >
-        <MenuItem onClick={this.handleSort}>Rosnąco</MenuItem>
-        <MenuItem onClick={this.handleSort}>Malejąco</MenuItem>
+        <MenuItem disabled className={classes.menuSectionTitle}>
+          <ListItemText secondary="Kierunek" />
+        </MenuItem>
+        <MenuItem onClick={() => this.handleSort({ direction: 'asc' })}>
+          Rosnąco{' '}
+          {this.state.sortInput.direction === 'asc' ? <CheckIcon /> : ''}
+        </MenuItem>
+        <MenuItem onClick={() => this.handleSort({ direction: 'desc' })}>
+          Malejąco{' '}
+          {this.state.sortInput.direction === 'desc' ? <CheckIcon /> : ''}
+        </MenuItem>
+        <Divider />
+        <MenuItem disabled className={classes.menuSectionTitle}>
+          <ListItemText secondary="Klucz" />
+        </MenuItem>
+        {sortKeys}
       </Menu>
     );
 
@@ -210,7 +270,7 @@ class NavBar extends Component {
               color="inherit"
               noWrap
             >
-              Planer
+              {this.props.label}
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -228,8 +288,11 @@ class NavBar extends Component {
                 debounceTimeout={300}
                 onChange={this.handleSearchChange}
                 endAdornment={
-                  <InputAdornment position="end" className={classes.searchAdornment}>
-                    <div 
+                  <InputAdornment
+                    position="end"
+                    className={classes.searchAdornment}
+                  >
+                    <div
                       className={classes.deleteIcon}
                       onClick={this.resetSearch}
                     >
@@ -239,10 +302,7 @@ class NavBar extends Component {
                 }
               />
             </div>
-            <IconButton
-              onClick={this.handleSortMenuOpen}
-              color="inherit"
-            >
+            <IconButton onClick={this.handleSortMenuOpen} color="inherit">
               <SortIcon />
             </IconButton>
             <div className={classes.grow} />
@@ -268,6 +328,10 @@ class NavBar extends Component {
 NavBar.propTypes = {
   buttonsData: PropTypes.array.isRequired,
   onFilter: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
+  sortKeys: PropTypes.array.isRequired,
+  sortInput: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired
 };
 

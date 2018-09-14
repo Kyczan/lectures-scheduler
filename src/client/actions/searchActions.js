@@ -33,6 +33,8 @@ export const sortData = sort => dispatch => {
   const { sortArray, sortKey, direction } = sort;
   const asc = direction === 'asc' ? 1 : -1;
   sortArray.sort((a, b) => {
+    if (!a[sortKey]) return -asc;
+    if (!b[sortKey]) return asc;
     if (a[sortKey] < b[sortKey]) return -asc;
     if (a[sortKey] > b[sortKey]) return asc;
     return 0;
