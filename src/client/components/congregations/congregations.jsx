@@ -45,14 +45,13 @@ class Congregations extends Component {
       },
       label: 'Zbory'
     });
-    this.props.fetchCongregations().then(() => {
-      const data = {
-        sortArray: this.props.congregations,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(data).payload;
-      this.setState({ filteredData: sorted });
-    });
+    if (!this.props.congregations.length) {
+      this.props.fetchCongregations().then(() => {
+        this.filterData();
+      });
+    } else {
+      this.filterData();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -61,22 +60,26 @@ class Congregations extends Component {
       prevProps.sortInput.direction !== this.props.sortInput.direction ||
       prevProps.sortInput.sortKey !== this.props.sortInput.sortKey
     ) {
-      const searchData = {
-        searchArray: this.props.congregations,
-        searchKeys: ['number', 'name'],
-        searchString: this.props.searchText
-      };
-      const filtered = this.props.searchData(searchData).payload;
-      const sortData = {
-        sortArray: filtered,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(sortData).payload;
-      this.setState({
-        filteredData: sorted
-      });
+      this.filterData();
     }
   }
+
+  filterData = () => {
+    const searchData = {
+      searchArray: this.props.congregations,
+      searchKeys: ['number', 'name'],
+      searchString: this.props.searchText
+    };
+    const filtered = this.props.searchData(searchData).payload;
+    const sortData = {
+      sortArray: filtered,
+      ...this.props.sortInput
+    };
+    const sorted = this.props.sortData(sortData).payload;
+    this.setState({
+      filteredData: sorted
+    });
+  };
 
   handleCongregationDelete = congregation => {
     this.setState({ isDelOpen: true, congregationToDel: congregation });
@@ -88,8 +91,8 @@ class Congregations extends Component {
 
   handleDelDialogConfirm = () => {
     this.props.deleteCongregation(this.state.congregationToDel.id).then(() => {
+      this.filterData();
       this.setState({
-        filteredData: this.props.congregations,
         flash: {
           opened: true,
           msg: 'Usunięto zbór!'
@@ -110,8 +113,8 @@ class Congregations extends Component {
     this.handleAddCongregationClose();
     if (congregation.id) {
       this.props.updateCongregation(congregation).then(() => {
+        this.filterData();
         this.setState({
-          filteredData: this.props.congregations,
           flash: {
             opened: true,
             msg: 'Zaktualizowano zbór!'
@@ -120,8 +123,8 @@ class Congregations extends Component {
       });
     } else {
       this.props.newCongregation(congregation).then(() => {
+        this.filterData();
         this.setState({
-          filteredData: this.props.congregations,
           flash: {
             opened: true,
             msg: 'Dodano nowy zbór!'

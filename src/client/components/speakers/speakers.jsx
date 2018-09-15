@@ -46,16 +46,15 @@ class Speakers extends Component {
       },
       label: 'Mówcy'
     });
-    this.props.fetchSpeakers().then(() => {
-      const data = {
-        sortArray: this.props.speakers,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(data).payload;
-      this.setState({ filteredData: sorted });
-    });
-    this.props.fetchCongregations();
-    this.props.fetchLectures();
+    if (!this.props.speakers.length) {
+      this.props.fetchSpeakers().then(() => {
+        this.filterData();
+      });
+    } else {
+      this.filterData();
+    }
+    if (!this.props.congregations.length) this.props.fetchCongregations();
+    if (!this.props.lectures.length) this.props.fetchLectures();
   }
 
   componentDidUpdate(prevProps) {
@@ -64,29 +63,33 @@ class Speakers extends Component {
       prevProps.sortInput.direction !== this.props.sortInput.direction ||
       prevProps.sortInput.sortKey !== this.props.sortInput.sortKey
     ) {
-      const searchData = {
-        searchArray: this.props.speakers,
-        searchKeys: [
-          'name',
-          'note',
-          'privilege',
-          'phone',
-          'email',
-          'congregation'
-        ],
-        searchString: this.props.searchText
-      };
-      const filtered = this.props.searchData(searchData).payload;
-      const sortData = {
-        sortArray: filtered,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(sortData).payload;
-      this.setState({
-        filteredData: sorted
-      });
+      this.filterData();
     }
   }
+
+  filterData = () => {
+    const searchData = {
+      searchArray: this.props.speakers,
+      searchKeys: [
+        'name',
+        'note',
+        'privilege',
+        'phone',
+        'email',
+        'congregation'
+      ],
+      searchString: this.props.searchText
+    };
+    const filtered = this.props.searchData(searchData).payload;
+    const sortData = {
+      sortArray: filtered,
+      ...this.props.sortInput
+    };
+    const sorted = this.props.sortData(sortData).payload;
+    this.setState({
+      filteredData: sorted
+    });
+  };
 
   handleSpeakerDelete = speaker => {
     this.setState({ isDelOpen: true, speakerToDel: speaker });
@@ -98,8 +101,8 @@ class Speakers extends Component {
 
   handleDelDialogConfirm = () => {
     this.props.deleteSpeaker(this.state.speakerToDel.id).then(() => {
+      this.filterData();
       this.setState({
-        filteredData: this.props.speakers,
         flash: {
           opened: true,
           msg: 'Usunięto mówcę!'
@@ -117,9 +120,9 @@ class Speakers extends Component {
     this.handleAddSpeakerClose();
     if (speaker.id) {
       this.props.updateSpeaker(speaker).then(() => {
+        this.filterData();
         this.setState({
           flash: {
-            filteredData: this.props.speakers,
             opened: true,
             msg: 'Zaktualizowano mówcę!'
           }
@@ -127,9 +130,9 @@ class Speakers extends Component {
       });
     } else {
       this.props.newSpeaker(speaker).then(() => {
+        this.filterData();
         this.setState({
           flash: {
-            filteredData: this.props.speakers,
             opened: true,
             msg: 'Dodano nowego mówcę!'
           }

@@ -45,14 +45,13 @@ class Lectures extends Component {
       },
       label: 'Wykłady'
     });
-    this.props.fetchLectures().then(() => {
-      const data = {
-        sortArray: this.props.lectures,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(data).payload;
-      this.setState({ filteredData: sorted });
-    });
+    if (!this.props.lectures.length) {
+      this.props.fetchLectures().then(() => {
+        this.filterData();
+      });
+    } else {
+      this.filterData();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -61,22 +60,26 @@ class Lectures extends Component {
       prevProps.sortInput.direction !== this.props.sortInput.direction ||
       prevProps.sortInput.sortKey !== this.props.sortInput.sortKey
     ) {
-      const searchData = {
-        searchArray: this.props.lectures,
-        searchKeys: ['number', 'title'],
-        searchString: this.props.searchText
-      };
-      const filtered = this.props.searchData(searchData).payload;
-      const sortData = {
-        sortArray: filtered,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(sortData).payload;
-      this.setState({
-        filteredData: sorted
-      });
+      this.filterData();
     }
   }
+
+  filterData = () => {
+    const searchData = {
+      searchArray: this.props.lectures,
+      searchKeys: ['number', 'title'],
+      searchString: this.props.searchText
+    };
+    const filtered = this.props.searchData(searchData).payload;
+    const sortData = {
+      sortArray: filtered,
+      ...this.props.sortInput
+    };
+    const sorted = this.props.sortData(sortData).payload;
+    this.setState({
+      filteredData: sorted
+    });
+  };
 
   handleLectureDelete = lecture => {
     this.setState({ isDelOpen: true, lectureToDel: lecture });
@@ -88,8 +91,8 @@ class Lectures extends Component {
 
   handleDelDialogConfirm = () => {
     this.props.deleteLecture(this.state.lectureToDel.id).then(() => {
+      this.filterData();
       this.setState({
-        filteredData: this.props.lectures,
         flash: {
           opened: true,
           msg: 'Usunięto wykład!'
@@ -110,8 +113,8 @@ class Lectures extends Component {
     this.handleAddLectureClose();
     if (lecture.id) {
       this.props.updateLecture(lecture).then(() => {
+        this.filterData();
         this.setState({
-          filteredData: this.props.lectures,
           flash: {
             opened: true,
             msg: 'Zaktualizowano wykład!'
@@ -120,8 +123,8 @@ class Lectures extends Component {
       });
     } else {
       this.props.newLecture(lecture).then(() => {
+        this.filterData();
         this.setState({
-          filteredData: this.props.lectures,
           flash: {
             opened: true,
             msg: 'Dodano nowy wykład!'

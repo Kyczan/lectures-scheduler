@@ -22,7 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 class Events extends Component {
   constructor(props) {
     super(props);
-    props.fetchSetting('DEFAULT_EVENT_TIME');
+    if (!props.defaultEventTime.value) props.fetchSetting('DEFAULT_EVENT_TIME');
     this.state = {
       filteredData: props.events,
       isDelOpen: false,
@@ -45,16 +45,15 @@ class Events extends Component {
       },
       label: 'Plan'
     });
-    this.props.fetchEvents().then(() => {
-      const data = {
-        sortArray: this.props.events,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(data).payload;
-      this.setState({ filteredData: sorted });
-    });
-    this.props.fetchSpeakers();
-    this.props.fetchLectures();
+    if (!this.props.events.length) {
+      this.props.fetchEvents().then(() => {
+        this.filterData();
+      });
+    } else {
+      this.filterData();
+    }
+    if (!this.props.speakers.length) this.props.fetchSpeakers();
+    if (!this.props.lectures.length) this.props.fetchLectures();
   }
 
   componentDidUpdate(prevProps) {
@@ -63,22 +62,26 @@ class Events extends Component {
       prevProps.sortInput.direction !== this.props.sortInput.direction ||
       prevProps.sortInput.sortKey !== this.props.sortInput.sortKey
     ) {
-      const searchData = {
-        searchArray: this.props.events,
-        searchKeys: ['lecture', 'speaker', 'note', 'event_date'],
-        searchString: this.props.searchText
-      };
-      const filtered = this.props.searchData(searchData).payload;
-      const sortData = {
-        sortArray: filtered,
-        ...this.props.sortInput
-      };
-      const sorted = this.props.sortData(sortData).payload;
-      this.setState({
-        filteredData: sorted
-      });
+      this.filterData();
     }
   }
+
+  filterData = () => {
+    const searchData = {
+      searchArray: this.props.events,
+      searchKeys: ['lecture', 'speaker', 'note', 'event_date'],
+      searchString: this.props.searchText
+    };
+    const filtered = this.props.searchData(searchData).payload;
+    const sortData = {
+      sortArray: filtered,
+      ...this.props.sortInput
+    };
+    const sorted = this.props.sortData(sortData).payload;
+    this.setState({
+      filteredData: sorted
+    });
+  };
 
   handleEventDelete = event => {
     this.setState({ isDelOpen: true, eventToDel: event });
@@ -90,8 +93,8 @@ class Events extends Component {
 
   handleDelDialogConfirm = () => {
     this.props.deleteEvent(this.state.eventToDel.id).then(() => {
+      this.filterData();
       this.setState({
-        filteredData: this.props.events,
         flash: {
           opened: true,
           msg: 'Usunięto wydarzenie!'
@@ -113,8 +116,8 @@ class Events extends Component {
     this.handleAddEventClose();
     if (event.id) {
       this.props.updateEvent(event).then(() => {
+        this.filterData();
         this.setState({
-          filteredData: this.props.events,
           flash: {
             opened: true,
             msg: 'Zaktualizowano wydarzenie!'
@@ -123,8 +126,8 @@ class Events extends Component {
       });
     } else {
       this.props.newEvent(event).then(() => {
+        this.filterData();
         this.setState({
-          filteredData: this.props.events,
           flash: {
             opened: true,
             msg: 'Dodano nowe wydarzenie!'
