@@ -6,10 +6,11 @@
   "main": "app.js",
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf ./dist && babel ./src -d ./dist --copy-files && webpack",
+    "build": "rimraf ./dist && babel ./src -d ./dist --copy-files && npm run cleanclient && webpack",
     "build:dev": "npm run build -- -d",
-    "build:prod": "npm run build -- -p",
+    "build:prod": "npm run build -- -p && cp ./package* ./dist/",
     "build:watch": "npm run build:dev -- --watch",
+    "cleanclient": "rimraf ./dist/client/* && cp ./src/client/favicon.ico ./dist/client/",
     "lint": "esw webpack.config.babel.js src --color",
     "lint:watch": "npm run lint -- --watch",
     "nodemon": "npm run build:dev && nodemon -w ./src --exec \"node ./dist/app\"",
