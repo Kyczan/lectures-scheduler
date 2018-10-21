@@ -75,11 +75,11 @@ class AddSpeakerDialog extends Component {
     });
   };
 
-  handleFormChange = field => e => {
+  handleFormChange = (field, isRequired = false) => e => {
     this.setState({
       error: {
         ...this.state.error,
-        [field]: e.target.value ? false : true
+        [field]: !e.target.value && isRequired
       },
       toReturn: {
         ...this.state.toReturn,
@@ -178,7 +178,7 @@ class AddSpeakerDialog extends Component {
                   id="first_name"
                   label="Imię"
                   fullWidth
-                  onChange={this.handleFormChange('first_name')}
+                  onChange={this.handleFormChange('first_name', true)}
                   defaultValue={speaker.first_name || null}
                   helperText={
                     this.state.error.first_name ? 'Imię jest wymagane' : ''
@@ -191,7 +191,7 @@ class AddSpeakerDialog extends Component {
                   id="last_name"
                   label="Nazwisko"
                   fullWidth
-                  onChange={this.handleFormChange('last_name')}
+                  onChange={this.handleFormChange('last_name', true)}
                   defaultValue={speaker.last_name || null}
                   helperText={
                     this.state.error.last_name ? 'Nazwisko jest wymagane' : ''
