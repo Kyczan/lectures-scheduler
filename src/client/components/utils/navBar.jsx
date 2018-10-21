@@ -284,7 +284,7 @@ class NavBar extends Component {
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
-                minLength={2}
+                minLength={1}
                 debounceTimeout={300}
                 onChange={this.handleSearchChange}
                 endAdornment={
