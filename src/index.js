@@ -10,9 +10,6 @@ import auth from './routes/auth';
 
 const app = express();
 
-app.set('views', path.join(__dirname, '/views'));
-app.set('view engine', 'pug');
-
 app.use(bodyParser.json());
 app.use(
   session({
@@ -23,20 +20,23 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/api', ensureAuthenticated, routes);
+app.use('/api', routes);
+// app.use('/api', ensureAuthenticated, routes);
 app.use('/auth', auth);
-app.use('/', ensureAuthenticated);
-app.use('/', express.static(path.join(__dirname, '/client')));
+// app.use('/', ensureAuthenticated);
 
-app.get('/*', (req, res) => {
-  res.render('index', (err, html) => {
-    res.send(html);
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.join(__dirname, '/client')));
+  app.get('/*', (req, res) => {
+    res.render('index', (err, html) => {
+      res.send(html);
+    });
   });
-});
-
-app.listen(3000);
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.redirect('/auth/login');
 }
+
+app.listen(3001);
+
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) return next();
+//   res.redirect('/auth/login');
+// }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,10 +15,11 @@ import Avatar from '@material-ui/core/Avatar';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
-import CongregationsIcon from '@material-ui/icons/Public';
+import TitleIcon from '@material-ui/icons/Assignment';
+import LastLectureIcon from '@material-ui/icons/History';
+import LastSpeakerIcon from '@material-ui/icons/Person';
 
-class CongregationCard extends Component {
+class LectureCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,37 +35,46 @@ class CongregationCard extends Component {
     this.setState({ anchorEl: null });
   };
 
-  handleCongregationDelete = () => {
+  handleLectureDelete = () => {
     this.handleMoreClose();
     this.props.onDelete();
   };
 
-  handleCongregationUpdate = () => {
+  handleLectureUpdate = () => {
     this.handleMoreClose();
     this.props.onUpdate();
   };
 
   render() {
-    const { congregation } = this.props;
+    const { lecture } = this.props;
     const { anchorEl } = this.state;
+    const notes = lecture.notes ? lecture.notes.split('##') : [];
 
-    const number = congregation.number ? (
+    const title = lecture.title ? (
       <ListItem className="list-item">
         <Avatar>
-          <CongregationsIcon />
+          <TitleIcon />
         </Avatar>
-        <ListItemText primary={congregation.number} secondary="Numer zboru" />
+        <ListItemText primary={lecture.title} secondary="Tytuł" />
       </ListItem>
     ) : null;
-    const speakers_count = congregation.speakers_count ? (
+    const lastTime = notes[0] ? (
       <ListItem className="list-item">
         <Avatar>
-          <SpeakersIcon />
+          <LastLectureIcon />
         </Avatar>
         <ListItemText
-          primary={congregation.speakers_count}
-          secondary="Mówców"
+          primary={moment(notes[0]).format('D MMMM YYYY')}
+          secondary="Ostatnie wygłoszenie"
         />
+      </ListItem>
+    ) : null;
+    const lastSpeaker = notes[1] ? (
+      <ListItem className="list-item">
+        <Avatar>
+          <LastSpeakerIcon />
+        </Avatar>
+        <ListItemText primary={notes[1]} secondary="Ostatni mówca" />
       </ListItem>
     ) : null;
 
@@ -75,7 +86,7 @@ class CongregationCard extends Component {
             <div>
               <IconButton
                 aria-label="Więcej"
-                aria-owns={open ? 'side-menu' : null}
+                // aria-owns={open ? 'side-menu' : null}
                 aria-haspopup="true"
                 onClick={this.handleMoreClick}
               >
@@ -87,13 +98,13 @@ class CongregationCard extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleMoreClose}
               >
-                <MenuItem onClick={this.handleCongregationUpdate}>
+                <MenuItem onClick={this.handleLectureUpdate}>
                   <ListItemIcon>
                     <EditIcon />
                   </ListItemIcon>
                   <ListItemText primary="Edytuj" />
                 </MenuItem>
-                <MenuItem onClick={this.handleCongregationDelete}>
+                <MenuItem onClick={this.handleLectureDelete}>
                   <ListItemIcon>
                     <DeleteIcon />
                   </ListItemIcon>
@@ -102,12 +113,13 @@ class CongregationCard extends Component {
               </Menu>
             </div>
           }
-          title={congregation.name}
+          title={lecture.number}
         />
         <CardContent className="card-content">
           <List>
-            {number}
-            {speakers_count}
+            {title}
+            {lastTime}
+            {lastSpeaker}
           </List>
         </CardContent>
       </Card>
@@ -115,10 +127,10 @@ class CongregationCard extends Component {
   }
 }
 
-CongregationCard.propTypes = {
-  congregation: PropTypes.object.isRequired,
+LectureCard.propTypes = {
+  lecture: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired
 };
 
-export default CongregationCard;
+export default LectureCard;

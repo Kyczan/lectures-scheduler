@@ -1,4 +1,5 @@
-node_modules/*
-dist/*
-.env
-.gulp-cache
+/node_modules
+/client/node_modules
+/client/build
+/build
+/.env

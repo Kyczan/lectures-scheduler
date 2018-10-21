@@ -19,12 +19,12 @@ Run `setup_db.sql` in mySQL database.
 Then just:
 
 ```
-npm i
+npm i && cd client && npm i && cd ..
 npm start
 ```
 
 And navigate to `localhost:3000`
 
-After first run you will get alert about no access. 
+After first run you will get alert about no access.
 
 You need to change flag in db in `users` table. Change column `access_privilege` from `F` to `T` and refresh page.

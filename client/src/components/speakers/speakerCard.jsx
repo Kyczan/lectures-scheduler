@@ -151,7 +151,7 @@ class SpeakerCard extends Component {
 
     const getCardClass = () => {
       let classes = 'card';
-      classes += (!speaker.email && !speaker.phone ? ' empty-card' : '');
+      classes += !speaker.email && !speaker.phone ? ' empty-card' : '';
       return classes;
     };
 
@@ -163,7 +163,7 @@ class SpeakerCard extends Component {
             <div>
               <IconButton
                 aria-label="Więcej"
-                aria-owns={open ? 'side-menu' : null}
+                // aria-owns={open ? 'side-menu' : null}
                 aria-haspopup="true"
                 onClick={this.handleMoreClick}
               >
