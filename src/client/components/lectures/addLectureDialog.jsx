@@ -49,11 +49,11 @@ class AddLectureDialog extends Component {
     }
   }
 
-  handleFormChange = field => e => {
+  handleFormChange = (field, isRequired = false) => e => {
     this.setState({
       error: {
         ...this.state.error,
-        [field]: e.target.value ? false : true
+        [field]: !e.target.value && isRequired
       },
       toReturn: {
         ...this.state.toReturn,
@@ -101,7 +101,7 @@ class AddLectureDialog extends Component {
                   label="Numer"
                   fullWidth
                   type="number"
-                  onChange={this.handleFormChange('number')}
+                  onChange={this.handleFormChange('number', true)}
                   defaultValue={lecture.number || null}
                   helperText={
                     this.state.error.number ? 'Numer jest wymagany' : ''
@@ -114,7 +114,7 @@ class AddLectureDialog extends Component {
                   id="title"
                   label="Tytuł"
                   fullWidth
-                  onChange={this.handleFormChange('title')}
+                  onChange={this.handleFormChange('title', true)}
                   defaultValue={lecture.title || null}
                   helperText={
                     this.state.error.title ? 'Tytuł jest wymagany' : ''

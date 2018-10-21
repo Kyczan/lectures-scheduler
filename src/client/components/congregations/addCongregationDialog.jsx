@@ -49,11 +49,11 @@ class AddCongregationDialog extends Component {
     }
   }
 
-  handleFormChange = field => e => {
+  handleFormChange = (field, isRequired = false) => e => {
     this.setState({
       error: {
         ...this.state.error,
-        [field]: e.target.value ? false : true
+        [field]: !e.target.value && isRequired
       },
       toReturn: {
         ...this.state.toReturn,
@@ -101,7 +101,7 @@ class AddCongregationDialog extends Component {
                   label="Numer"
                   fullWidth
                   type="number"
-                  onChange={this.handleFormChange('number')}
+                  onChange={this.handleFormChange('number', true)}
                   defaultValue={congregation.number || null}
                   helperText={
                     this.state.error.number ? 'Numer jest wymagany' : ''
@@ -114,7 +114,7 @@ class AddCongregationDialog extends Component {
                   id="name"
                   label="Nazwa"
                   fullWidth
-                  onChange={this.handleFormChange('name')}
+                  onChange={this.handleFormChange('name', true)}
                   defaultValue={congregation.name || null}
                   helperText={
                     this.state.error.name ? 'Nazwa jest wymagana' : ''
