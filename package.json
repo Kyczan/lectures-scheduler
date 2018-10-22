@@ -7,11 +7,12 @@
   "scripts": {
     "build": "rimraf build && npm run build:server && npm run build:client && cp package* build",
     "build:client": "cd client && npm run build && cd .. && mkdir build/client && cp -r client/build/* build/client",
-    "build:server": "babel src -d build --copy-files",
-    "prod": "npm run build && NODE_ENV=production node build",
+    "build:server": "babel server -d build --copy-files",
     "start": "npm-run-all --parallel start:server start:client",
-    "start:server": "nodemon -w src --exec \"babel-node src\"",
-    "start:client": "cd client && npm start"
+    "start:server": "nodemon -w server --exec \"babel-node server\"",
+    "start:client": "cd client && npm start",
+    "start:build": "npm run build && NODE_ENV=production node build",
+    "start:dev": "npm start"
   },
   "keywords": [],
   "author": "krystian@kowal.pro",
