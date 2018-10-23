@@ -5,13 +5,14 @@
   "repository": "github:Kyczan/lectures-scheduler",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf build && npm run build:server && npm run build:client && cp package* build",
+    "build": "rimraf build && npm run build:server && npm run build:client",
+    "postbuild": "cp package* build && mv build/index.js build/app.js",
     "build:client": "cd client && npm run build && cd .. && mkdir build/client && cp -r client/build/* build/client",
     "build:server": "babel server -d build --copy-files",
     "start": "npm-run-all --parallel start:server start:client",
     "start:server": "nodemon -w server --exec \"babel-node server\"",
     "start:client": "cd client && npm start",
-    "start:build": "npm run build && NODE_ENV=production node build",
+    "start:build": "npm run build && NODE_ENV=production node build/app.js",
     "start:dev": "npm start"
   },
   "keywords": [],
