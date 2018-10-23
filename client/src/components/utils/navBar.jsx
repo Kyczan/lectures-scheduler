@@ -31,7 +31,7 @@ const styles = theme => ({
     marginLeft: -12,
     marginRight: 20
   },
-  title: {
+  h6: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block'
@@ -265,8 +265,8 @@ class NavBar extends Component {
         <AppBar position="fixed">
           <Toolbar>
             <Typography
-              className={classes.title}
-              variant="title"
+              className={classes.h6}
+              variant="h6"
               color="inherit"
               noWrap
             >

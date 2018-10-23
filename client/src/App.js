@@ -56,6 +56,9 @@ class App extends Component {
       palette: {
         primary: blue,
         secondary: pink
+      },
+      typography: {
+        useNextVariants: true
       }
     });
     const routesData = [
