@@ -19,12 +19,21 @@ Run `setup_db.sql` in mySQL database.
 Then just:
 
 ```
-npm i
+npm i && cd client && npm i && cd ..
 npm start
 ```
 
 And navigate to `localhost:3000`
 
-After first run you will get alert about no access. 
+In development mode there are running two servers:
+
+- one on `localhost:3000` - client react app
+- second on `localhost:3001` - server express app
+
+Also in dev mode authentication is not working because of proxy used in client app.
+
+When you start production version of app (by typing `npm run start:build`) there is only one server running on `localhost:3001`.
+
+After first prod run you will get alert about no access.
 
 You need to change flag in db in `users` table. Change column `access_privilege` from `F` to `T` and refresh page.

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -15,11 +14,10 @@ import Avatar from '@material-ui/core/Avatar';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import TitleIcon from '@material-ui/icons/Assignment';
-import SpeakerIcon from '@material-ui/icons/Person';
-import NotesIcon from '@material-ui/icons/Notes';
+import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
+import CongregationsIcon from '@material-ui/icons/Public';
 
-class EventCard extends Component {
+class CongregationCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,64 +33,49 @@ class EventCard extends Component {
     this.setState({ anchorEl: null });
   };
 
-  handleEventDelete = () => {
+  handleCongregationDelete = () => {
     this.handleMoreClose();
     this.props.onDelete();
   };
 
-  handleEventUpdate = () => {
+  handleCongregationUpdate = () => {
     this.handleMoreClose();
     this.props.onUpdate();
   };
 
   render() {
-    const { event } = this.props;
+    const { congregation } = this.props;
     const { anchorEl } = this.state;
-    const today = new Date().toJSON().substring(0, 10);
-    const eventDate = moment(event.event_date).format('D MMMM YYYY');
 
-    const lecture = event.lecture ? (
+    const number = congregation.number ? (
       <ListItem className="list-item">
         <Avatar>
-          <TitleIcon />
+          <CongregationsIcon />
         </Avatar>
-        <ListItemText primary={event.lecture} />
+        <ListItemText primary={congregation.number} secondary="Numer zboru" />
       </ListItem>
     ) : null;
-    const congregation = event.congregation ? event.congregation : '';
-    const speaker = event.speaker ? (
+    const speakers_count = congregation.speakers_count ? (
       <ListItem className="list-item">
         <Avatar>
-          <SpeakerIcon />
+          <SpeakersIcon />
         </Avatar>
-        <ListItemText primary={event.speaker} secondary={congregation} />
+        <ListItemText
+          primary={congregation.speakers_count}
+          secondary="Mówców"
+        />
       </ListItem>
     ) : null;
-    const notes = event.note ? (
-      <ListItem className="list-item">
-        <Avatar>
-          <NotesIcon />
-        </Avatar>
-        <ListItemText primary={event.note} secondary="Uwagi" />
-      </ListItem>
-    ) : null;
-
-    const getCardClass = () => {
-      let classes = 'card';
-      classes += (!event.lecture && !event.speaker && !event.note ? ' empty-card' : '');
-      classes += (event.event_date < today ? ' past-card' : '');
-      return classes;
-    };
 
     return (
-      <Card className={getCardClass()}>
+      <Card className="card">
         <CardHeader
           className="card-header"
           action={
             <div>
               <IconButton
                 aria-label="Więcej"
-                aria-owns={open ? 'side-menu' : null}
+                // aria-owns={open ? 'side-menu' : null}
                 aria-haspopup="true"
                 onClick={this.handleMoreClick}
               >
@@ -104,13 +87,13 @@ class EventCard extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleMoreClose}
               >
-                <MenuItem onClick={this.handleEventUpdate}>
+                <MenuItem onClick={this.handleCongregationUpdate}>
                   <ListItemIcon>
                     <EditIcon />
                   </ListItemIcon>
                   <ListItemText primary="Edytuj" />
                 </MenuItem>
-                <MenuItem onClick={this.handleEventDelete}>
+                <MenuItem onClick={this.handleCongregationDelete}>
                   <ListItemIcon>
                     <DeleteIcon />
                   </ListItemIcon>
@@ -119,14 +102,12 @@ class EventCard extends Component {
               </Menu>
             </div>
           }
-          title={eventDate}
-          subheader={event.event_time}
+          title={congregation.name}
         />
         <CardContent className="card-content">
           <List>
-            {lecture}
-            {speaker}
-            {notes}
+            {number}
+            {speakers_count}
           </List>
         </CardContent>
       </Card>
@@ -134,10 +115,10 @@ class EventCard extends Component {
   }
 }
 
-EventCard.propTypes = {
-  event: PropTypes.object.isRequired,
+CongregationCard.propTypes = {
+  congregation: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired
 };
 
-export default EventCard;
+export default CongregationCard;
