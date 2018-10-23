@@ -161,12 +161,7 @@ class SpeakerCard extends Component {
           className="card-header"
           action={
             <div>
-              <IconButton
-                aria-label="Więcej"
-                // aria-owns={open ? 'side-menu' : null}
-                aria-haspopup="true"
-                onClick={this.handleMoreClick}
-              >
+              <IconButton aria-label="Więcej" onClick={this.handleMoreClick}>
                 <MoreVertIcon />
               </IconButton>
               <Menu
