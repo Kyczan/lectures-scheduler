@@ -72,6 +72,7 @@ class SpeakerCard extends Component {
   render() {
     const { speaker, lectures } = this.props;
     const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
     const congregation = speaker.congregation ? (
       <ListItem className="list-item">
         <Avatar>
@@ -161,13 +162,18 @@ class SpeakerCard extends Component {
           className="card-header"
           action={
             <div>
-              <IconButton aria-label="Więcej" onClick={this.handleMoreClick}>
+              <IconButton
+                aria-label="Więcej"
+                aria-owns={open ? 'side-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleMoreClick}
+              >
                 <MoreVertIcon />
               </IconButton>
               <Menu
                 id="side-menu"
                 anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
+                open={open}
                 onClose={this.handleMoreClose}
               >
                 <MenuItem onClick={this.handleSpeakerUpdate}>
