@@ -154,27 +154,15 @@ class SelectData extends React.Component {
       label: null
     };
     this.state = {
-      selected: hasDefaults ? defaultValue : selected,
-      shouldShrink: hasDefaults
+      selected: hasDefaults ? defaultValue : selected
     };
   }
 
   handleChange = () => selected => {
     this.setState({
-      selected,
-      shouldShrink: true
+      selected
     });
     this.props.handleSelect(selected.value);
-  };
-  handleFocus = () => {
-    this.setState({
-      shouldShrink: true
-    });
-  };
-  handleBlur = () => {
-    this.setState({
-      shouldShrink: this.state.selected.value ? true : false
-    });
   };
 
   render() {
@@ -196,12 +184,10 @@ class SelectData extends React.Component {
           components={components}
           value={this.state.selected}
           onChange={this.handleChange()}
-          onFocus={() => this.handleFocus()}
-          onBlur={() => this.handleBlur()}
           textFieldProps={{
             label: this.props.label,
             InputLabelProps: {
-              shrink: this.state.shouldShrink
+              shrink: !!this.state.selected.value
             }
           }}
         />
