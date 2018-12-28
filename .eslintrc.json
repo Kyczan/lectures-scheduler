@@ -19,5 +19,10 @@
     "semi": ["error", "always"],
     "no-console": "off"
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "settings": {
+    "react": {
+      "version": "latest"
+    }
+  }
 }
