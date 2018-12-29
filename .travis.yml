@@ -4,7 +4,7 @@ node_js:
 addons:
   ssh_known_hosts: $deploy_host
 install:
-  - npm run install:ci
+  - npm run init:install:ci
 script:
   - npm run test
   - npm run build

@@ -16,8 +16,8 @@
     "start:dev": "npm start",
     "lint": "eslint \"server/**/*.js\" \"client/**/*.+(js|jsx)\"",
     "test": "npm run lint",
-    "install": "npm i && cd client && npm i && cd ..",
-    "install:ci": "npm ci && cd client && npm ci && cd .."
+    "init:install": "npm i && cd client && npm i && cd ..",
+    "init:install:ci": "npm ci && cd client && npm ci && cd .."
   },
   "keywords": [],
   "author": "krystian@kowal.pro",
