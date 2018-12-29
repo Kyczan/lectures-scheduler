@@ -17,6 +17,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: scp -rp $TRAVIS_BUILD_DIR/build/* $deploy_user@$deploy_host:$deploy_path/$TRAVIS_BUILD_ID && ssh $deploy_user@$deploy_host 'cd $deploy_path && rm -rf old.build && mv public_nodejs old.build && mv $TRAVIS_BUILD_ID public_nodejs && cp env/.env public_nodejs && cd public_nodejs && npm ci && ../restart_domain.sh'
+  script: scp -rp $TRAVIS_BUILD_DIR/build/* $deploy_user@$deploy_host:$deploy_path/new.build && ssh $deploy_user@$deploy_host 'cd $deploy_path && rm -rf old.build && mv public_nodejs old.build && mv new.build public_nodejs && mkdir new.build && cp env/.env public_nodejs && cd public_nodejs && npm ci && ../restart_domain.sh'
   on:
     tags: true
