@@ -5,7 +5,7 @@
   "repository": "github:Kyczan/lectures-scheduler",
   "main": "index.js",
   "scripts": {
-    "build": "npm run lint && rimraf build && npm run build:server && npm run build:client",
+    "build": "rimraf build && npm run build:server && npm run build:client",
     "postbuild": "cp package* build && mv build/index.js build/app.js",
     "build:client": "cd client && npm run build && cd .. && mkdir build/client && cp -r client/build/* build/client",
     "build:server": "babel server -d build --copy-files",
@@ -15,7 +15,9 @@
     "start:build": "npm run build && NODE_ENV=production node build/app.js",
     "start:dev": "npm start",
     "lint": "eslint \"server/**/*.js\" \"client/**/*.+(js|jsx)\"",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "install": "npm i && cd client && npm i && cd ..",
+    "install:ci": "npm ci && cd client && npm ci && cd .."
   },
   "keywords": [],
   "author": "krystian@kowal.pro",
