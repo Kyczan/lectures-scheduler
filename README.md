@@ -20,8 +20,8 @@ Run `setup_db.sql` in mySQL database.
 
 Then just:
 
-```
-npm i && cd client && npm i && cd ..
+```sh
+npm run init:install
 npm start
 ```
 
