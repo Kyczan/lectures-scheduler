@@ -1,6 +1,6 @@
 {
   "name": "lectures-scheduler",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Application to schedule lectures",
   "repository": "github:Kyczan/lectures-scheduler",
   "main": "index.js",
