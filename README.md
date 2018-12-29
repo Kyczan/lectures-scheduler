@@ -1,6 +1,6 @@
 # lectures-scheduler
 
-[![Build Status](https://travis-ci.org/Kyczan/lectures-scheduler.svg?branch=master)](https://travis-ci.org/Kyczan/lectures-scheduler)
+[![Build Status](https://travis-ci.com/Kyczan/lectures-scheduler.svg?branch=master)](https://travis-ci.com/Kyczan/lectures-scheduler)
 
 Fullstack application to schedule lectures. Authentication is provided by passport.js and uses Google oAuth 2.0.
 
