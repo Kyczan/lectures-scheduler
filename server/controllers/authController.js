@@ -10,7 +10,10 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (userData, done) => {
-  const data = await db.query(sql.findOne, [userData.id]);
+  const data = await db.query(sql.findOne, {
+    replacements: [userData.id],
+    type: db.QueryTypes.SELECT
+  });
   let user = false;
   if (data.length && data[0].access_privilege === 'T') user = data[0];
   done(null, user);
@@ -31,7 +34,10 @@ passport.use(
         email: profile.emails[0].value
       };
       const { error } = validateUser(userData);
-      let data = await db.query(sql.findOne, [userData.id]);
+      let data = await db.query(sql.findOne, {
+        replacements: [userData.id],
+        type: db.QueryTypes.SELECT
+      });
       let user = false;
 
       if (data.length) {
@@ -40,7 +46,7 @@ passport.use(
         }
       } else {
         const params = [userData.id, userData.name, userData.email];
-        await db.query(sql.create, params);
+        await db.query(sql.create, { replacements: params });
       }
 
       return done(error, user);

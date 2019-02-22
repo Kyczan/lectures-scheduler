@@ -1,15 +1,23 @@
-import mysql from 'promise-mysql';
 import {} from 'dotenv/config';
+const Sequelize = require('sequelize');
 
-const config = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE,
-  connectionLimit: 100,
-};
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    operatorsAliases: false,
+    logging: false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  }
+);
 
-const pool = mysql.createPool(config);
-
-export default pool;
+export default sequelize;
 export * from './queries';
