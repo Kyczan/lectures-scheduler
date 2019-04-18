@@ -1,0 +1,47 @@
+{
+  "name": "lectures-scheduler",
+  "version": "3.3.0",
+  "description": "Application to schedule lectures",
+  "repository": "github:Kyczan/lectures-scheduler",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf build && npm run build:server",
+    "postbuild": "cp package* build && mv build/index.js build/app.js",
+    "build:server": "babel src -d build --copy-files",
+    "start": "nodemon -w src --exec \"babel-node src\"",
+    "start:build": "npm run build && NODE_ENV=production node build/app.js",
+    "start:dev": "npm start",
+    "lint": "eslint \"src/**/*.js\"",
+    "test": "npm run lint"
+  },
+  "keywords": [],
+  "author": "krystian@kowal.pro",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "joi": "^13.7.0",
+    "mysql2": "^1.6.5",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0",
+    "sequelize": "^5.7.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^9.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-watch": "^4.0.1",
+    "nodemon": "^1.18.11",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.3"
+  }
+}

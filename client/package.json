@@ -32,5 +32,8 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:3001/"
+  "proxy": "http://server:3001/",
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0"
+  }
 }
