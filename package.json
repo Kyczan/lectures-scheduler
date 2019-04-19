@@ -4,24 +4,24 @@
   "description": "Application to schedule lectures",
   "repository": "github:Kyczan/lectures-scheduler",
   "scripts": {
-    "build": "rimraf build && npm run build:server && npm run build:client",
-    "postbuild": "cp package* build && mv build/index.js build/app.js",
-    "build:client": "cd client && npm run build && cd .. && mkdir build/client && cp -r client/build/* build/client",
-    "build:server": "babel server -d build --copy-files",
-    "start": "npm-run-all --parallel start:server start:client",
-    "start:server": "nodemon -w server --exec \"babel-node server\"",
-    "start:client": "cd client && npm start",
-    "start:build": "npm run build && NODE_ENV=production node build/app.js",
-    "start:dev": "npm start",
+    "build": "rimraf build && npm-run-all --parallel build:server build:client",
+    "postbuild": "mkdir build && cp -r server/build/* build && mkdir build/client && cp -r client/build/* build/client",
+    "build:client": "(cd client && npm run build)",
+    "build:server": "(cd server && npm run build)",
+    "start": "docker-compose up --build",
     "lint": "eslint \"server/src/**/*.js\" \"client/src/**/*.+(js|jsx)\"",
     "test": "npm run lint",
-    "init:install": "npm i && cd client && npm i && cd ..",
-    "init:install:ci": "npm ci && cd client && npm ci && cd .."
+    "init:install": "npm i & (cd server && npm i) & (cd client && npm i)",
+    "init:install:ci": "npm ci & (cd server && npm ci) & (cd client && npm ci)"
   },
-  "keywords": [],
   "author": "krystian@kowal.pro",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-watch": "^4.0.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^2.6.3"
   }
