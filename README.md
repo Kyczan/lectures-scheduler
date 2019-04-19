@@ -18,10 +18,9 @@ First copy `.env.example` to `.env` and set mySQL database details and google cr
 
 Run `setup_db.sql` in mySQL database.
 
-Then just:
+Then you need to have docker installed. Then just:
 
 ```sh
-npm run init:install
 npm start
 ```
 
@@ -33,8 +32,6 @@ In development mode there are running two servers:
 - second on `localhost:3001` - server express app
 
 Also in dev mode authentication is not working because of proxy used in client app.
-
-When you start production version of app (by typing `npm run start:build`) there is only one server running on `localhost:3001`.
 
 After first prod run you will get alert about no access.
 
