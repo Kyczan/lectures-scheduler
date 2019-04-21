@@ -8,7 +8,7 @@
     "postbuild": "mkdir build && cp -r server/build/* build && mkdir build/client && cp -r client/build/* build/client",
     "build:client": "(cd client && npm run build)",
     "build:server": "(cd server && npm run build)",
-    "start": "docker-compose up --build",
+    "start": "docker-compose up",
     "lint": "eslint \"server/src/**/*.js\" \"client/src/**/*.+(js|jsx)\"",
     "test": "npm run lint",
     "init:install": "npm i & (cd server && npm i) & (cd client && npm i)",
