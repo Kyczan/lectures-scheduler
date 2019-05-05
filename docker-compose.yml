@@ -1,21 +1,38 @@
 version: '3'
 
 services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+      MYSQL_DATABASE: lectures_scheduler
+    volumes:
+      - db-data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
   server:
     build: ./server
-    expose:
-      - 3001
     ports:
       - 3001:3001
     volumes:
       - ./server/src:/srv/app/server/src
+    depends_on:
+      - db
 
   client:
     build: ./client
-    expose:
-      - 3000
     ports:
       - 3000:3000
     volumes:
       - ./client/src:/srv/app/client/src
       - ./client/public:/srv/app/client/public
+
+volumes:
+  db-data:

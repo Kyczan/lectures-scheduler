@@ -33,6 +33,7 @@
   ],
   "proxy": "http://server:3001/",
   "devDependencies": {
-    "babel-polyfill": "^6.26.0"
+    "babel-polyfill": "^6.26.0",
+    "eslint-plugin-react": "^7.13.0"
   }
 }
