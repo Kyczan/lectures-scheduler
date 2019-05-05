@@ -10,6 +10,7 @@ services:
       MYSQL_DATABASE: lectures_scheduler
     volumes:
       - db-data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer

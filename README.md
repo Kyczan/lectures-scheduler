@@ -12,13 +12,11 @@ Frontend uses React + Redux
 
 Communication between API and frontend is managed by Axios lib.
 
-## Setup
+## Local setup
 
-First copy `.env.example` to `.env` and set mySQL database details and google credentials for authentication.
+You have to install docker first.
 
-Run `setup_db.sql` in mySQL database.
-
-Then you need to have docker installed. Then just:
+First copy `.env.example` to `.env`. Then just:
 
 ```sh
 npm start
@@ -26,13 +24,15 @@ npm start
 
 And navigate to `localhost:3000`
 
-In development mode there are running two servers:
+In development mode there are running 4 services in docker containers:
 
 - one on `localhost:3000` - client react app
 - second on `localhost:3001` - server express app
+- third: mysql database
+- fourth: adminer - simple db client running on `localhost:8080` (connect to db with host and password from `.env` file. User is `root`)
 
 Also in dev mode authentication is not working because of proxy used in client app.
 
-After first prod run you will get alert about no access.
+After first **prod** run you will get alert about no access.
 
 You need to change flag in db in `users` table. Change column `access_privilege` from `F` to `T` and refresh page.
