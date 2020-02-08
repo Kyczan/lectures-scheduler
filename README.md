@@ -16,7 +16,7 @@ Communication between API and frontend is managed by Axios lib.
 
 You have to install docker first.
 
-First copy `server/.env.example` to `server/.env`. Then just:
+Next copy `server/.env.example` to `server/.env`. Then just:
 
 ```sh
 npm start
