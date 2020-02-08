@@ -10,6 +10,7 @@
     "build:server": "(cd server && npm run build)",
     "start": "docker-compose up",
     "lint": "eslint \"server/src/**/*.js\" \"client/src/**/*.+(js|jsx)\"",
+    "lint:fix": "eslint  --fix \"server/src/**/*.js\" \"client/src/**/*.+(js|jsx)\"",
     "test": "npm run lint",
     "init:install": "npm i & (cd server && npm i) & (cd client && npm i)",
     "init:install:ci": "npm ci & (cd server && npm ci) & (cd client && npm ci)"
@@ -19,10 +20,13 @@
   "devDependencies": {
     "babel-eslint": "^9.0.0",
     "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.12.4",
     "eslint-watch": "^4.0.1",
     "npm-run-all": "^4.1.5",
+    "prettier": "1.19.1",
     "rimraf": "^2.6.3"
   }
 }

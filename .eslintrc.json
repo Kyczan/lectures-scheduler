@@ -4,8 +4,13 @@
     "node": true,
     "browser": true
   },
-  "plugins": ["react", "babel"],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react", "babel", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2018,
@@ -14,7 +19,7 @@
     }
   },
   "rules": {
-    "indent": ["error", 2],
+    "prettier/prettier": "error",
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "no-console": "off"

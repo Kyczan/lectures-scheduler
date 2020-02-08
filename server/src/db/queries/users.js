@@ -12,7 +12,7 @@ const sql = {
   )values(
     ?, ?, ?
   );
-`,
+`
 };
 
 export { sql as users };

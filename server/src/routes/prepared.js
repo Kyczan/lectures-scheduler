@@ -5,15 +5,13 @@ import ctl from '../controllers/preparedController';
 
 const prepared = Router({ mergeParams: true });
 
-prepared.param( 'lectureId', async (req, res, next, value) => {
-
-  const { error } = Joi.validate(
-    value, 
-    Joi.number().required() 
-  );
+prepared.param('lectureId', async (req, res, next, value) => {
+  const { error } = Joi.validate(value, Joi.number().required());
   if (error) return res.status(404).send('Invalid ID');
-  
-  const data = await db.query(sql.findOne, { replacements: [req.params.speakerId, value]});
+
+  const data = await db.query(sql.findOne, {
+    replacements: [req.params.speakerId, value]
+  });
   if (data.length) {
     req['returnedData'] = data[0][0];
     next();

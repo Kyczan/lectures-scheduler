@@ -170,8 +170,5 @@ const mapDispatchToProps = {
 
 export default compose(
   withMobileDialog(),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(PreparedDialog);

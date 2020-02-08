@@ -7,17 +7,17 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-  case types.SEARCH_DATA:
-    return {
-      ...state,
-      filtered: action.payload
-    };
-  case types.SORT_DATA:
-    return {
-      ...state,
-      sorted: action.payload
-    };
-  default:
-    return state;
+    case types.SEARCH_DATA:
+      return {
+        ...state,
+        filtered: action.payload
+      };
+    case types.SORT_DATA:
+      return {
+        ...state,
+        sorted: action.payload
+      };
+    default:
+      return state;
   }
 }

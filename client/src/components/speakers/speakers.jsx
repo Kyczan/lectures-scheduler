@@ -238,7 +238,4 @@ const mapDispatchToProps = {
   sortData
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Speakers);
+export default connect(mapStateToProps, mapDispatchToProps)(Speakers);

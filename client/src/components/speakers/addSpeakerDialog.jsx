@@ -163,7 +163,7 @@ class AddSpeakerDialog extends Component {
                   handleSelect={this.handleSelect('congregation_id')}
                   defaultValue={defaultCongregation}
                 />
-                <div className="divider" />                
+                <div className="divider" />
                 <TextField
                   id="note"
                   label="Uwagi"

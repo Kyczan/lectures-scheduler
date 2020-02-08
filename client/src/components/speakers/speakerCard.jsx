@@ -158,7 +158,7 @@ class SpeakerCard extends Component {
         />
         <CardContent className="card-content">
           <List>
-            {congregation}            
+            {congregation}
             {last_lecture_date}
             {prepared}
             {note}
@@ -195,7 +195,4 @@ const mapDispatchToProps = {
   fetchPrepared
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SpeakerCard);
+export default connect(mapStateToProps, mapDispatchToProps)(SpeakerCard);

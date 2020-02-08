@@ -91,9 +91,7 @@ class CongregationCard extends Component {
           title={congregation.name}
         />
         <CardContent className="card-content">
-          <List>
-            {speakers_count}
-          </List>
+          <List>{speakers_count}</List>
         </CardContent>
       </Card>
     );

@@ -181,9 +181,7 @@ class Events extends Component {
           opened={this.state.isAddEventOpen}
         />
         <DeleteDialog
-          deleteMsg={`${this.state.eventToDel.event_date} ${
-            this.state.eventToDel.event_time
-          }`}
+          deleteMsg={`${this.state.eventToDel.event_date} ${this.state.eventToDel.event_time}`}
           opened={this.state.isDelOpen}
           onClose={this.handleDelDialogClose}
           onConfirm={this.handleDelDialogConfirm}
@@ -242,7 +240,4 @@ const mapDispatchToProps = {
   sortData
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Events);
+export default connect(mapStateToProps, mapDispatchToProps)(Events);

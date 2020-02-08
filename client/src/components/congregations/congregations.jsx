@@ -222,7 +222,4 @@ const mapDispatchToProps = {
   sortData
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Congregations);
+export default connect(mapStateToProps, mapDispatchToProps)(Congregations);
