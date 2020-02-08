@@ -18,9 +18,6 @@ class AddSpeakerDialog extends Component {
         congregation_id: null,
         first_name: null,
         last_name: null,
-        phone: null,
-        email: null,
-        privilege: null,
         note: null
       }
     };
@@ -36,9 +33,6 @@ class AddSpeakerDialog extends Component {
             congregation_id: this.props.speaker.congregation_id || null,
             first_name: this.props.speaker.first_name || null,
             last_name: this.props.speaker.last_name || null,
-            phone: this.props.speaker.phone || null,
-            email: this.props.speaker.email || null,
-            privilege: this.props.speaker.privilege || null,
             note: this.props.speaker.note || null,
             id: this.props.speaker.id
           }
@@ -55,9 +49,6 @@ class AddSpeakerDialog extends Component {
             congregation_id: null,
             first_name: null,
             last_name: null,
-            phone: null,
-            email: null,
-            privilege: null,
             note: null
           }
         });
@@ -88,23 +79,6 @@ class AddSpeakerDialog extends Component {
     });
   };
 
-  validateEmail = e => {
-    let error = false;
-    if (e.target.value && !/\S+@\S+\.\S+/.test(e.target.value)) {
-      error = true;
-    }
-    this.setState({
-      error: {
-        ...this.state.error,
-        email: error
-      },
-      toReturn: {
-        ...this.state.toReturn,
-        email: e.target.value
-      }
-    });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     this.props.onSubmitSpeaker(this.state.toReturn);
@@ -112,9 +86,7 @@ class AddSpeakerDialog extends Component {
 
   render() {
     const { fullScreen, congregations, speaker } = this.props;
-    const privileges = ['?', 'sługa', 'starszy', 'nie usługuje'];
     let defaultCongregation = {};
-    let defaultPrivilege = {};
 
     congregations.sort((a, b) => {
       if (a.name < b.name) return -1;
@@ -125,26 +97,13 @@ class AddSpeakerDialog extends Component {
     const suggestedCongregations = congregations.map(congregation => {
       return {
         value: congregation,
-        label: `${congregation.name} (${congregation.number})`
+        label: congregation.name
       };
     });
 
     if (speaker.congregation_id) {
       defaultCongregation = suggestedCongregations.filter(
         congregation => congregation.value.id === speaker.congregation_id
-      )[0];
-    }
-
-    const suggestedPrivileges = privileges.map(privilege => {
-      return {
-        value: { id: privilege },
-        label: privilege
-      };
-    });
-
-    if (speaker.privilege) {
-      defaultPrivilege = suggestedPrivileges.filter(
-        privilege => privilege.value.id === speaker.privilege
       )[0];
     }
 
@@ -204,35 +163,7 @@ class AddSpeakerDialog extends Component {
                   handleSelect={this.handleSelect('congregation_id')}
                   defaultValue={defaultCongregation}
                 />
-                <div className="divider" />
-                <SelectData
-                  suggestions={suggestedPrivileges}
-                  label="Przywilej"
-                  handleSelect={this.handleSelect('privilege')}
-                  defaultValue={defaultPrivilege}
-                />
-                <div className="divider" />
-                <TextField
-                  error={this.state.error.email}
-                  id="email"
-                  type="email"
-                  label="Email"
-                  fullWidth
-                  onBlur={this.validateEmail}
-                  defaultValue={speaker.email || null}
-                  helperText={
-                    this.state.error.email ? 'Email jest niepoprawny' : ''
-                  }
-                />
-                <div className="divider" />
-                <TextField
-                  id="phone"
-                  label="Telefon"
-                  fullWidth
-                  onChange={this.handleFormChange('phone')}
-                  defaultValue={speaker.phone || null}
-                />
-                <div className="divider" />
+                <div className="divider" />                
                 <TextField
                   id="note"
                   label="Uwagi"

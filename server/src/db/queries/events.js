@@ -2,8 +2,6 @@ const select = `
   select 
     sc.*,
     concat(sp.last_name, ' ', sp.first_name) as speaker,
-    sp.phone as phone,
-    sp.email as email,
     co.name as congregation,
     concat(le.number, '. ', le.title) as lecture
   from schedule sc

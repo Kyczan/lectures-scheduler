@@ -12,10 +12,10 @@ prepared.param( 'lectureId', async (req, res, next, value) => {
     Joi.number().required() 
   );
   if (error) return res.status(404).send('Invalid ID');
-
-  const data = await db.query(sql.findOne, [req.params.speakerId, value]);
+  
+  const data = await db.query(sql.findOne, { replacements: [req.params.speakerId, value]});
   if (data.length) {
-    req['returnedData'] = data[0];
+    req['returnedData'] = data[0][0];
     next();
   } else {
     res.status(404).send('Invalid ID');

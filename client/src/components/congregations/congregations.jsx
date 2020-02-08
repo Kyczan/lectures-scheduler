@@ -13,7 +13,7 @@ import DeleteDialog from '../utils/deleteDialog';
 import AddCongregationDialog from './addCongregationDialog';
 import SnackbarMessage from '../utils/snackbarMessage';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 class Congregations extends Component {
@@ -180,15 +180,14 @@ class Congregations extends Component {
           onClose={this.handleDelDialogClose}
           onConfirm={this.handleDelDialogConfirm}
         />
-        <Button
+        <Fab
           onClick={() => this.handleCongregationAdd({})}
-          variant="fab"
           color="secondary"
           aria-label="Dodaj"
           className="fab"
         >
           <AddIcon />
-        </Button>
+        </Fab>
         <Grid container alignItems="stretch" spacing={16}>
           {congregationsItems}
         </Grid>

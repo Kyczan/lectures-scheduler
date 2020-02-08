@@ -14,7 +14,6 @@ class AddCongregationDialog extends Component {
     this.state = {
       error: {},
       toReturn: {
-        number: null,
         name: null
       }
     };
@@ -27,7 +26,6 @@ class AddCongregationDialog extends Component {
         this.setState({
           error: {},
           toReturn: {
-            number: this.props.congregation.number || null,
             name: this.props.congregation.name || null,
             id: this.props.congregation.id
           }
@@ -41,7 +39,6 @@ class AddCongregationDialog extends Component {
           error: {},
           toReturn: {
             ...toReturn,
-            number: null,
             name: null
           }
         });
@@ -94,19 +91,6 @@ class AddCongregationDialog extends Component {
             </DialogTitle>
             <DialogContent style={{ overflow: 'visible' }}>
               <div className="form-wrapper">
-                <TextField
-                  required
-                  error={this.state.error.number}
-                  id="number"
-                  label="Numer"
-                  fullWidth
-                  type="number"
-                  onChange={this.handleFormChange('number', true)}
-                  defaultValue={congregation.number || null}
-                  helperText={
-                    this.state.error.number ? 'Numer jest wymagany' : ''
-                  }
-                />
                 <div className="divider" />
                 <TextField
                   required

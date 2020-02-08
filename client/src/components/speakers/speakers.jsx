@@ -15,7 +15,7 @@ import DeleteDialog from '../utils/deleteDialog';
 import AddSpeakerDialog from './addSpeakerDialog';
 import SnackbarMessage from '../utils/snackbarMessage';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 class Speakers extends Component {
@@ -188,15 +188,14 @@ class Speakers extends Component {
           onClose={this.handleDelDialogClose}
           onConfirm={this.handleDelDialogConfirm}
         />
-        <Button
+        <Fab
           onClick={() => this.handleSpeakerAdd({})}
-          variant="fab"
           color="secondary"
           aria-label="Dodaj"
           className="fab"
         >
           <AddIcon />
-        </Button>
+        </Fab>
         <Grid container alignItems="stretch" spacing={16}>
           {speakersItems}
         </Grid>

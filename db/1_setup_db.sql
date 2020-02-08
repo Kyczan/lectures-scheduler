@@ -5,7 +5,6 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `congregations` (
   `id` int(11) NOT NULL,
-  `number` int(11) DEFAULT NULL,
   `name` text,
   `modify_date` varchar(20) DEFAULT NULL,
   `deleted` varchar(1) NOT NULL DEFAULT 'F'
@@ -15,6 +14,7 @@ CREATE TABLE `lectures` (
   `id` int(11) NOT NULL,
   `number` int(11) DEFAULT NULL,
   `title` text,
+  `note` text,
   `modify_date` varchar(20) DEFAULT NULL,
   `deleted` varchar(1) NOT NULL DEFAULT 'F'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -45,9 +45,6 @@ CREATE TABLE `speakers` (
   `congregation_id` int(11) DEFAULT NULL,
   `first_name` text,
   `last_name` text,
-  `phone` text,
-  `email` text,
-  `privilege` text,
   `note` text,
   `modify_date` varchar(20) DEFAULT NULL,
   `deleted` varchar(1) NOT NULL DEFAULT 'F'

@@ -23,9 +23,6 @@ export default {
       +req.body.congregation_id,
       req.body.first_name,
       req.body.last_name,
-      req.body.phone,
-      req.body.email,
-      req.body.privilege,
       req.body.note
     ];
 
@@ -46,9 +43,6 @@ export default {
       +req.body.congregation_id,
       req.body.first_name,
       req.body.last_name,
-      req.body.phone,
-      req.body.email,
-      req.body.privilege,
       req.body.note,
       speakerId
     ];

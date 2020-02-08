@@ -20,10 +20,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import EmailIcon from '@material-ui/icons/Email';
 import LastLectureIcon from '@material-ui/icons/History';
-import PhoneIcon from '@material-ui/icons/Phone';
-import PrivilegeIcon from '@material-ui/icons/Work';
 import NotesIcon from '@material-ui/icons/Notes';
 import CongregationsIcon from '@material-ui/icons/Public';
 import PreparedIcon from '@material-ui/icons/Assignment';
@@ -81,34 +78,6 @@ class SpeakerCard extends Component {
         <ListItemText primary={speaker.congregation} secondary="Zbór" />
       </ListItem>
     ) : null;
-    const privilege =
-      speaker.privilege && speaker.privilege !== '?' ? (
-        <ListItem className="list-item">
-          <Avatar>
-            <PrivilegeIcon />
-          </Avatar>
-          <ListItemText
-            primary={speaker.privilege || ''}
-            secondary="Przywilej"
-          />
-        </ListItem>
-      ) : null;
-    const email = speaker.email ? (
-      <ListItem className="list-item">
-        <Avatar>
-          <EmailIcon />
-        </Avatar>
-        <ListItemText primary={speaker.email} secondary="Email" />
-      </ListItem>
-    ) : null;
-    const phone = speaker.phone ? (
-      <ListItem className="list-item">
-        <Avatar>
-          <PhoneIcon />
-        </Avatar>
-        <ListItemText primary={speaker.phone} secondary="Telefon" />
-      </ListItem>
-    ) : null;
     const last_lecture_date = speaker.last_lecture_date ? (
       <ListItem className="list-item">
         <Avatar>
@@ -150,14 +119,8 @@ class SpeakerCard extends Component {
       </ListItem>
     );
 
-    const getCardClass = () => {
-      let classes = 'card';
-      classes += !speaker.email && !speaker.phone ? ' empty-card' : '';
-      return classes;
-    };
-
     return (
-      <Card className={getCardClass()}>
+      <Card className="card">
         <CardHeader
           className="card-header"
           action={
@@ -195,10 +158,7 @@ class SpeakerCard extends Component {
         />
         <CardContent className="card-content">
           <List>
-            {congregation}
-            {privilege}
-            {email}
-            {phone}
+            {congregation}            
             {last_lecture_date}
             {prepared}
             {note}
