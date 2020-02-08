@@ -6,8 +6,7 @@ const select = `
     from speakers s
     where s.congregation_id = co.id
       and s.deleted = 'F'
-  ) as speakers_count,
-  concat(co.number, co.name) as number_name
+  ) as speakers_count
   from congregations co
   where co.deleted = 'F'
 `;
@@ -16,13 +15,12 @@ const sql = {
   findAll: `${select} ;`,
   findOne: `${select} and co.id = ?;`,
   create: `
-    insert into congregations (number, name, modify_date, deleted)
-    values( ?, ?, now(), 'F' );
+    insert into congregations (name, modify_date, deleted)
+    values( ?, now(), 'F' );
   `,
   update: `
     update congregations
-    set number = ?, 
-      name = ?, 
+    set name = ?, 
       modify_date = now()
     where id = ?;
   `,

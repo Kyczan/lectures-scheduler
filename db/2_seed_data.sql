@@ -1,14 +1,13 @@
-insert into lectures (number, title, modify_date, deleted) 
-    values( 1, 'Test title', now(), 'F' );
+insert into lectures (number, title, note, modify_date, deleted) 
+    values( 1, 'Test title', '', now(), 'F' );
 
-insert into congregations (number, name, modify_date, deleted)
-    values( 1111, 'Congregation-Name', now(), 'F' );
+insert into congregations (name, modify_date, deleted)
+    values( 'Test Congregation', now(), 'F' );
 
 insert into speakers (
-      congregation_id, first_name, last_name, phone,
-      email, privilege, note, modify_date, deleted
+      congregation_id, first_name, last_name, note, modify_date, deleted
     )values(
-      (select id from congregations limit 1), 'John', 'Smith', '555666555', 'john@smith.com', 'starszy', '',
+      (select id from congregations limit 1), 'John', 'Smith', '',
       now(),
       'F'
     );

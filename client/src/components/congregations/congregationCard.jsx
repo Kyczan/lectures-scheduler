@@ -15,7 +15,6 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import SpeakersIcon from '@material-ui/icons/SupervisorAccount';
-import CongregationsIcon from '@material-ui/icons/Public';
 
 class CongregationCard extends Component {
   constructor(props) {
@@ -47,14 +46,6 @@ class CongregationCard extends Component {
     const { congregation } = this.props;
     const { anchorEl } = this.state;
 
-    const number = congregation.number ? (
-      <ListItem className="list-item">
-        <Avatar>
-          <CongregationsIcon />
-        </Avatar>
-        <ListItemText primary={congregation.number} secondary="Numer zboru" />
-      </ListItem>
-    ) : null;
     const speakers_count = congregation.speakers_count ? (
       <ListItem className="list-item">
         <Avatar>
@@ -101,7 +92,6 @@ class CongregationCard extends Component {
         />
         <CardContent className="card-content">
           <List>
-            {number}
             {speakers_count}
           </List>
         </CardContent>

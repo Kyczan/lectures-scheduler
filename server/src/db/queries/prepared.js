@@ -25,7 +25,7 @@ const select = `
 
 const sql = {
   findAll: `${select} ;`,
-  findOne: `${select} and pl.lecture_id = ?;`,
+  findOne: `${select} and pl.lecture_id = ? ;`,
   create: `
     insert into prepared_lectures ( speaker_id, lecture_id )
     values( ?, ? );

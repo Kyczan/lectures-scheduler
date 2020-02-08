@@ -37,6 +37,7 @@ class Lectures extends Component {
       sortKeys: [
         { key: 'number', name: 'Numer' },
         { key: 'title', name: 'Tytuł' },
+        { key: 'note', name: 'Uwagi' },
         { key: 'notes', name: 'Ostatnie wygłoszenie' }
       ],
       sortInput: {
@@ -67,7 +68,7 @@ class Lectures extends Component {
   filterData = () => {
     const searchData = {
       searchArray: this.props.lectures,
-      searchKeys: ['number', 'title'],
+      searchKeys: ['number', 'title', 'note'],
       searchString: this.props.searchText
     };
     const filtered = this.props.searchData(searchData).payload;

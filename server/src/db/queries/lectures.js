@@ -17,13 +17,14 @@ const sql = {
   findAll: `${select} ;`,
   findOne: `${select} and l.id = ?;`,
   create: `
-    insert into lectures (number, title, modify_date, deleted)
-    values( ?, ?, now(), 'F' );
+    insert into lectures (number, title, note, modify_date, deleted)
+    values( ?, ?, ?, now(), 'F' );
   `,
   update: `
     update lectures
     set number = ?, 
         title = ?, 
+        note = ?, 
         modify_date = now()
     where id = ?;
   `,

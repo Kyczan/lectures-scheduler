@@ -19,7 +19,7 @@ export default {
     const { error } = validateLecture(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const params = [+req.body.number, req.body.title];
+    const params = [+req.body.number, req.body.title, req.body.note];
 
     const [insertId] = await db.query(sql.create, { replacements: params });
     const data = await db.query(sql.findOne, {
@@ -34,7 +34,7 @@ export default {
     if (error) return res.status(400).send(error.details[0].message);
 
     const lectureId = +req.params.lectureId;
-    const params = [+req.body.number, req.body.title, lectureId];
+    const params = [+req.body.number, req.body.title, req.body.note, lectureId];
 
     await db.query(sql.update, { replacements: params });
     const data = await db.query(sql.findOne, {

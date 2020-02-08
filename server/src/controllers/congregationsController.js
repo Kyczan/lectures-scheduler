@@ -19,7 +19,7 @@ export default {
     const { error } = validateCongregation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const params = [+req.body.number, req.body.name];
+    const params = [req.body.name];
 
     const [insertId] = await db.query(sql.create, { replacements: params });
     const data = await db.query(sql.findOne, {
@@ -34,7 +34,7 @@ export default {
     if (error) return res.status(400).send(error.details[0].message);
 
     const congregationId = +req.params.congregationId;
-    const params = [+req.body.number, req.body.name, congregationId];
+    const params = [req.body.name, congregationId];
 
     await db.query(sql.update, { replacements: params });
     const data = await db.query(sql.findOne, {

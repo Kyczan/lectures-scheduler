@@ -18,6 +18,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import TitleIcon from '@material-ui/icons/Assignment';
 import LastLectureIcon from '@material-ui/icons/History';
 import LastSpeakerIcon from '@material-ui/icons/Person';
+import NotesIcon from '@material-ui/icons/Notes';
 
 class LectureCard extends Component {
   constructor(props) {
@@ -77,6 +78,14 @@ class LectureCard extends Component {
         <ListItemText primary={notes[1]} secondary="Ostatni mówca" />
       </ListItem>
     ) : null;
+    const note = lecture.note ? (
+      <ListItem className="list-item">
+        <Avatar>
+          <NotesIcon />
+        </Avatar>
+        <ListItemText primary={lecture.note} secondary="Uwagi" />
+      </ListItem>
+    ) : null;
 
     return (
       <Card className="card">
@@ -115,6 +124,7 @@ class LectureCard extends Component {
             {title}
             {lastTime}
             {lastSpeaker}
+            {note}
           </List>
         </CardContent>
       </Card>
