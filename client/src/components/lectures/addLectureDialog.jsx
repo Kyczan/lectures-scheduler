@@ -22,8 +22,8 @@ class AddLectureDialog extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { opened } = this.props
-    const hasDefaults = !!this.props.lecture.title
+    const { opened } = this.props;
+    const hasDefaults = !!this.props.lecture.title;
 
     if (!prevProps.opened && opened && !hasDefaults) {
       this.setState({
